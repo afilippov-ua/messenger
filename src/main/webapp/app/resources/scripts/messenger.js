@@ -2,7 +2,7 @@ var userId = document.getElementById("userId").value;
 
 window.onload = function onLoad() {
     loadContacts();
-    window.setInterval("loadMessages();", 1000);
+    window.setInterval("loadMessages(false);", 1000);
 }
 
 function loadContacts() {
@@ -36,13 +36,14 @@ function loadContacts() {
     }
 }
 
-function loadMessages() {
+function loadMessages(scrollOnBottom) {
 
     var receiver = document.getElementById("contacts").selectedOptions[0];
     var receiverId = receiver.id;
     var receiverName = receiver.innerHTML;
 
-    if (document.getElementById("messages") != null) {
+    if (document.getElementById("messages") != null
+        && userId != null && receiverId != null) {
 
         var xmlhttp = new XMLHttpRequest();
 
@@ -62,8 +63,12 @@ function loadMessages() {
                         result = result + receiverName + ": " + currentMessage.text;
                     }
                 }
+
                 document.getElementById("messages").value = result;
-                document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
+
+                if (scrollOnBottom == true) {
+                    document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
+                }
             }
         }
 
@@ -100,7 +105,8 @@ function sendMessage() {
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 messageField.value = "";
-                loadMessages();
+                loadMessages(true);
+
             } else if (xmlhttp.readyState == 4) {
                 errorField.innerHTML = "posting message error... please, try again later...";
             }

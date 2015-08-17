@@ -10,7 +10,7 @@
 
 <body align="center">
 
-<table align="center">
+<table about="headers" align="center">
 
     <tr>
         <%------------------- USER DATA / LOGIN / LOGOUT -------------------%>
@@ -60,7 +60,7 @@
         <tr>
 
             <td>
-                <select id="contacts" multiple="multiple" style="height:100%" onChange="javascript:loadMessages()">
+                <select id="contacts" multiple="multiple" style="height:100%" onChange="javascript:loadMessages(true)">
                     <%--contact list--%>
                 </select>
 
@@ -95,6 +95,18 @@
 </c:if>
 <%-------------------------------------------------------------%>
 
+<table border="1" align="center">
+
+    <tr>
+        <td>
+            <div overflow="auto">
+                Some text 2
+            </div>
+        </td>
+    </tr>
+
+
+</table>
 
 </body>
 
