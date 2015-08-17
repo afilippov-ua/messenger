@@ -18,15 +18,9 @@
         <c:url value="/index" var="indexUrl"/>
         <c:url value="/j_spring_security_logout" var="logoutUrl"/>
 
-        <form action="${indexUrl}" method="get" id="indexForm">
-            <input type="hidden" name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
-        </form>
+        <form action="${indexUrl}" method="get" id="indexForm"></form>
 
-        <form action="${logoutUrl}" method="post" id="logoutForm">
-            <input type="hidden" name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
-        </form>
+        <form action="${logoutUrl}" method="post" id="logoutForm"></form>
         <%------------------------------------------------------------------%>
     </tr>
 

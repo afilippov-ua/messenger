@@ -31,25 +31,13 @@
         <c:url value="/login" var="loginUrl"/>
         <c:url value="/register" var="registerUrl"/>
 
-        <form action="${loginUrl}" method="get" id="loginForm">
-            <input type="hidden" name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
-        </form>
+        <form action="${loginUrl}" method="get" id="loginForm"></form>
 
-        <form action="${registerUrl}" method="get" id="registerForm">
-            <input type="hidden" name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
-        </form>
+        <form action="${registerUrl}" method="get" id="registerForm"></form>
 
-        <form action="${logoutUrl}" method="post" id="logoutForm">
-            <input type="hidden" name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
-        </form>
+        <form action="${logoutUrl}" method="post" id="logoutForm"></form>
 
-        <form action="${profileUrl}" method="get" id="profileForm">
-            <input type="hidden" name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
-        </form>
+        <form action="${profileUrl}" method="get" id="profileForm"></form>
         <%------------------------------------------------------------------%>
     </tr>
 
@@ -110,7 +98,6 @@
 
 </body>
 
-<input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 <script src="/app/resources/scripts/messenger.js"></script>
 <script src="/app/resources/scripts/authenticatation.js"></script>
 

@@ -18,15 +18,8 @@
         <c:url value="/index" var="indexUrl"/>
         <c:url value="/register" var="registerUrl"/>
 
-        <form action="${indexUrl}" method="get" id="indexForm">
-            <input type="hidden" name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
-        </form>
-
-        <form action="${registerUrl}" method="get" id="registerForm">
-            <input type="hidden" name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
-        </form>
+        <form action="${indexUrl}" method="get" id="indexForm"></form>
+        <form action="${registerUrl}" method="get" id="registerForm"></form>
         <%------------------------------------------------------------------%>
     </tr>
 
@@ -80,11 +73,6 @@
         </tr>
 
     </table>
-
-    <%--------------- SPRING SECURITY ----------------%>
-    <input type="hidden" name="${_csrf.parameterName}"
-           value="${_csrf.token}"/>
-    <%------------------------------------------------%>
 
 </form>
 

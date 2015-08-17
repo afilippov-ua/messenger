@@ -86,13 +86,11 @@ function sendMessage() {
     var messageField = document.getElementById("newMessage");
     var errorField = document.getElementById("errorLabel");
     var message = messageField.value;
-    var csrf = document.getElementById("csrf");
 
     errorField.innerText = "";
 
     if (message != "") {
 
-        //var params = "?" + csrf.name + "=" + csrf.value + "&receiverId=" + receiverId;
         var params = "?receiverId=" + receiverId;
 
         xmlhttp.open("POST", "//localhost:8555/api/users/" + userId + "/messages" + params, true);
