@@ -92,10 +92,12 @@ function sendMessage() {
 
     if (message != "") {
 
-        var params = "?" + csrf.name + "=" + csrf.value + "&receiverId=" + receiverId + "&messageText=" + message;
+        //var params = "?" + csrf.name + "=" + csrf.value + "&receiverId=" + receiverId;
+        var params = "?receiverId=" + receiverId;
 
         xmlhttp.open("POST", "//localhost:8555/api/users/" + userId + "/messages" + params, true);
-        xmlhttp.send();
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
+        xmlhttp.send("\"" + message + "\"");
 
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
