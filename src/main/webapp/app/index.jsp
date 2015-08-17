@@ -95,19 +95,6 @@
 </c:if>
 <%-------------------------------------------------------------%>
 
-<table border="1" align="center">
-
-    <tr>
-        <td>
-            <div overflow="auto">
-                Some text 2
-            </div>
-        </td>
-    </tr>
-
-
-</table>
-
 </body>
 
 <script src="/app/resources/scripts/messenger.js"></script>
