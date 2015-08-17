@@ -39,7 +39,7 @@ public class UserService implements IUserService {
         return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
 
     }
-    
+
     @Transactional
     @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
