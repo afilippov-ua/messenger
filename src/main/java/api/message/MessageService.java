@@ -26,8 +26,8 @@ public class MessageService implements IMessageService {
     IUserDao userDao;
 
     @Transactional
-    @RequestMapping(value = "/{userId}/messages", method = RequestMethod.POST)
-    public ResponseEntity createMessage(@PathVariable("userId") Integer senderId, @RequestParam("receiverId") Integer receiverId, @RequestParam("messageText") String messageText) {
+    @RequestMapping(value = "/{userId}/messages", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createMessage(@PathVariable("userId") Integer senderId, @RequestParam("receiverId") Integer receiverId, @RequestBody String messageText) {
 
         User userSender = userDao.getUserById(senderId);
         User userReceiver = userDao.getUserById(receiverId);
