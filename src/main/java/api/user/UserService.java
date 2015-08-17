@@ -18,7 +18,6 @@ public class UserService implements IUserService {
     @Inject
     IUserDao userDao;
 
-    @Override
     @Transactional
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestParam("email") String email, @RequestParam("password") String password) {
@@ -32,7 +31,6 @@ public class UserService implements IUserService {
 
     }
 
-    @Override
     @Transactional
     @RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public ResponseEntity<List<User>> getUsers() {
@@ -41,8 +39,7 @@ public class UserService implements IUserService {
         return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
 
     }
-
-    @Override
+    
     @Transactional
     @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
@@ -56,7 +53,6 @@ public class UserService implements IUserService {
 
     }
 
-    @Override
     @Transactional
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteUser(@PathVariable("id") Integer id) {
@@ -70,7 +66,6 @@ public class UserService implements IUserService {
 
     }
 
-    @Override
     @Transactional
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateUser(@PathVariable("id") Integer id, @RequestBody User sourceUser) {
