@@ -43,7 +43,7 @@
 
 </table>
 
-<h2>Hello! Welcome to new great messenger of the world!</h2>
+<h2>messenger</h2>
 
 <c:if test="${pageContext.request.userPrincipal.name == null}">
     <h3>Please log in or register for starting conversation...</h3>

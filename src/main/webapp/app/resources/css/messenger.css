@@ -64,9 +64,9 @@
 .message_text_me {
     font-family: sans-serif;
     font-size: small;
-    border: 10px solid cornsilk;
+    border: 10px solid skyblue;
     border-radius: 8px;
-    background: cornsilk;
+    background: skyblue;
 }
 
 .message_text_interlocutor {
