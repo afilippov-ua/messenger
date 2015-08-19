@@ -67,10 +67,10 @@ function loadMessages(fullUpdate, scrollOnBottom) {
                 }
 
                 for (index = 0; index < messages.length; index++) {
-                    findCreateMessage(message_container, messages[index], fullUpdate, receiverName);
+                    findCreateMessage(message_container, messages[index], fullUpdate, scrollOnBottom, receiverName);
                 }
 
-                if (fullUpdate) {
+                if (scrollOnBottom) {
                     message_container.scrollTop = message_container.scrollHeight;
                 }
             }
@@ -82,7 +82,7 @@ function loadMessages(fullUpdate, scrollOnBottom) {
 
 }
 
-function findCreateMessage(message_container, currentMessage, fullUpdate, receiverName) {
+function findCreateMessage(message_container, currentMessage, fullUpdate, scrollOnBottom, receiverName) {
 
     // find this message by ID and create if it was not found
     if (document.getElementById("msg" + currentMessage.id) == null) {
@@ -106,6 +106,8 @@ function findCreateMessage(message_container, currentMessage, fullUpdate, receiv
         }
 
         message_container.appendChild(messageBlock);
+
+        scrollOnBottom = true;
     }
 }
 

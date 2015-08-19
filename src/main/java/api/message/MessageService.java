@@ -27,7 +27,9 @@ public class MessageService implements IMessageService {
 
     @Transactional
     @RequestMapping(value = "/{userId}/messages", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createMessage(@PathVariable("userId") Integer senderId, @RequestParam("receiverId") Integer receiverId, @RequestBody String messageText) {
+    public ResponseEntity createMessage(@PathVariable("userId") Integer senderId,
+                                        @RequestParam("receiverId") Integer receiverId,
+                                        @RequestBody String messageText) {
 
         User userSender = userDao.getUserById(senderId);
         User userReceiver = userDao.getUserById(receiverId);
@@ -42,7 +44,8 @@ public class MessageService implements IMessageService {
 
     @Transactional
     @RequestMapping(value = "/{senderId}/messages", method = RequestMethod.GET)
-    public ResponseEntity<List<Message>> getMessages(@PathVariable("senderId") String senderId, @RequestParam("receiverId") String receiverId) {
+    public ResponseEntity<List<Message>> getMessages(@PathVariable("senderId") String senderId,
+                                                     @RequestParam("receiverId") String receiverId) {
 
         User userSender = userDao.getUserById(Integer.parseInt(senderId));
         User userReceiver = userDao.getUserById(Integer.parseInt(receiverId));
@@ -54,7 +57,8 @@ public class MessageService implements IMessageService {
 
     @Transactional
     @RequestMapping(value = "/{userId}/messages/{messageId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    public ResponseEntity<Message> getMessage(@PathVariable("userId") Integer userId, @PathVariable("messageId") Integer messageId) {
+    public ResponseEntity<Message> getMessage(@PathVariable("userId") Integer userId,
+                                              @PathVariable("messageId") Integer messageId) {
 
         User user = userDao.getUserById(userId);
         if (user == null)
@@ -70,7 +74,8 @@ public class MessageService implements IMessageService {
 
     @Transactional
     @RequestMapping(value = "/{userId}/messages/{messageId}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteMessage(@PathVariable("userId") Integer userId, @PathVariable("messageId") Integer messageId) {
+    public ResponseEntity deleteMessage(@PathVariable("userId") Integer userId,
+                                        @PathVariable("messageId") Integer messageId) {
 
         User user = userDao.getUserById(userId);
         if (user == null)
@@ -87,7 +92,9 @@ public class MessageService implements IMessageService {
 
     @Transactional
     @RequestMapping(value = "/{userId}/messages/{messageId}", method = RequestMethod.PUT)
-    public ResponseEntity updateMessage(@PathVariable("userId") Integer userId, @PathVariable("messageId") Integer messageId, @RequestBody Message sourceMessage) {
+    public ResponseEntity updateMessage(@PathVariable("userId") Integer userId,
+                                        @PathVariable("messageId") Integer messageId,
+                                        @RequestBody Message sourceMessage) {
 
         User user = userDao.getUserById(userId);
         if (user == null)
