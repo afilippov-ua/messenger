@@ -131,6 +131,6 @@
 </body>
 
 <script src="/app/resources/scripts/messenger.js"></script>
-<script src="/app/resources/scripts/authenticatation.js"></script>
+<script src="/app/resources/scripts/authentication.js"></script>
 
 </html>
