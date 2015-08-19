@@ -5,7 +5,7 @@
 <head>
     <title>Messenger</title>
     <input type="hidden" id="userId" value="${userId}"/>
-    <link href="resources/css/message.css" rel="stylesheet">
+    <link href="resources/css/messenger.css" rel="stylesheet">
 </head>
 
 <body align="center">
@@ -55,37 +55,70 @@
 
     <br>
 
-    <table align="center">
+    <!-- TABLE -->
+    <table class="main_table" align="center">
 
         <tr>
 
-            <td>
-                <select id="contacts" multiple="multiple" style="height:100%" onChange="javascript:loadMessages(true)">
-                    <%--contact list--%>
+            <!-- CONTACTS -->
+            <td width="100">
+
+                <select id="contacts" class="contacts" size="20" onChange="javascript:loadMessages(true, true)">
+                    <%-- Contact list --%>
                 </select>
 
             </td>
 
-            <td>
-                <table align="center">
+            <!-- MESSAGES -->
+            <td valign="top">
 
-                    <tr>
+                <table style="width: 100%; height: 100%">
+
+                    <tr style="height: 90%">
+
                         <td>
-                            <textarea id="messages" cols="100" rows="15"></textarea>
+
+                            <div id="messages" class="messages">
+                                <!-- messages -->
+
+                                <%--<div align="center">--%>
+                                    <%--<div class="date" align="center">--%>
+                                        <%--2015.09.10--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+
+                                <%--<div id="message1" class="message_wrapper_interlocutor">--%>
+                                    <%--<div>--%>
+                                        <%--<span class="time">....................</span>--%>
+                                        <%--<span class="author">author </span>--%>
+                                    <%--</div>--%>
+                                    <%--<span class="message_text">.................</span>--%>
+                                <%--</div>--%>
+
+                                <%--<div id="message2" class="message_wrapper_me">--%>
+                                    <%--<div>--%>
+                                        <%--<span class="time">......................../span>--%>
+                                        <%--<span class="author">Me: </span>--%>
+                                    <%--</div>--%>
+                                    <%--<span class="message_text">..........................</span>--%>
+                                <%--</div>--%>
+
+                            </div>
+
                         </td>
+
                     </tr>
 
-                    <tr align="center">
+                    <tr style="height: 10%">
                         <td>
-
-                            <input type="text" style="width: 100%" id="newMessage" onkeypress="sendMessageOnEnter(event)">
-                            <label id="error" hidden="false">error</label>
-
+                            <input id="newMessage" class="input_message" type="text" placeholder="enter your message..." onkeypress="sendMessageOnEnter(event)">
                         </td>
                     </tr>
 
                 </table>
+
             </td>
+
         </tr>
 
     </table>

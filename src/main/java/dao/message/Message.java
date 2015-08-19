@@ -111,4 +111,9 @@ public class Message {
     public Integer getIdUserReceiver(){
         return userReceiver.getId();
     }
+
+    @JsonProperty("messageDate")
+    public String getMessageDateView(){
+        return messageDate.toString();
+    }
 }

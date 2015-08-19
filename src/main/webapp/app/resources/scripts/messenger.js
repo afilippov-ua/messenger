@@ -1,9 +1,13 @@
+
 var userId = document.getElementById("userId").value;
+var lastDate = null;
 
 window.onload = function onLoad() {
     loadContacts();
     window.setInterval("loadMessages(false);", 1000);
 }
+
+/////////////////////////////////////////// LOAD CONTACTS ////////////////////////////////////////
 
 function loadContacts() {
 
@@ -17,12 +21,13 @@ function loadContacts() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
                 var contactsArray = JSON.parse(xmlhttp.responseText);
-                for (index = 0; index < contactsArray.length; index++) {
+                for (var index = 0; index < contactsArray.length; index++) {
 
                     var currentContact = contactsArray[index];
 
                     var newOption = document.createElement("option");
                     newOption.id = currentContact.contactUser.id;
+                    newOption.className = "contact";
                     newOption.innerHTML = currentContact.contactUser.name;
 
                     contactList.insertBefore(newOption, contactList.lastElementChild);
@@ -36,41 +41,40 @@ function loadContacts() {
     }
 }
 
-function loadMessages(scrollOnBottom) {
+/////////////////////////////////////////// LOAD MESSAGES ////////////////////////////////////////
+function loadMessages(fullUpdate, scrollOnBottom) {
 
     var receiver = document.getElementById("contacts").selectedOptions[0];
     var receiverId = receiver.id;
     var receiverName = receiver.innerHTML;
+    var message_container = document.getElementById("messages");
 
-    if (document.getElementById("messages") != null
-        && userId != null && receiverId != null) {
+    if (message_container != null
+        && userId != null
+        && receiverId != null) {
 
         var xmlhttp = new XMLHttpRequest();
 
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                var result = "";
-                var messages = JSON.parse(xmlhttp.responseText);
-                for (index = 0; index < messages.length; index++) {
-                    var currentMessage = messages[index];
-                    if (result != "") {
-                        result += "\n";
-                    }
 
-                    if (currentMessage.userSender == userId) {
-                        result = result + "Me: " + currentMessage.text;
-                    } else {
-                        result = result + receiverName + ": " + currentMessage.text;
-                    }
+                var messages = JSON.parse(xmlhttp.responseText);
+
+                if (fullUpdate == true) {
+                    // clear all message data
+                    message_container.innerHTML = "";
+                    lastDate = null;
                 }
 
-                document.getElementById("messages").value = result;
+                for (index = 0; index < messages.length; index++) {
+                    findCreateMessage(message_container, messages[index], fullUpdate, receiverName);
+                }
 
-                if (scrollOnBottom == true) {
-                    document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
+                if (fullUpdate) {
+                    message_container.scrollTop = message_container.scrollHeight;
                 }
             }
-        }
+        };
 
         xmlhttp.open("GET", "//localhost:8555/api/users/" + userId + "/messages?receiverId=" + receiverId, true);
         xmlhttp.send();
@@ -78,6 +82,108 @@ function loadMessages(scrollOnBottom) {
 
 }
 
+function findCreateMessage(message_container, currentMessage, fullUpdate, receiverName) {
+
+    // find this message by ID and create if it was not found
+    if (document.getElementById("msg" + currentMessage.id) == null) {
+
+        // message date
+        var curDate = currentMessage.messageDate.substr(0, 10).split("-").join(".");
+        if (curDate != lastDate) {
+            lastDate = curDate;
+            message_container.appendChild(generateDateBlock(curDate));
+        }
+
+        var messageBlock;
+
+        // author & time
+        if (currentMessage.userSender == userId) {
+            // my message
+            messageBlock = generateMessage(currentMessage, receiverName, true);
+        } else {
+            // to me
+            messageBlock = generateMessage(currentMessage, receiverName, false);
+        }
+
+        message_container.appendChild(messageBlock);
+    }
+}
+
+function generateDateBlock(curDate) {
+
+    var newInnerDiv = document.createElement("div");
+    newInnerDiv.className = "date";
+    newInnerDiv.align = "center";
+    newInnerDiv.innerHTML = curDate;
+
+    var newDiv = document.createElement("div");
+    newDiv.align = "center";
+    newDiv.appendChild(newInnerDiv);
+
+    return newDiv;
+
+}
+
+function generateMessage(currentMessage, receiverName, isMyMessage) {
+
+    var newDiv = document.createElement("div");
+    newDiv.id = "msg" + currentMessage.id;
+
+    var author;
+    if (isMyMessage) {
+        newDiv.className = "message_wrapper_me";
+        author = "Me: ";
+    } else {
+        newDiv.className = "message_wrapper_interlocutor";
+        author = receiverName + ": ";
+    }
+
+    newDiv.appendChild(generateAuthorTimeBlock(currentMessage, author));
+    newDiv.appendChild(generateMessageTextBlock(currentMessage, isMyMessage));
+
+    return newDiv;
+}
+
+function generateAuthorTimeBlock(currentMessage, author) {
+
+    var curTime = currentMessage.messageDate.substr(11, 5);
+
+    var newDiv = document.createElement("div");
+    newDiv.className = "author_time_div";
+
+    // time
+    var newSpan = document.createElement("span");
+    newSpan.className = "time";
+    newSpan.innerHTML = curTime + "  ";
+
+    newDiv.appendChild(newSpan);
+
+    // author
+    newSpan = document.createElement("span");
+    newSpan.className = "author";
+    newSpan.innerHTML = author;
+
+    newDiv.appendChild(newSpan);
+
+    return newDiv;
+}
+
+function generateMessageTextBlock(currentMessage, isMyMessage) {
+
+    var newSpan = document.createElement("span");
+
+    if (isMyMessage) {
+        newSpan.className = "message_text_me";
+    } else {
+        newSpan.className = "message_text_interlocutor";
+    }
+    newSpan.innerHTML = currentMessage.text;
+
+    return newSpan;
+
+}
+
+/////////////////////////////////////////// SEND MESSAGE ////////////////////////////////////////
 function sendMessageOnEnter(event) {
     if (event.keyCode == 13)
         sendMessage();
@@ -105,7 +211,7 @@ function sendMessage() {
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 messageField.value = "";
-                loadMessages(true);
+                loadMessages(true, true);
 
             } else if (xmlhttp.readyState == 4) {
                 errorField.innerHTML = "posting message error... please, try again later...";
@@ -113,3 +219,4 @@ function sendMessage() {
         }
     }
 }
+
