@@ -25,7 +25,6 @@ public class ContactService implements IContactService {
     @Inject
     IUserDao userDao;
 
-    @Override
     @Transactional
     @RequestMapping(value = "/{userId}/contacts", method = RequestMethod.GET)
     public ResponseEntity<List<Contact>> getContacts(@PathVariable("userId") Integer userId) {
@@ -40,7 +39,6 @@ public class ContactService implements IContactService {
 
     }
 
-    @Override
     @Transactional
     @RequestMapping(value = "/{userId}/contacts/{id}", method = RequestMethod.GET)
     public ResponseEntity<Contact> getContact(@PathVariable("id") Integer id) {
