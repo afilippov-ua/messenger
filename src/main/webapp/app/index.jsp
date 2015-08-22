@@ -3,7 +3,7 @@
 
 <html>
 <head>
-    <title>Messenger</title>
+    <title>messenger</title>
     <input type="hidden" id="userId" value="${userId}"/>
     <link href="resources/css/messenger.css" rel="stylesheet">
 </head>
@@ -74,7 +74,7 @@
 
                 <table style="width: 100%; height: 100%">
 
-                    <tr style="height: 90%">
+                    <tr style="height: 80%">
 
                         <td>
 
@@ -88,19 +88,23 @@
                                 <%--</div>--%>
 
                                 <%--<div id="message1" class="message_wrapper_interlocutor">--%>
-                                    <%--<div>--%>
-                                        <%--<span class="time">....................</span>--%>
-                                        <%--<span class="author">author </span>--%>
+                                <%--<div class="message_wrapper">--%>
+                                        <%--<div>--%>
+                                            <%--<span class="time">....................</span>--%>
+                                            <%--<span class="author">author </span>--%>
+                                        <%--</div>--%>
+                                        <%--<span class="message_text">.................</span>--%>
                                     <%--</div>--%>
-                                    <%--<span class="message_text">.................</span>--%>
                                 <%--</div>--%>
 
                                 <%--<div id="message2" class="message_wrapper_me">--%>
                                     <%--<div>--%>
-                                        <%--<span class="time">......................../span>--%>
-                                        <%--<span class="author">Me: </span>--%>
+                                        <%--<div>--%>
+                                            <%--<span class="time">......................../span>--%>
+                                            <%--<span class="author">Me: </span>--%>
+                                        <%--</div>--%>
+                                        <%--<span class="message_text">..........................</span>--%>
                                     <%--</div>--%>
-                                    <%--<span class="message_text">..........................</span>--%>
                                 <%--</div>--%>
 
                             </div>
@@ -109,10 +113,14 @@
 
                     </tr>
 
-                    <tr style="height: 10%">
+                    <tr style="height: 20%">
                         <td>
-                            <input id="newMessage" class="input_message" type="text" placeholder="enter your message..." onkeypress="sendMessageOnEnter(event)">
+                            <textarea id="newMessage" class="input_textarea" placeholder="enter your message..." onkeypress="sendMessageOnEnter(event)"></textarea>
                         </td>
+                    </tr>
+
+                    <tr>
+                        <td align="right" style="font-family: sans-serif; font-size: small; color: darkgray">Send message Ctrl+Enter</td>
                     </tr>
 
                 </table>

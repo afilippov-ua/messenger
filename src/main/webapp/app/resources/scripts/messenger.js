@@ -91,7 +91,7 @@ function findCreateMessage(message_container, currentMessage, fullUpdate, scroll
         var curDate = currentMessage.messageDate.substr(0, 10).split("-").join(".");
         if (curDate != lastDate) {
             lastDate = curDate;
-            message_container.appendChild(generateDateBlock(curDate));
+            message_container.appendChild(createDateBlock(curDate));
         }
 
         var messageBlock;
@@ -99,10 +99,10 @@ function findCreateMessage(message_container, currentMessage, fullUpdate, scroll
         // author & time
         if (currentMessage.userSender == userId) {
             // my message
-            messageBlock = generateMessage(currentMessage, receiverName, true);
+            messageBlock = createMessage(currentMessage, receiverName, true);
         } else {
             // to me
-            messageBlock = generateMessage(currentMessage, receiverName, false);
+            messageBlock = createMessage(currentMessage, receiverName, false);
         }
 
         message_container.appendChild(messageBlock);
@@ -111,7 +111,7 @@ function findCreateMessage(message_container, currentMessage, fullUpdate, scroll
     }
 }
 
-function generateDateBlock(curDate) {
+function createDateBlock(curDate) {
 
     var newInnerDiv = document.createElement("div");
     newInnerDiv.className = "date";
@@ -126,7 +126,7 @@ function generateDateBlock(curDate) {
 
 }
 
-function generateMessage(currentMessage, receiverName, isMyMessage) {
+function createMessage(currentMessage, receiverName, isMyMessage) {
 
     var newDiv = document.createElement("div");
     newDiv.id = "msg" + currentMessage.id;
@@ -140,37 +140,39 @@ function generateMessage(currentMessage, receiverName, isMyMessage) {
         author = receiverName + ": ";
     }
 
-    newDiv.appendChild(generateAuthorTimeBlock(currentMessage, author));
-    newDiv.appendChild(generateMessageTextBlock(currentMessage, isMyMessage));
+    var newInnerDiv = document.createElement("div");
+    newInnerDiv.className = "message_wrapper";
+
+    newInnerDiv.appendChild(createTimeBlock(currentMessage));
+    newInnerDiv.appendChild(createAuthorBlock(currentMessage, author));
+    newInnerDiv.appendChild(createMessageTextBlock(currentMessage, isMyMessage));
+
+    newDiv.appendChild(newInnerDiv);
 
     return newDiv;
 }
 
-function generateAuthorTimeBlock(currentMessage, author) {
+function createAuthorBlock(currentMessage, author) {
 
-    var curTime = currentMessage.messageDate.substr(11, 5);
-
-    var newDiv = document.createElement("div");
-    newDiv.className = "author_time_div";
-
-    // time
     var newSpan = document.createElement("span");
-    newSpan.className = "time";
-    newSpan.innerHTML = curTime + "  ";
-
-    newDiv.appendChild(newSpan);
-
-    // author
-    newSpan = document.createElement("span");
     newSpan.className = "author";
     newSpan.innerHTML = author;
 
-    newDiv.appendChild(newSpan);
-
-    return newDiv;
+    return newSpan;
 }
 
-function generateMessageTextBlock(currentMessage, isMyMessage) {
+function createTimeBlock(currentMessage) {
+
+    var curTime = currentMessage.messageDate.substr(11, 5);
+
+    var newSpan = document.createElement("span");
+    newSpan.className = "time";
+    newSpan.innerHTML = "[" + curTime + "]  ";
+
+    return newSpan;
+}
+
+function createMessageTextBlock(currentMessage, isMyMessage) {
 
     var newSpan = document.createElement("span");
 
@@ -187,7 +189,7 @@ function generateMessageTextBlock(currentMessage, isMyMessage) {
 
 /////////////////////////////////////////// SEND MESSAGE ////////////////////////////////////////
 function sendMessageOnEnter(event) {
-    if (event.keyCode == 13)
+    if (event.ctrlKey && event.keyCode == 10)
         sendMessage();
 }
 

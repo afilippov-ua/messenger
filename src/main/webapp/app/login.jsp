@@ -25,7 +25,7 @@
 
 </table>
 
-<h2> Messenger </h2>
+<h2> messenger </h2>
 
 <form name="loginForm" action="/j_spring_security_check" method="post">
 
