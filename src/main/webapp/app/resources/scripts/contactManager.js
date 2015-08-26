@@ -1,22 +1,29 @@
 window.onload = function onLoad() {
     loadContacts();
-    window.setInterval("loadMessages(false);", 1000);
 };
 
 function addContact() {
 
-    if ($("#email")[0].value != "") {
-        $.get("//localhost:8555/api/users/?email=" + $("#email")[0].value, function (data, status) {
+    var email = $("#email");
+    var name = $("#name");
+    var ownerId = $("#userId");
 
-            var user = data[0];
-            if (user != undefined) {
+    if (email.val() != "") {
+        $.get("//localhost:8555/api/users/?email=" + email.val(), function (dataGet, status) {
 
-                $.post("//localhost:8555/api/users/" + $("#userId")[0].value + "/contacts/" + user.id + "?name=" + $("#name")[0].value, function (data, status) {
+            if (dataGet.length) {
+                var user = dataGet[0];
+                $.post("//localhost:8555/api/users/" + ownerId.val() + "/contacts/" + user.id + "?name=" + name.val(), function (dataPost, status) {
                     if (status != "success") {
                         alert("error!");
+                    } else {
+                        email.val("");
+                        name.val("");
                     }
                     loadContacts();
                 });
+            } else {
+                alert("user not found!")
             }
         });
     }
@@ -39,25 +46,23 @@ function deleteContact() {
 
 function loadContacts() {
 
-    if ($("#contacts")[0] != undefined && $("#userId")[0] != undefined) {
+    var contacts = $("#contacts");
+    var userId = $("#userId");
 
-        $.get("//localhost:8555/api/users/" + $("#userId")[0].value + "/contacts", function (data, status) {
+    if (contacts.length && userId.length) {
 
-            $("#contacts")[0].innerHTML = "";
+        $.get("//localhost:8555/api/users/" + userId[0].value + "/contacts", function (data, status) {
 
-            for (var index = 0; index < data.length; index++) {
+            contacts.html("");
 
-                var currentContact = data[index];
-
-                var newOption = document.createElement("option");
-                newOption.setAttribute("id", currentContact.id);
-                newOption.setAttribute("data-user-id", currentContact.contactUser.id);
-                newOption.setAttribute("className", "contact");
-                newOption.innerHTML = currentContact.contactName;
-
-                $("#contacts")[0].insertBefore(newOption, $("#contacts")[0].lastElementChild);
-
-            }
+            $.each(data, function(index, element){
+                $("<option />").
+                    appendTo(contacts[0]).
+                    addClass("contact").
+                    attr("id", element.id).
+                    attr("data-user-id", element.contactUser.id).
+                    html(element.contactName);
+            });
         })
     }
 }

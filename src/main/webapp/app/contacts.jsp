@@ -8,7 +8,7 @@
     <script src="/app/resources/scripts/authentication.js"></script>
     <script src="/app/resources/scripts/contactManager.js"></script>
     <script src="/app/resources/scripts/jquery-1.11.3.js"></script>
-    <link href="resources/css/messenger.css" rel="stylesheet">
+    <link href="/app/resources/css/messenger.css" rel="stylesheet">
 </head>
 <body align="center">
 
@@ -46,8 +46,8 @@
 
     <tr>
         <!-- CONTACTS -->
-        <td width="150">
-            <select id="contacts" class="contacts" size="20" onChange="javascript:loadMessages(true, true)">
+        <td width="100">
+            <select id="contacts" size="20" onChange="javascript:loadMessages(true, true)">
                 <%-- contact list --%>
             </select>
         </td>
