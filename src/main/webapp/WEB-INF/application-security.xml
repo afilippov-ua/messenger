@@ -19,6 +19,7 @@
         <intercept-url pattern="/login" access="permitAll"/>
         <intercept-url pattern="/register" access="permitAll"/>
         <intercept-url pattern="/profile" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/contacts" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
 
         <!-- access denied page -->

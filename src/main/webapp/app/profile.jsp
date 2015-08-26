@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>Profile</title>
+    <script src="/app/resources/scripts/authentication.js"></script>
 </head>
 
 <body align="center">
@@ -11,20 +12,20 @@
 <table align="center">
     <tr>
         <%------------------- USER DATA / LOGIN / LOGOUT -------------------%>
-        User : ${pageContext.request.userPrincipal.name} |
-        <a href="javascript:index()"> Main page </a> |
-        <a href="javascript:logout()"> Logout </a>
+        User : ${pageContext.request.userPrincipal.name}
+        | <a href="javascript:index()"> Main page </a>
+        | <a href="javascript:contacts()"> Manage contacts </a>
+        | <a href="javascript:logout()"> Logout </a>
 
-        <c:url value="/index" var="indexUrl"/>
-        <c:url value="/j_spring_security_logout" var="logoutUrl"/>
-
-        <form action="${indexUrl}" method="get" id="indexForm"></form>
-
-        <form action="${logoutUrl}" method="post" id="logoutForm"></form>
+        <form action="/index" method="get" id="indexForm"></form>
+        <form action="/contacts" method="get" id="contactsForm"></form>
+        <form action="/j_spring_security_logout" method="post" id="logoutForm"></form>
         <%------------------------------------------------------------------%>
     </tr>
 
 </table>
+
+<h2>Profile</h2>
 
 <table align="center">
 
@@ -54,7 +55,5 @@
 </table>
 
 </body>
-
-<script src="/app/resources/scripts/authentication.js"></script>
 
 </html>

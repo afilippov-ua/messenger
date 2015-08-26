@@ -1,6 +1,6 @@
 <web-app>
 
-    <display-name>Chess Application</display-name>
+    <display-name>messenger application</display-name>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>

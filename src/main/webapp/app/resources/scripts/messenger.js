@@ -5,7 +5,7 @@ var lastDate = null;
 window.onload = function onLoad() {
     loadContacts();
     window.setInterval("loadMessages(false);", 1000);
-}
+};
 
 /////////////////////////////////////////// LOAD CONTACTS ////////////////////////////////////////
 
@@ -20,15 +20,18 @@ function loadContacts() {
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
+                contactList.innerHTML = "";
+
                 var contactsArray = JSON.parse(xmlhttp.responseText);
                 for (var index = 0; index < contactsArray.length; index++) {
 
                     var currentContact = contactsArray[index];
 
                     var newOption = document.createElement("option");
-                    newOption.id = currentContact.contactUser.id;
-                    newOption.className = "contact";
-                    newOption.innerHTML = currentContact.contactUser.name;
+                    newOption.setAttribute("id", currentContact.id);
+                    newOption.setAttribute("data-user-id", currentContact.contactUser.id);
+                    newOption.setAttribute("className", "contact");
+                    newOption.innerHTML = currentContact.contactName;
 
                     contactList.insertBefore(newOption, contactList.lastElementChild);
 
@@ -45,44 +48,52 @@ function loadContacts() {
 function loadMessages(fullUpdate, scrollOnBottom) {
 
     var receiver = document.getElementById("contacts").selectedOptions[0];
-    var receiverId = receiver.id;
-    var receiverName = receiver.innerHTML;
-    var message_container = document.getElementById("messages");
+    if (receiver == undefined) {
+        message_container.innerHTML = "";
+    } else {
 
-    if (message_container != null
-        && userId != null
-        && receiverId != null) {
+        var receiverId = receiver.getAttribute("data-user-id");
+        var receiverName = receiver.innerHTML;
+        var message_container = document.getElementById("messages");
 
-        var xmlhttp = new XMLHttpRequest();
+        if (message_container != null
+            && userId != null
+            && receiverId != null) {
 
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var xmlhttp = new XMLHttpRequest();
 
-                var messages = JSON.parse(xmlhttp.responseText);
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
-                if (fullUpdate == true) {
-                    // clear all message data
-                    message_container.innerHTML = "";
-                    lastDate = null;
+                    var messages = JSON.parse(xmlhttp.responseText);
+
+                    if (fullUpdate == true) {
+                        // clear all message data
+                        message_container.innerHTML = "";
+                        lastDate = null;
+                    }
+
+                    for (index = 0; index < messages.length; index++) {
+                        if (findCreateMessage(message_container, messages[index], receiverName)){
+                            scrollOnBottom = true;
+                        }
+                    }
+
+                    if (scrollOnBottom) {
+                        message_container.scrollTop = message_container.scrollHeight;
+                    }
                 }
+            };
 
-                for (index = 0; index < messages.length; index++) {
-                    findCreateMessage(message_container, messages[index], fullUpdate, scrollOnBottom, receiverName);
-                }
-
-                if (scrollOnBottom) {
-                    message_container.scrollTop = message_container.scrollHeight;
-                }
-            }
-        };
-
-        xmlhttp.open("GET", "//localhost:8555/api/users/" + userId + "/messages?receiverId=" + receiverId, true);
-        xmlhttp.send();
+            xmlhttp.open("GET", "//localhost:8555/api/users/" + userId + "/messages?receiverId=" + receiverId, true);
+            xmlhttp.send();
+        }
     }
-
 }
 
-function findCreateMessage(message_container, currentMessage, fullUpdate, scrollOnBottom, receiverName) {
+function findCreateMessage(message_container, currentMessage, receiverName) {
+
+    var result = false;
 
     // find this message by ID and create if it was not found
     if (document.getElementById("msg" + currentMessage.id) == null) {
@@ -107,8 +118,10 @@ function findCreateMessage(message_container, currentMessage, fullUpdate, scroll
 
         message_container.appendChild(messageBlock);
 
-        scrollOnBottom = true;
+        result = true;
     }
+
+    return result;
 }
 
 function createDateBlock(curDate) {
@@ -195,32 +208,35 @@ function sendMessageOnEnter(event) {
 
 function sendMessage() {
 
-    var receiverId = document.getElementById("contacts").selectedOptions[0].id;
+    var receiver = document.getElementById("contacts").selectedOptions[0];
+    if (receiver != undefined) {
 
-    var xmlhttp = new XMLHttpRequest();
-    var messageField = document.getElementById("newMessage");
-    var errorField = document.getElementById("errorLabel");
-    var message = messageField.value;
+        var receiverId = receiver.getAttribute("data-user-id");
 
-    errorField.innerText = "";
+        var xmlhttp = new XMLHttpRequest();
+        var messageField = document.getElementById("newMessage");
+        var errorField = document.getElementById("errorLabel");
+        var message = messageField.value;
 
-    if (message != "") {
+        errorField.innerText = "";
 
-        var params = "?receiverId=" + receiverId;
+        if (message != "") {
 
-        xmlhttp.open("POST", "//localhost:8555/api/users/" + userId + "/messages" + params, true);
-        xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send("\"" + message + "\"");
+            var params = "?receiverId=" + receiverId;
 
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                messageField.value = "";
-                loadMessages(true, true);
+            xmlhttp.open("POST", "//localhost:8555/api/users/" + userId + "/messages" + params, true);
+            xmlhttp.setRequestHeader("Content-Type", "application/json");
+            xmlhttp.send("\"" + message + "\"");
 
-            } else if (xmlhttp.readyState == 4) {
-                errorField.innerHTML = "posting message error... please, try again later...";
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    messageField.value = "";
+                    loadMessages(true, true);
+
+                } else if (xmlhttp.readyState == 4) {
+                    errorField.innerHTML = "posting message error... please, try again later...";
+                }
             }
         }
     }
 }
-

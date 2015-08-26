@@ -15,11 +15,8 @@
         <a href="javascript:index()"> Main page </a> |
         <a href="javascript:register()"> Register </a>
 
-        <c:url value="/index" var="indexUrl"/>
-        <c:url value="/register" var="registerUrl"/>
-
-        <form action="${indexUrl}" method="get" id="indexForm"></form>
-        <form action="${registerUrl}" method="get" id="registerForm"></form>
+        <form action="/index" method="get" id="indexForm"></form>
+        <form action="/register" method="get" id="registerForm"></form>
         <%------------------------------------------------------------------%>
     </tr>
 

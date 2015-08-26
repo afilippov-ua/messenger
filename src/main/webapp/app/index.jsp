@@ -6,6 +6,8 @@
     <title>messenger</title>
     <input type="hidden" id="userId" value="${userId}"/>
     <link href="resources/css/messenger.css" rel="stylesheet">
+    <script src="/app/resources/scripts/messenger.js"></script>
+    <script src="/app/resources/scripts/authentication.js"></script>
 </head>
 
 <body align="center">
@@ -22,22 +24,16 @@
             <a href="javascript:register()"> Register </a>
         </c:if>
         <c:if test="${pageContext.request.userPrincipal.name != null}">
-            | <a href="javascript:profile()"> Profile </a> |
-            <a href="javascript:logout()"> Logout </a>
+            | <a href="javascript:profile()"> Profile </a>
+            | <a href="javascript:contacts()"> Manage contacts </a>
+            | <a href="javascript:logout()"> Logout </a>
         </c:if>
 
-        <c:url value="/j_spring_security_logout" var="logoutUrl"/>
-        <c:url value="/profile" var="profileUrl"/>
-        <c:url value="/login" var="loginUrl"/>
-        <c:url value="/register" var="registerUrl"/>
-
-        <form action="${loginUrl}" method="get" id="loginForm"></form>
-
-        <form action="${registerUrl}" method="get" id="registerForm"></form>
-
-        <form action="${logoutUrl}" method="post" id="logoutForm"></form>
-
-        <form action="${profileUrl}" method="get" id="profileForm"></form>
+        <form action="/login" method="get" id="loginForm"></form>
+        <form action="/register" method="get" id="registerForm"></form>
+        <form action="/j_spring_security_logout" method="post" id="logoutForm"></form>
+        <form action="/profile" method="get" id="profileForm"></form>
+        <form action="/contacts" method="get" id="contactsForm"></form>
         <%------------------------------------------------------------------%>
     </tr>
 
@@ -55,18 +51,15 @@
 
     <br>
 
-    <!-- TABLE -->
     <table class="main_table" align="center">
 
         <tr>
 
             <!-- CONTACTS -->
             <td width="100">
-
                 <select id="contacts" class="contacts" size="20" onChange="javascript:loadMessages(true, true)">
-                    <%-- Contact list --%>
+                        <%-- contact list --%>
                 </select>
-
             </td>
 
             <!-- MESSAGES -->
@@ -75,52 +68,24 @@
                 <table style="width: 100%; height: 100%">
 
                     <tr style="height: 80%">
-
                         <td>
-
                             <div id="messages" class="messages">
                                 <!-- messages -->
-
-                                <%--<div align="center">--%>
-                                    <%--<div class="date" align="center">--%>
-                                        <%--2015.09.10--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-
-                                <%--<div id="message1" class="message_wrapper_interlocutor">--%>
-                                <%--<div class="message_wrapper">--%>
-                                        <%--<div>--%>
-                                            <%--<span class="time">....................</span>--%>
-                                            <%--<span class="author">author </span>--%>
-                                        <%--</div>--%>
-                                        <%--<span class="message_text">.................</span>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-
-                                <%--<div id="message2" class="message_wrapper_me">--%>
-                                    <%--<div>--%>
-                                        <%--<div>--%>
-                                            <%--<span class="time">......................../span>--%>
-                                            <%--<span class="author">Me: </span>--%>
-                                        <%--</div>--%>
-                                        <%--<span class="message_text">..........................</span>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-
                             </div>
-
                         </td>
-
                     </tr>
 
                     <tr style="height: 20%">
                         <td>
-                            <textarea id="newMessage" class="input_textarea" placeholder="enter your message..." onkeypress="sendMessageOnEnter(event)"></textarea>
+                            <textarea id="newMessage" class="input_textarea" placeholder="enter your message..."
+                                      onkeypress="sendMessageOnEnter(event)"></textarea>
                         </td>
                     </tr>
 
                     <tr>
-                        <td align="right" style="font-family: sans-serif; font-size: small; color: darkgray">Send message Ctrl+Enter</td>
+                        <td align="right" style="font-family: sans-serif; font-size: small; color: darkgray">Send
+                            message Ctrl+Enter
+                        </td>
                     </tr>
 
                 </table>
@@ -137,8 +102,5 @@
 <%-------------------------------------------------------------%>
 
 </body>
-
-<script src="/app/resources/scripts/messenger.js"></script>
-<script src="/app/resources/scripts/authentication.js"></script>
 
 </html>

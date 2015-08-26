@@ -94,6 +94,24 @@ public class MVCController {
 
     }
 
+    @Transactional
+    @RequestMapping(value = "/contacts", method = RequestMethod.GET)
+    public ModelAndView contacts() {
+
+        ModelAndView model = new ModelAndView();
+        model.setViewName("contacts");
+
+        User currentUser = userDao.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (currentUser == null) {
+            model.addObject("userId", "");
+        } else {
+            model.addObject("userId", currentUser.getId());
+        }
+
+        return model;
+
+    }
+
     //for 403 access denied page
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public ModelAndView accessDenied() {
@@ -104,7 +122,6 @@ public class MVCController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
-            System.out.println(userDetail);
             model.addObject("username", userDetail.getUsername());
         }
 
