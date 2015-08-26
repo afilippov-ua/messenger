@@ -57,8 +57,8 @@ public class UserDao implements IUserDao {
     }
 
     public User getUserByEmail(String email){
-        Query query = getSession().createQuery("from User where email = :email");
-        query.setParameter("email", email);
+        Query query = getSession().createQuery("from User where LOWER(email) = :email");
+        query.setParameter("email", email.toLowerCase());
 
         List result = query.list();
 
