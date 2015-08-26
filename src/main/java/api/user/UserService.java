@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class UserService implements IUserService {
     IUserDao userDao;
 
     @Transactional
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestParam("email") String email, @RequestParam("password") String password) {
 
         try {
@@ -32,10 +33,21 @@ public class UserService implements IUserService {
     }
 
     @Transactional
-    @RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getUsers() {
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    public ResponseEntity<List<User>> getUsers(@RequestParam(value = "email", required = false) String email) {
 
-        List<User> userList = userDao.getUsers();
+        List<User> userList;
+        if(email != null) {
+            User currentUser = userDao.getUserByEmail(email);
+            if (currentUser != null) {
+                userList = new ArrayList<User>();
+                userList.add(currentUser);
+            } else {
+                userList = null;
+            }
+        } else {
+            userList = userDao.getUsers();
+        }
         return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
 
     }

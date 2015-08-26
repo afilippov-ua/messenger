@@ -11,4 +11,8 @@ public interface IContactService {
 
     public ResponseEntity<Contact> getContact(Integer id);
 
+    public ResponseEntity deleteContact(Integer id);
+
+    public ResponseEntity addContact(Integer ownerId, Integer contactId, String name);
+
 }

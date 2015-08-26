@@ -58,9 +58,26 @@ public class ContactDao implements IContactDao {
         }
     }
 
-    public Contact createContact(User ownerUser, User contactUser) {
+    public Contact getContactByUsers(User ownerUser, User contactUser) {
+
+        Query query = getSession().createQuery("from Contact " +
+                "where ownerUser = :ownerUser and contactUser =:contactUser");
+        query.setParameter("ownerUser", ownerUser);
+        query.setParameter("contactUser", contactUser);
+
+        List result = query.list();
+
+        if (result.isEmpty()) {
+            return null;
+        } else {
+            return (Contact)result.get(0);
+        }
+    }
+
+    public Contact createContact(User ownerUser, User contactUser, String name) {
 
         Contact newContact = new Contact(ownerUser, contactUser);
+        newContact.setContactName(name);
         save(newContact);
 
         return newContact;

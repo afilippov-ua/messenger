@@ -10,7 +10,9 @@ public interface IContactDao {
 
     public Contact getContact(int id);
 
-    public Contact createContact(User ownerUser, User contactUser);
+    public Contact getContactByUsers(User ownerUser, User contactUser);
+
+    public Contact createContact(User ownerUser, User contactUser, String name);
 
     public void updateContact(int id, Contact sourceMessage) throws ContactNotFoundException;
 

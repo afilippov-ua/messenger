@@ -26,7 +26,7 @@ public class Contact {
     User contactUser;
 
     @Column(name = "contact_name")
-    private String text;
+    private String contactName;
 
     // default constructor
     public Contact(){};
@@ -60,12 +60,12 @@ public class Contact {
         this.contactUser = contactUser;
     }
 
-    public String getText() {
-        return text;
+    public String getContactName() {
+        return contactName;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setContactName(String text) {
+        this.contactName = text;
     }
 
     public void loadValues(Contact sourceContact){

@@ -1,15 +1,13 @@
 package api.contact;
 
 import dao.contact.Contact;
+import dao.contact.ContactNotFoundException;
 import dao.contact.IContactDao;
 import dao.user.IUserDao;
 import dao.user.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -42,11 +40,44 @@ public class ContactService implements IContactService {
     @Transactional
     @RequestMapping(value = "/{userId}/contacts/{id}", method = RequestMethod.GET)
     public ResponseEntity<Contact> getContact(@PathVariable("id") Integer id) {
+
         Contact contact = contactDao.getContact(id);
         if (contact == null){
             return new ResponseEntity<Contact>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<Contact>(contact, HttpStatus.OK);
         }
+
     }
+
+    @Transactional
+    @RequestMapping(value = "/{ownerId}/contacts/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteContact(@PathVariable("id") Integer id) {
+
+        try {
+            contactDao.deleteContact(id);
+            return  new ResponseEntity(HttpStatus.OK);
+        } catch (ContactNotFoundException e) {
+            return  new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @Transactional
+    @RequestMapping(value = "/{ownerId}/contacts/{contactId}", method = RequestMethod.POST)
+    public ResponseEntity addContact(@PathVariable("ownerId") Integer ownerId, @PathVariable("contactId") Integer contactId, @RequestParam("name") String name) {
+
+        User ownerUser = userDao.getUserById(ownerId);
+        User contactUser = userDao.getUserById(contactId);
+
+        if (ownerUser == null || contactUser == null) {
+            return  new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        if (contactDao.getContactByUsers(ownerUser, contactUser) == null) {
+            contactDao.createContact(ownerUser, contactUser, name);
+        }
+        return  new ResponseEntity(HttpStatus.OK);
+    }
+
 }
