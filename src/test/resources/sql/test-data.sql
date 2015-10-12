@@ -2,7 +2,7 @@ DELETE FROM USERS;
 DELETE FROM MESSAGES;
 DELETE FROM CONTACTS;
 
-INSERT INTO USERS (ID, EMAIL, PASSWORD, NAME, TOKEN) VALUES
+INSERT INTO USERS (ID, EMAIL, PASSWORD, NAME) VALUES
   (1, 'serdyukov@mail.com', '12345', 'aleksandr serdyukov'),
   (2, 'sirosh@mail.com', '12345', 'sergey  sirosh'),
   (3, 'filippov@mail.com', '12345', 'aleksandr filippov'),
