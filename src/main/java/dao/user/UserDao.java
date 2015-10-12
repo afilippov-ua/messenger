@@ -56,7 +56,11 @@ public class UserDao implements IUserDao {
 
     }
 
-    public User getUserByEmail(String email){
+    public User getUserByEmail(String email) throws IllegalArgumentException{
+
+        if (email == null)
+            throw new IllegalArgumentException("argument \"email\" is not valid");
+
         Query query = getSession().createQuery("from User where LOWER(email) = :email");
         query.setParameter("email", email.toLowerCase());
 
@@ -69,7 +73,16 @@ public class UserDao implements IUserDao {
         }
     }
 
-    public User createUser(String email, String password) throws UserAlreadyExistException{
+    public User createUser(String email, String password) throws UserAlreadyExistException, IllegalArgumentException {
+
+        if (email == null)
+            throw new IllegalArgumentException("argument \"email\" is not valid");
+
+        if (password == null)
+            throw new IllegalArgumentException("argument \"password\" is not valid");
+
+        if (getUserByEmail(email) != null)
+            throw new UserAlreadyExistException("User with email" + email + " already exist");
 
         User newUser = new User(email, password);
         save(newUser);
@@ -77,7 +90,10 @@ public class UserDao implements IUserDao {
         return newUser;
     }
 
-    public void updateUser(int id, User sourceUser) throws UserNotFoundException {
+    public void updateUser(int id, User sourceUser) throws UserNotFoundException, IllegalArgumentException {
+
+        if (sourceUser == null)
+            throw new IllegalArgumentException("argument \"sourceUser\" is not valid");
 
         User currentUser = getUserById(id);
         if (currentUser == null)

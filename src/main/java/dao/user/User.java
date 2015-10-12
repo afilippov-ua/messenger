@@ -25,9 +25,6 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "token")
-    private String token;
-
     @OneToMany(mappedBy="contactUser")
     private Set<Contact> contacts;
 
@@ -71,20 +68,11 @@ public class User {
         this.name = name;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public void loadValues(User sourceUser){
 
         setEmail(sourceUser.getEmail());
         setPassword(sourceUser.getPassword());
         setName(sourceUser.getName());
-        setToken(sourceUser.getToken());
 
     }
 }

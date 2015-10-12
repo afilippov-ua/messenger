@@ -8,11 +8,11 @@ public interface IUserDao {
 
     public User getUserById(int id);
 
-    public User getUserByEmail(String email);
+    public User getUserByEmail(String email) throws IllegalArgumentException;
 
-    public User createUser(String email, String password) throws UserAlreadyExistException;
+    public User createUser(String email, String password) throws UserAlreadyExistException, IllegalArgumentException;
 
-    public void updateUser(int id, User user) throws UserNotFoundException;
+    public void updateUser(int id, User user) throws UserNotFoundException, IllegalArgumentException;
 
     public void deleteUser(int id) throws UserNotFoundException;
 
