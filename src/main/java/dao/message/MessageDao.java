@@ -36,10 +36,13 @@ public class MessageDao implements IMessageDao {
         getSession().persist(entity);
     }
 
-    public List<Message> getMessages(User userSender, User userReceiver) {
+    public List<Message> getMessages(User userSender, User userReceiver) throws IllegalArgumentException {
 
-        if (userSender == null || userReceiver == null)
-            return null;
+        if (userSender == null)
+            throw new IllegalArgumentException("argument \"userSender\" is not valid");
+
+        if (userReceiver == null)
+            throw new IllegalArgumentException("argument \"userReceiver\" is not valid");
 
         Query query = getSession().createQuery("from Message where (userSender = :userSender or userReceiver =:userSender) and (userSender = :userReceiver or userReceiver = :userReceiver)");
         query.setParameter("userSender", userSender);
@@ -49,10 +52,10 @@ public class MessageDao implements IMessageDao {
 
     }
 
-    public Message getMessage(User user, int messageId) {
+    public Message getMessage(User user, int messageId) throws IllegalArgumentException {
 
         if (user == null)
-            return null;
+            throw new IllegalArgumentException("argument \"user\" is not valid");
 
         Query query = getSession().createQuery("from Message where id = :id and (userSender = :currentUser or userReceiver = :currentUser)");
         query.setParameter("currentUser", user);
@@ -67,10 +70,19 @@ public class MessageDao implements IMessageDao {
         }
     }
 
-    public Message createMessage(Date messageDate, User sender, User receiver, String messageText) {
+    public Message createMessage(Date messageDate, User sender, User receiver, String messageText) throws IllegalArgumentException {
 
-        if (sender == null || receiver == null || messageDate == null || messageText == null)
-            return null;
+        if (messageDate == null)
+            throw new IllegalArgumentException("argument \"messageDate\" is not valid");
+
+        if (sender == null)
+            throw new IllegalArgumentException("argument \"sender\" is not valid");
+
+        if (receiver == null)
+            throw new IllegalArgumentException("argument \"receiver\" is not valid");
+
+        if (messageText == null)
+            throw new IllegalArgumentException("argument \"messageText\" is not valid");
 
         Message newMessage = new Message(messageDate, sender, receiver, messageText);
         save(newMessage);
@@ -78,22 +90,27 @@ public class MessageDao implements IMessageDao {
         return newMessage;
     }
 
-    public void updateMessage(User user, int messageId, Message sourceMessage) throws MessageNotFoundException {
+    public void updateMessage(User user, int messageId, Message sourceMessage) throws MessageNotFoundException, IllegalArgumentException {
 
-        if (user != null || sourceMessage != null) {
+        if (user == null)
+            throw new IllegalArgumentException("argument \"user\" is not valid");
 
-            Message currentMessage = getMessage(user, messageId);
-            if (currentMessage == null)
-                throw new MessageNotFoundException("Message with id" + messageId + " was not found");
+        if (sourceMessage == null)
+            throw new IllegalArgumentException("argument \"sourceMessage\" is not valid");
 
-            currentMessage.loadValues(sourceMessage);
+        Message currentMessage = getMessage(user, messageId);
+        if (currentMessage == null)
+            throw new MessageNotFoundException("Message with id" + messageId + " was not found");
 
-            persist(currentMessage);
-        }
+        currentMessage.loadValues(sourceMessage);
 
+        persist(currentMessage);
     }
 
-    public void deleteMessage(User user, int messageId) throws MessageNotFoundException {
+    public void deleteMessage(User user, int messageId) throws MessageNotFoundException, IllegalArgumentException {
+
+        if (user == null)
+            throw new IllegalArgumentException("argument \"user\" is not valid");
 
         Message currentMessage = getMessage(user, messageId);
         if (currentMessage == null)
