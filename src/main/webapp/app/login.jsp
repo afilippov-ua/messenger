@@ -48,7 +48,7 @@
                     </td>
                     <td>
                         <input type="email" name="username" size="25" title="Enter your email"
-                               placeholder="filippov@javamonkeys.com" value="filippov@javamonkeys.com" required>
+                               placeholder="filippov@mail.com" value="filippov@mail.com" required>
                     </td>
                 </tr>
                 <tr>
