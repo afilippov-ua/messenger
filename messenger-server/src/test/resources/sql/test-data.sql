@@ -22,4 +22,8 @@ INSERT INTO MESSAGES (ID, MESSAGE_DATE, SENDER_ID, RECEIVER_ID, TEXT, SEEN) VALU
 INSERT INTO CONTACTS (ID, OWNER_ID, CONTACT_ID, CONTACT_NAME) VALUES
   (1, 1, 3, 'Filippov'),
   (2, 3, 1, 'Serdyikov'),
-  (3, 3, 2, 'Sirosh');
+  (3, 3, 2, 'Sirosh'),
+  (4, 5, 4, 'update user'),
+  (5, 4, 5, 'delete user'),
+  (6, 5, 3, 'filippov'),
+  (7, 3, 5, 'delete user');
