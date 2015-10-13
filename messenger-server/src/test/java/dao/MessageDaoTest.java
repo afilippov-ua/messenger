@@ -1,5 +1,8 @@
-package dao.message;
+package dao;
 
+import dao.message.IMessageDao;
+import dao.message.Message;
+import dao.message.MessageNotFoundException;
 import dao.user.IUserDao;
 import dao.user.User;
 import org.junit.Before;

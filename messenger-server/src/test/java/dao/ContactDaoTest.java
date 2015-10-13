@@ -1,5 +1,8 @@
-package dao.contact;
+package dao;
 
+import dao.contact.Contact;
+import dao.contact.ContactNotFoundException;
+import dao.contact.IContactDao;
 import dao.user.IUserDao;
 import dao.user.User;
 import org.junit.Before;

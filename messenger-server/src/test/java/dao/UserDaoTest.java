@@ -1,5 +1,9 @@
-package dao.user;
+package dao;
 
+import dao.user.IUserDao;
+import dao.user.User;
+import dao.user.UserAlreadyExistException;
+import dao.user.UserNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
