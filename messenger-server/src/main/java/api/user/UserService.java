@@ -21,11 +21,11 @@ public class UserService implements IUserService {
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<User> createUser(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public ResponseEntity createUser(@RequestHeader("email") String email, @RequestHeader("password") String password) {
 
         try {
-            User newUser = userDao.createUser(email, password);
-            return new ResponseEntity<User>(newUser, HttpStatus.OK);
+            userDao.createUser(email, password);
+            return new ResponseEntity(HttpStatus.CREATED);
         } catch (UserAlreadyExistException e){
             return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
         }
