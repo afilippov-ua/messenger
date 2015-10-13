@@ -162,6 +162,7 @@ public class MessageDaoTest {
     public void deleteMessageTest(){
 
         int messageId = 7;
+        assertNotNull("Check the test data", messageDao.getMessage(userSender, messageId));
 
         try {
 

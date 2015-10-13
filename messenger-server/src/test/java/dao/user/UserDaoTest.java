@@ -125,6 +125,7 @@ public class UserDaoTest {
     public void deleteUserTest(){
 
         String email = "DeleteUser@mail.com";
+        assertNotNull("Check the test data", userDao.getUserByEmail(email));
 
         try {
             User user = userDao.getUserByEmail(email);
