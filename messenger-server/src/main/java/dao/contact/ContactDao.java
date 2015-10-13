@@ -36,7 +36,10 @@ public class ContactDao implements IContactDao {
         getSession().persist(entity);
     }
 
-    public List<Contact> getContacts(User ownerUser) {
+    public List<Contact> getContacts(User ownerUser) throws IllegalArgumentException {
+
+        if (ownerUser == null)
+            throw new IllegalArgumentException("argument \"ownerUser\" is not valid");
 
         Query query = getSession().createQuery("from Contact where ownerUser = :ownerUser");
         query.setParameter("ownerUser", ownerUser);
@@ -58,7 +61,13 @@ public class ContactDao implements IContactDao {
         }
     }
 
-    public Contact getContactByUsers(User ownerUser, User contactUser) {
+    public Contact getContactByUsers(User ownerUser, User contactUser) throws IllegalArgumentException {
+
+        if (ownerUser == null)
+            throw new IllegalArgumentException("argument \"ownerUser\" is not valid");
+
+        if (contactUser == null)
+            throw new IllegalArgumentException("argument \"contactUser\" is not valid");
 
         Query query = getSession().createQuery("from Contact " +
                 "where ownerUser = :ownerUser and contactUser =:contactUser");
@@ -74,7 +83,16 @@ public class ContactDao implements IContactDao {
         }
     }
 
-    public Contact createContact(User ownerUser, User contactUser, String name) {
+    public Contact createContact(User ownerUser, User contactUser, String name) throws IllegalArgumentException {
+
+        if (ownerUser == null)
+            throw new IllegalArgumentException("argument \"ownerUser\" is not valid");
+
+        if (contactUser == null)
+            throw new IllegalArgumentException("argument \"contactUser\" is not valid");
+
+        if (name == null)
+            throw new IllegalArgumentException("argument \"name\" is not valid");
 
         Contact newContact = new Contact(ownerUser, contactUser);
         newContact.setContactName(name);
@@ -83,7 +101,10 @@ public class ContactDao implements IContactDao {
         return newContact;
     }
 
-    public void updateContact(int id, Contact sourceContact) throws ContactNotFoundException {
+    public void updateContact(int id, Contact sourceContact) throws ContactNotFoundException, IllegalArgumentException {
+
+        if (sourceContact == null)
+            throw new IllegalArgumentException("argument \"name\" is not valid");
 
         Contact currentContact = getContact(id);
         if (currentContact == null)
