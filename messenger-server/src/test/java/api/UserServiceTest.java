@@ -7,6 +7,7 @@ import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageConverter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -17,7 +18,8 @@ public class UserServiceTest {
 
     ///////////////////////////////////////// BASIC REQUESTS /////////////////////////////////////////
 
-    /* "getUsers" method with "email" parameter */
+    /** "doGetUsers" method with "email" parameter
+    * return User*/
     private static User doGetUserByEmail(CustomRestTemplate restTemplate, String email){
         ResponseEntity<User[]> response = restTemplate.getForEntity(baseUrl + "/api/users/?email=" + email, User[].class);
         User[] arrUser = response.getBody();
@@ -28,22 +30,22 @@ public class UserServiceTest {
         }
     }
 
-    /* "getUser" method with "id" parameter */
     private static ResponseEntity<User> doGetUser(CustomRestTemplate restTemplate, int id){
         return restTemplate.getForEntity(baseUrl + "/api/users/" + id, User.class);
     }
 
-    /* "createUser" method with "email" & "password" parameter */
+    private static ResponseEntity<User[]> doGetUsers(CustomRestTemplate restTemplate, String email){
+        return restTemplate.getForEntity(baseUrl + "/api/users" + ((email == null ) ? "" : "/?email=" + email), User[].class);
+    }
+
     private static ResponseEntity<String> doCreateUser(CustomRestTemplate restTemplate, HttpEntity entity){
         return restTemplate.exchange(baseUrl + "/api/users", HttpMethod.POST, entity, String.class);
     }
 
-    /* "updateUser" method with "idl" & "user" parameter */
     private static ResponseEntity<String> doUpdateUser(CustomRestTemplate restTemplate, HttpEntity entity, int id){
         return restTemplate.exchange(baseUrl + "/api/users/" + id, HttpMethod.PUT, entity, String.class);
     }
 
-    /* "deleteUser" method with "id" parameter */
     private static ResponseEntity<String> doDeleteUser(CustomRestTemplate restTemplate, HttpEntity entity, int id){
         return restTemplate.exchange(baseUrl + "/api/users/" + id, HttpMethod.DELETE, entity, String.class);
     }
@@ -126,6 +128,84 @@ public class UserServiceTest {
         ResponseEntity<User> responseEntity = doGetUser(restTemplate, -1);
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertNull(responseEntity.getBody());
+    }
+
+    ///////////////////////////////////////// GET USERS /////////////////////////////////////////
+
+    /** Get list of users
+     * Users already exists in DB
+     * Should return list of users */
+    @Test
+    public void getUsersTest(){
+
+        String email1 = "filippov@mail.com";
+        String email2 = "serdyukov@mail.com";
+        String email3 = "sirosh@mail.com";
+
+        boolean user1IsFound = false;
+        boolean user2IsFound = false;
+        boolean user3IsFound = false;
+
+        CustomRestTemplate restTemplate = new CustomRestTemplate();
+
+        // Get users
+        ResponseEntity<User[]> responseEntity = doGetUsers(restTemplate, null);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        User[] userList = responseEntity.getBody();
+        assertNotNull(userList);
+        assertNotEquals(0, userList.length);
+
+        // find users in array
+        for (User user : userList){
+            if (user.getEmail().equals(email1))
+                user1IsFound = true;
+            if (user.getEmail().equals(email2))
+                user2IsFound = true;
+            if (user.getEmail().equals(email3))
+                user3IsFound = true;
+        }
+
+        assertTrue(user1IsFound);
+        assertTrue(user2IsFound);
+        assertTrue(user3IsFound);
+    }
+
+    /** Get list of users by email
+     * User already exists in DB
+     * Should return list which contains 1 user */
+    @Test
+    public void getUsersByEmailTest(){
+
+        CustomRestTemplate restTemplate = new CustomRestTemplate();
+
+        // Get user to find
+        User findUser = doGetUserByEmail(restTemplate, "filippov@mail.com");
+        assertNotNull(findUser);
+
+        // Get list of 1 user
+        ResponseEntity<User[]> responseEntity = doGetUsers(restTemplate, findUser.getEmail());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        User[] userList = responseEntity.getBody();
+        assertNotNull(userList);
+        assertEquals(1, userList.length);
+        assertNotNull(userList[0]);
+        assertTrue(userList[0].getEmail().equals("filippov@mail.com"));
+    }
+
+    /** Get list of users
+     * Incorrect email
+     * Should return null */
+    @Test
+    public void getUsersIncorrectEmailTest(){
+
+        CustomRestTemplate restTemplate = new CustomRestTemplate();
+
+        ResponseEntity<User[]> responseEntity = doGetUsers(restTemplate,  "incorrectEmail");
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+
     }
 
     ///////////////////////////////////////// CREATE USER /////////////////////////////////////////
