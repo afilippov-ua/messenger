@@ -155,9 +155,9 @@ public class UserServiceTest {
         for (User user : userList){
             if (user.getEmail().equals(email1))
                 user1IsFound = true;
-            if (user.getEmail().equals(email2))
+            else if (user.getEmail().equals(email2))
                 user2IsFound = true;
-            if (user.getEmail().equals(email3))
+            else if (user.getEmail().equals(email3))
                 user3IsFound = true;
         }
 
