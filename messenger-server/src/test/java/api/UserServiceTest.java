@@ -4,11 +4,6 @@ import dao.user.User;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.http.*;
-import org.springframework.http.converter.HttpMessageConverter;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
