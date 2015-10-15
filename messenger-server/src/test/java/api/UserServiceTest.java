@@ -1,6 +1,7 @@
 package api;
 
 import dao.user.User;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.http.*;
@@ -16,7 +17,7 @@ public class UserServiceTest {
     /** "doGetUsers" method with "email" parameter
     * return User*/
     private static User doGetUserByEmail(CustomRestTemplate restTemplate, String email){
-        ResponseEntity<User[]> response = restTemplate.getForEntity(baseUrl + "/api/users/?email=" + email, User[].class);
+        ResponseEntity<User[]> response = restTemplate.getForEntity(baseUrl + "/api/users?email=" + email, User[].class);
         User[] arrUser = response.getBody();
         if(arrUser != null && arrUser.length == 1 && arrUser[0] != null) {
             return arrUser[0];
@@ -30,7 +31,7 @@ public class UserServiceTest {
     }
 
     private static ResponseEntity<User[]> doGetUsers(CustomRestTemplate restTemplate, String email){
-        return restTemplate.getForEntity(baseUrl + "/api/users" + ((email == null ) ? "" : "/?email=" + email), User[].class);
+        return restTemplate.getForEntity(baseUrl + "/api/users" + ((email == null ) ? "" : "?email=" + email), User[].class);
     }
 
     private static ResponseEntity<String> doCreateUser(CustomRestTemplate restTemplate, HttpEntity entity){
@@ -87,6 +88,33 @@ public class UserServiceTest {
         if (responseEntity.getStatusCode() != HttpStatus.CREATED && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST){
             fail("User \"updateUser@mail.com\" creation error");
         }
+    }
+
+    //////////////////////////// CLEAR TEST DATA AFTER TESTS ////////////////////////////
+    @AfterClass
+    public static void clearTestData() {
+
+        CustomRestTemplate restTemplate = new CustomRestTemplate();
+
+        // Delete "JohnDoe@mail.com" if exist
+        restTemplate.clearHttpHeaders();
+        HttpEntity entity = new HttpEntity(restTemplate.getHttpHeaders());
+
+        User user = doGetUserByEmail(restTemplate, "JohnDoe@mail.com");
+        if (user != null)
+            doDeleteUser(restTemplate, entity, user.getId());
+
+        // Delete "existingUser@mail.com" if exist
+        restTemplate.clearHttpHeaders();
+        user = doGetUserByEmail(restTemplate, "existingUser@mail.com");
+        if (user != null)
+            doDeleteUser(restTemplate, entity, user.getId());
+
+        // Delete "newUser@mail.com" if exist
+        restTemplate.clearHttpHeaders();
+        user = doGetUserByEmail(restTemplate, "newUser@mail.com");
+        if (user != null)
+            doDeleteUser(restTemplate, entity, user.getId());
     }
 
     ///////////////////////////////////////// GET USER /////////////////////////////////////////
