@@ -71,7 +71,6 @@ public class User {
     public void loadValues(User sourceUser){
 
         setEmail(sourceUser.getEmail());
-        setPassword(sourceUser.getPassword());
         setName(sourceUser.getName());
 
     }
