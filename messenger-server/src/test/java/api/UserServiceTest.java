@@ -51,7 +51,7 @@ public class UserServiceTest {
 
         CustomRestTemplate restTemplate = new CustomRestTemplate();
 
-        // DELETE "newUser@mail.com" if exist
+        // Delete "newUser@mail.com" if exist
         restTemplate.clearHttpHeaders();
         HttpEntity entity = new HttpEntity(restTemplate.getHttpHeaders());
 
@@ -59,7 +59,7 @@ public class UserServiceTest {
         if (user != null)
             doDeleteUser(restTemplate, entity, user.getId());
 
-        // CREATE user "existingUser@mail.com"
+        // Create user "existingUser@mail.com"
         restTemplate.addHttpHeader("email", "existingUser@mail.com");
         restTemplate.addHttpHeader("password", "12345");
         entity = new HttpEntity(restTemplate.getHttpHeaders());
@@ -68,7 +68,7 @@ public class UserServiceTest {
             fail("User \"existingUser@mail.com\" creation error");
         }
 
-        // CREATE user "deleteUser@mail.com"
+        // Create user "deleteUser@mail.com"
         restTemplate.clearHttpHeaders();
         restTemplate.addHttpHeader("email", "deleteUser@mail.com");
         restTemplate.addHttpHeader("password", "12345");
@@ -78,7 +78,7 @@ public class UserServiceTest {
             fail("User \"deleteUser@mail.com\" creation error");
         }
 
-        // CREATE user "updateUser@mail.com"
+        // Create user "updateUser@mail.com"
         restTemplate.clearHttpHeaders();
         restTemplate.addHttpHeader("email", "updateUser@mail.com");
         restTemplate.addHttpHeader("password", "12345");
@@ -87,7 +87,6 @@ public class UserServiceTest {
         if (responseEntity.getStatusCode() != HttpStatus.CREATED && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST){
             fail("User \"updateUser@mail.com\" creation error");
         }
-
     }
 
     ///////////////////////////////////////// GET USER /////////////////////////////////////////
@@ -151,7 +150,7 @@ public class UserServiceTest {
         assertNotNull(userList);
         assertNotEquals(0, userList.length);
 
-        // find users in array
+        // Find users in array
         for (User user : userList){
             if (user.getEmail().equals(email1))
                 user1IsFound = true;
@@ -223,7 +222,7 @@ public class UserServiceTest {
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertNull(responseEntity.getBody());
 
-        // CHECK update user
+        // Check update user
         User user = doGetUserByEmail(restTemplate, email);
         assertNotNull(user);
         assertEquals(email, user.getEmail());
@@ -268,7 +267,7 @@ public class UserServiceTest {
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
         assertNull(responseEntity.getBody());
 
-        // CHECK update user
+        // Check update user
         assertNull(doGetUserByEmail(restTemplate, email));
     }
 
@@ -297,17 +296,15 @@ public class UserServiceTest {
         String email = "updateUser@mail.com";
         CustomRestTemplate restTemplate = new CustomRestTemplate();
 
-        // GET user for update
+        // Get user for update
         User user = doGetUserByEmail(restTemplate, email);
         assertNotNull(user);
 
-        // UPDATE current user
+        // Update current user
         String newEmail = "JohnDoe@mail.com";
-        String newPassword = "54321";
         String newName = "John Doe";
 
         user.setEmail(newEmail);
-        user.setPassword(newPassword);
         user.setName(newName);
 
         HttpEntity<User> entity = new HttpEntity<User>(user, restTemplate.getHttpHeaders());
@@ -316,7 +313,7 @@ public class UserServiceTest {
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
         assertNull(responseEntity.getBody());
 
-        // CHECK update user
+        // Check update user
         user = doGetUserByEmail(restTemplate, newEmail);
         assertNotNull(user);
         assertEquals(newEmail, user.getEmail());
@@ -340,4 +337,64 @@ public class UserServiceTest {
         assertNull(responseEntity.getBody());
     }
 
+    ///////////////////////////////////////// COMPLEX TEST /////////////////////////////////////////
+
+    @Test
+    public void complexTest(){
+
+        String email = "complexTestUser@mail.com";
+        String password = "12345";
+
+        CustomRestTemplate restTemplate = new CustomRestTemplate();
+        HttpEntity entity = new HttpEntity(restTemplate.getHttpHeaders());
+
+        // Delete user if exist
+        User user = doGetUserByEmail(restTemplate, email);
+        if (user != null)
+            doDeleteUser(restTemplate, entity, user.getId());
+
+        assertNull(doGetUserByEmail(restTemplate, email));
+
+        // Create new user
+        restTemplate.addHttpHeader("email", email);
+        restTemplate.addHttpHeader("password", password);
+        entity = new HttpEntity(restTemplate.getHttpHeaders());
+
+        ResponseEntity<String> responseEntity = doCreateUser(restTemplate, entity);
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+
+        restTemplate.clearHttpHeaders();
+
+        // Get new user
+        user = doGetUserByEmail(restTemplate, email);
+        assertNotNull(user);
+
+        // Update current user
+        String newEmail = "complexTestUserChanged@mail.com";
+        String newName = "complex user";
+
+        user.setEmail(newEmail);
+        user.setName(newName);
+
+        HttpEntity<User> userEntity = new HttpEntity<>(user, restTemplate.getHttpHeaders());
+
+        responseEntity = doUpdateUser(restTemplate, userEntity, user.getId());
+        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+
+        // Check update user
+        user = doGetUserByEmail(restTemplate, newEmail);
+        assertNotNull(user);
+        assertEquals(newEmail, user.getEmail());
+        assertEquals(newName, user.getName());
+
+        // Delete current user
+        responseEntity = doDeleteUser(restTemplate, entity, user.getId());
+        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+
+        // Check update user
+        assertNull(doGetUserByEmail(restTemplate, email));
+    }
 }
