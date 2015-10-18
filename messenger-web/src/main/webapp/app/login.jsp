@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>Login</title>
+    <script src="/app/resources/scripts/authentication.js"></script>
 </head>
 
 <body align="center">
@@ -74,7 +75,5 @@
 </form>
 
 </body>
-
-<script src="/app/resources/scripts/authentication.js"></script>
 
 </html>
