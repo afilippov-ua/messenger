@@ -1,14 +1,12 @@
-package main.java.controller;
+package controller;
 
 import dao.user.IUserDao;
 import dao.user.User;
-import dao.user.UserAlreadyExistException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,23 +63,6 @@ public class MVCController {
 
         return model;
 
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView register(@RequestHeader(value="email") String email, @RequestHeader(value="password") String password) {
-
-        ModelAndView model = new ModelAndView();
-
-        try {
-            userDao.createUser(email, password);
-            model.addObject("msg", "You have been successfully registered! Please, login!");
-            model.setViewName("login");
-        } catch (UserAlreadyExistException e){
-            model.addObject("error", "User with this email already exists!");
-            model.setViewName("register");
-        }
-
-        return model;
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
