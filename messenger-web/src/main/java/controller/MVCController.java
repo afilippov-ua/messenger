@@ -1,7 +1,8 @@
 package controller;
 
-import dao.user.IUserDao;
+import api.user.IUserService;
 import dao.user.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,20 +15,21 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Controller
 public class MVCController {
 
     @Inject
-    IUserDao userDao;
+    IUserService userService;
 
-    @Transactional
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public ModelAndView index() {
 
         ModelAndView model = new ModelAndView();
         model.setViewName("index");
-        User currentUser = userDao.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        ResponseEntity<List<User>> responseEntity = userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
+        User currentUser =  (responseEntity.getBody() == null || responseEntity.getBody().size() == 0) ? null : responseEntity.getBody().get(0);
         if (currentUser == null) {
             model.addObject("userId", "");
         } else {
@@ -82,7 +84,9 @@ public class MVCController {
         ModelAndView model = new ModelAndView();
         model.setViewName("contacts");
 
-        User currentUser = userDao.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        ResponseEntity<List<User>> responseEntity = userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
+        User currentUser =  (responseEntity.getBody() == null || responseEntity.getBody().size() == 0) ? null : responseEntity.getBody().get(0);
+
         if (currentUser == null) {
             model.addObject("userId", "");
         } else {

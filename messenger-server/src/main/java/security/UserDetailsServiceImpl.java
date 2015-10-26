@@ -1,7 +1,8 @@
 package security;
 
-import dao.user.IUserDao;
+import api.user.IUserService;
 import dao.user.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,19 +10,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Inject
-    IUserDao userDao;
+    IUserService userService;
 
-    @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = userDao.getUserByEmail(email);
+        ResponseEntity<List<User>> responseEntity = userService.getUsers(email);
+        User user =  (responseEntity.getBody() == null || responseEntity.getBody().size() == 0) ? null : responseEntity.getBody().get(0);
 
         if (user != null) {
 
