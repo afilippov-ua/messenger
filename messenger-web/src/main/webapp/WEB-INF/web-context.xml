@@ -10,7 +10,7 @@
                            http://www.springframework.org/schema/mvc
                            http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <import resource="classpath*:service-config.xml"/>
+    <import resource="classpath*:applicationContext.xml"/>
 
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
@@ -18,7 +18,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <context:component-scan base-package="api, main.java.controller" />
+    <context:component-scan base-package="api, controller" />
 
     <!-- RESOURCES -->
     <mvc:resources mapping="/app/resources/**" location="/app/resources/" />
