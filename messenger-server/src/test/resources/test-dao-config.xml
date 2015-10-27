@@ -12,7 +12,7 @@
 
 
     <context:annotation-config/>
-    <context:component-scan base-package="dao"/>
+    <context:component-scan base-package="com.filippov.messenger.dao"/>
 
     <jdbc:embedded-database id="dataSource" type="H2">
         <jdbc:script location="classpath*:sql/schema.sql"/>

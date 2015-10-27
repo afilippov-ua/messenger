@@ -40,7 +40,7 @@
 
     </http>
 
-    <beans:bean id="userDetailsService" class="security.UserDetailsServiceImpl"/>
+    <beans:bean id="userDetailsService" class="com.filippov.messenger.security.UserDetailsServiceImpl"/>
 
     <authentication-manager>
         <authentication-provider user-service-ref="userDetailsService"/>

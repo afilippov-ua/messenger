@@ -18,7 +18,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <context:component-scan base-package="api, controller" />
+    <context:component-scan base-package="com.filippov.messenger.api, com.filippov.messenger.controller" />
 
     <!-- RESOURCES -->
     <mvc:resources mapping="/app/resources/**" location="/app/resources/" />

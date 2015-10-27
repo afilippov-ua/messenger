@@ -30,7 +30,7 @@
 <table align="center">
 
     <tr>
-        <p><img src="http://cdn.shopoweb.com/1/themes/standard/img/no_image.jpg"></p>
+        <p><img src="resources/no_image.jpg"></p>
     </tr>
 
     <tr>
