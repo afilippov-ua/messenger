@@ -1,6 +1,6 @@
 package com.filippov.messenger.api.message;
 
-import com.filippov.messenger.dao.message.Message;
+import com.filippov.messenger.entity.message.Message;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

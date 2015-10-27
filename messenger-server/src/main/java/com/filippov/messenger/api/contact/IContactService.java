@@ -1,6 +1,6 @@
 package com.filippov.messenger.api.contact;
 
-import com.filippov.messenger.dao.contact.Contact;
+import com.filippov.messenger.entity.contact.Contact;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

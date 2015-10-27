@@ -1,7 +1,7 @@
 package com.filippov.messenger.controller;
 
 import com.filippov.messenger.api.user.IUserService;
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.entity.user.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

@@ -1,7 +1,7 @@
 package com.filippov.messenger.security;
 
 import com.filippov.messenger.api.user.IUserService;
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.entity.user.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

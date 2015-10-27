@@ -1,7 +1,7 @@
 package com.filippov.messenger.api.user;
 
 import com.filippov.messenger.dao.user.IUserDao;
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.entity.user.User;
 import com.filippov.messenger.dao.user.UserAlreadyExistException;
 import com.filippov.messenger.dao.user.UserNotFoundException;
 import org.springframework.http.*;

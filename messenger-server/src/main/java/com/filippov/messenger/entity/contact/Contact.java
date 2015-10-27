@@ -1,6 +1,6 @@
-package com.filippov.messenger.dao.contact;
+package com.filippov.messenger.entity.contact;
 
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.entity.user.User;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 

@@ -1,10 +1,10 @@
 package com.filippov.messenger.api.message;
 
 import com.filippov.messenger.dao.message.IMessageDao;
-import com.filippov.messenger.dao.message.Message;
+import com.filippov.messenger.entity.message.Message;
 import com.filippov.messenger.dao.message.MessageNotFoundException;
 import com.filippov.messenger.dao.user.IUserDao;
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.entity.user.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

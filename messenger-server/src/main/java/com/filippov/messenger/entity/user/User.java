@@ -1,7 +1,7 @@
-package com.filippov.messenger.dao.user;
+package com.filippov.messenger.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.filippov.messenger.dao.contact.Contact;
+import com.filippov.messenger.entity.contact.Contact;
 
 import javax.persistence.*;
 import java.util.Set;

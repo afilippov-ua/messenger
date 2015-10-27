@@ -5,9 +5,9 @@
 <hibernate-configuration>
 
     <session-factory>
-        <mapping class="com.filippov.messenger.dao.contact.Contact"/>
-        <mapping class="com.filippov.messenger.dao.message.Message"/>
-        <mapping class="com.filippov.messenger.dao.user.User"/>
+        <mapping class="com.filippov.messenger.entity.contact.Contact"/>
+        <mapping class="com.filippov.messenger.entity.message.Message"/>
+        <mapping class="com.filippov.messenger.entity.user.User"/>
     </session-factory>
 
 </hibernate-configuration>

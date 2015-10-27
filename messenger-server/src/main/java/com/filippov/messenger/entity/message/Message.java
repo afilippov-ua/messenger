@@ -1,7 +1,7 @@
-package com.filippov.messenger.dao.message;
+package com.filippov.messenger.entity.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.entity.user.User;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 

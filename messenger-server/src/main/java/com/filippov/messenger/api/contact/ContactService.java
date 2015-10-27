@@ -1,10 +1,10 @@
 package com.filippov.messenger.api.contact;
 
-import com.filippov.messenger.dao.contact.Contact;
+import com.filippov.messenger.entity.contact.Contact;
 import com.filippov.messenger.dao.contact.ContactNotFoundException;
 import com.filippov.messenger.dao.contact.IContactDao;
 import com.filippov.messenger.dao.user.IUserDao;
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.entity.user.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
