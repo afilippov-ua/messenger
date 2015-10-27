@@ -1,6 +1,8 @@
 package com.filippov.messenger.dao.message;
 
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.dao.AbstractDao;
+import com.filippov.messenger.entity.user.User;
+import com.filippov.messenger.entity.message.Message;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,30 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public class MessageDao implements IMessageDao {
-
-    @Autowired
-    private SessionFactory hibernateSessionFactory;
-
-    private Session getSession() {
-        return hibernateSessionFactory.getCurrentSession();
-    }
-
-    private void save(Object entity) {
-        getSession().save(entity);
-    }
-
-    private void delete(Object entity) {
-        getSession().delete(entity);
-    }
-
-    private void merge(Object entity) {
-        getSession().merge(entity);
-    }
-
-    private void persist(Object entity) {
-        getSession().persist(entity);
-    }
+public class MessageDao extends AbstractDao implements IMessageDao {
 
     public List<Message> getMessages(User userSender, User userReceiver) throws IllegalArgumentException {
 

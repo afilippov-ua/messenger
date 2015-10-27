@@ -1,6 +1,7 @@
 package com.filippov.messenger.dao.message;
 
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.entity.user.User;
+import com.filippov.messenger.entity.message.Message;
 
 import java.util.Date;
 import java.util.List;

@@ -1,5 +1,7 @@
 package com.filippov.messenger.dao.user;
 
+import com.filippov.messenger.entity.user.User;
+
 import java.util.List;
 
 public interface IUserDao {

@@ -1,10 +1,10 @@
 package com.filippov.messenger.dao;
 
-import com.filippov.messenger.dao.contact.Contact;
+import com.filippov.messenger.entity.contact.Contact;
 import com.filippov.messenger.dao.contact.ContactNotFoundException;
 import com.filippov.messenger.dao.contact.IContactDao;
 import com.filippov.messenger.dao.user.IUserDao;
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.entity.user.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

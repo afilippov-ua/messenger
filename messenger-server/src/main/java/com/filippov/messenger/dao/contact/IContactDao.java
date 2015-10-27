@@ -1,6 +1,7 @@
 package com.filippov.messenger.dao.contact;
 
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.entity.user.User;
+import com.filippov.messenger.entity.contact.Contact;
 
 import java.util.List;
 

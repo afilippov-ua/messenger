@@ -1,6 +1,8 @@
 package com.filippov.messenger.dao.contact;
 
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.dao.AbstractDao;
+import com.filippov.messenger.entity.user.User;
+import com.filippov.messenger.entity.contact.Contact;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,30 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ContactDao implements IContactDao {
-
-    @Autowired
-    private SessionFactory hibernateSessionFactory;
-
-    private Session getSession() {
-        return hibernateSessionFactory.getCurrentSession();
-    }
-
-    private void save(Object entity) {
-        getSession().save(entity);
-    }
-
-    private void delete(Object entity) {
-        getSession().delete(entity);
-    }
-
-    private void merge(Object entity) {
-        getSession().merge(entity);
-    }
-
-    private void persist(Object entity) {
-        getSession().persist(entity);
-    }
+public class ContactDao extends AbstractDao implements IContactDao {
 
     public List<Contact> getContacts(User ownerUser) throws IllegalArgumentException {
 
