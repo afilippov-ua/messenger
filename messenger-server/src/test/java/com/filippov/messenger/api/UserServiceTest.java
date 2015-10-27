@@ -1,6 +1,6 @@
 package com.filippov.messenger.api;
 
-import com.filippov.messenger.dao.user.User;
+import com.filippov.messenger.entity.user.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -19,7 +19,7 @@ public class UserServiceTest {
     /** "doGetUsers" method with "email" parameter
     * return User*/
     private static User doGetUserByEmail(CustomRestTemplate restTemplate, String email){
-        ResponseEntity<User[]> response = restTemplate.getForEntity(baseUrl + "/com/filippov/messenger/api/users?email=" + email, User[].class);
+        ResponseEntity<User[]> response = restTemplate.getForEntity(baseUrl + "/api/users?email=" + email, User[].class);
         User[] arrUser = response.getBody();
         if(arrUser != null && arrUser.length == 1 && arrUser[0] != null) {
             return arrUser[0];
@@ -29,23 +29,23 @@ public class UserServiceTest {
     }
 
     private static ResponseEntity<User> doGetUser(CustomRestTemplate restTemplate, int id){
-        return restTemplate.getForEntity(baseUrl + "/com/filippov/messenger/api/users/" + id, User.class);
+        return restTemplate.getForEntity(baseUrl + "/api/users/" + id, User.class);
     }
 
     private static ResponseEntity<User[]> doGetUsers(CustomRestTemplate restTemplate, String email){
-        return restTemplate.getForEntity(baseUrl + "/com/filippov/messenger/api/users" + ((email == null ) ? "" : "?email=" + email), User[].class);
+        return restTemplate.getForEntity(baseUrl + "/api/users" + ((email == null ) ? "" : "?email=" + email), User[].class);
     }
 
     private static ResponseEntity<String> doCreateUser(CustomRestTemplate restTemplate, HttpEntity entity){
-        return restTemplate.exchange(baseUrl + "/com/filippov/messenger/api/users", HttpMethod.POST, entity, String.class);
+        return restTemplate.exchange(baseUrl + "/api/users", HttpMethod.POST, entity, String.class);
     }
 
     private static ResponseEntity<String> doUpdateUser(CustomRestTemplate restTemplate, HttpEntity entity, int id){
-        return restTemplate.exchange(baseUrl + "/com/filippov/messenger/api/users/" + id, HttpMethod.PUT, entity, String.class);
+        return restTemplate.exchange(baseUrl + "/api/users/" + id, HttpMethod.PUT, entity, String.class);
     }
 
     private static ResponseEntity<String> doDeleteUser(CustomRestTemplate restTemplate, HttpEntity entity, int id){
-        return restTemplate.exchange(baseUrl + "/com/filippov/messenger/api/users/" + id, HttpMethod.DELETE, entity, String.class);
+        return restTemplate.exchange(baseUrl + "/api/users/" + id, HttpMethod.DELETE, entity, String.class);
     }
 
     ///////////////////////////////////////// INIT DATA /////////////////////////////////////////
