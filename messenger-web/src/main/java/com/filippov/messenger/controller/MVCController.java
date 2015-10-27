@@ -28,7 +28,8 @@ public class MVCController {
 
         ModelAndView model = new ModelAndView();
         model.setViewName("index");
-        ResponseEntity<List<User>> responseEntity = userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
+        ResponseEntity<List<User>> responseEntity =
+                userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
         User currentUser =  (responseEntity.getBody() == null || responseEntity.getBody().size() == 0) ? null : responseEntity.getBody().get(0);
         if (currentUser == null) {
             model.addObject("userId", "");
@@ -84,7 +85,8 @@ public class MVCController {
         ModelAndView model = new ModelAndView();
         model.setViewName("contacts");
 
-        ResponseEntity<List<User>> responseEntity = userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
+        ResponseEntity<List<User>> responseEntity =
+                userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
         User currentUser =  (responseEntity.getBody() == null || responseEntity.getBody().size() == 0) ? null : responseEntity.getBody().get(0);
 
         if (currentUser == null) {

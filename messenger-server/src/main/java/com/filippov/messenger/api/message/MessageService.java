@@ -26,7 +26,10 @@ public class MessageService implements IMessageService {
     IUserDao userDao;
 
     @Transactional
-    @RequestMapping(value = "/{userId}/messages", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+            value = "/{userId}/messages",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createMessage(@PathVariable("userId") Integer senderId,
                                         @RequestParam("receiverId") Integer receiverId,
                                         @RequestBody String messageText) {
@@ -43,7 +46,9 @@ public class MessageService implements IMessageService {
     }
 
     @Transactional
-    @RequestMapping(value = "/{senderId}/messages", method = RequestMethod.GET)
+    @RequestMapping(
+            value = "/{senderId}/messages",
+            method = RequestMethod.GET)
     public ResponseEntity<List<Message>> getMessages(@PathVariable("senderId") String senderId,
                                                      @RequestParam("receiverId") String receiverId) {
 
@@ -52,11 +57,13 @@ public class MessageService implements IMessageService {
 
         List<Message> messageList = messageDao.getMessages(userSender, userReceiver);
         return new ResponseEntity<List<Message>>(messageList, HttpStatus.OK);
-
     }
 
     @Transactional
-    @RequestMapping(value = "/{userId}/messages/{messageId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @RequestMapping(
+            value = "/{userId}/messages/{messageId}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.GET)
     public ResponseEntity<Message> getMessage(@PathVariable("userId") Integer userId,
                                               @PathVariable("messageId") Integer messageId) {
 
@@ -69,13 +76,14 @@ public class MessageService implements IMessageService {
             return new ResponseEntity<Message>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<Message>(msg, HttpStatus.OK);
-
     }
 
     @Transactional
-    @RequestMapping(value = "/{userId}/messages/{messageId}", method = RequestMethod.DELETE)
+    @RequestMapping(
+            value = "/{userId}/messages/{messageId}",
+            method = RequestMethod.DELETE)
     public ResponseEntity deleteMessage(@PathVariable("userId") Integer userId,
-                                        @PathVariable("messageId") Integer messageId) {
+            @PathVariable("messageId") Integer messageId) {
 
         User user = userDao.getUserById(userId);
         if (user == null)
@@ -87,11 +95,12 @@ public class MessageService implements IMessageService {
         } catch (MessageNotFoundException e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
     }
 
     @Transactional
-    @RequestMapping(value = "/{userId}/messages/{messageId}", method = RequestMethod.PUT)
+    @RequestMapping(
+            value = "/{userId}/messages/{messageId}",
+            method = RequestMethod.PUT)
     public ResponseEntity updateMessage(@PathVariable("userId") Integer userId,
                                         @PathVariable("messageId") Integer messageId,
                                         @RequestBody Message sourceMessage) {
@@ -111,7 +120,5 @@ public class MessageService implements IMessageService {
         } catch (MessageNotFoundException e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
     }
-
 }

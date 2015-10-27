@@ -41,7 +41,6 @@ public class Message {
         setUserSender(sender);
         setUserReceiver(receiver);
         setText(text);
-
     }
 
     public Message() {

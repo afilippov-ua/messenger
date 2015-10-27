@@ -24,7 +24,9 @@ public class ContactService implements IContactService {
     IUserDao userDao;
 
     @Transactional
-    @RequestMapping(value = "/{userId}/contacts", method = RequestMethod.GET)
+    @RequestMapping(
+            value = "/{userId}/contacts",
+            method = RequestMethod.GET)
     public ResponseEntity<List<Contact>> getContacts(@PathVariable("userId") Integer userId) {
 
         User ownerUser = userDao.getUserById(userId);
@@ -34,11 +36,12 @@ public class ContactService implements IContactService {
             List<Contact> contacts = contactDao.getContacts(ownerUser);
             return new ResponseEntity<List<Contact>>(contacts, HttpStatus.OK);
         }
-
     }
 
     @Transactional
-    @RequestMapping(value = "/{userId}/contacts/{id}", method = RequestMethod.GET)
+    @RequestMapping(
+            value = "/{userId}/contacts/{id}",
+            method = RequestMethod.GET)
     public ResponseEntity<Contact> getContact(@PathVariable("id") Integer id) {
 
         Contact contact = contactDao.getContact(id);
@@ -47,11 +50,12 @@ public class ContactService implements IContactService {
         } else {
             return new ResponseEntity<Contact>(contact, HttpStatus.OK);
         }
-
     }
 
     @Transactional
-    @RequestMapping(value = "/{ownerId}/contacts/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(
+            value = "/{ownerId}/contacts/{id}",
+            method = RequestMethod.DELETE)
     public ResponseEntity deleteContact(@PathVariable("id") Integer id) {
 
         try {
@@ -60,12 +64,16 @@ public class ContactService implements IContactService {
         } catch (ContactNotFoundException e) {
             return  new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
     }
 
     @Transactional
-    @RequestMapping(value = "/{ownerId}/contacts/{contactId}", method = RequestMethod.POST)
-    public ResponseEntity addContact(@PathVariable("ownerId") Integer ownerId, @PathVariable("contactId") Integer contactId, @RequestParam("name") String name) {
+    @RequestMapping(
+            value = "/{ownerId}/contacts/{contactId}",
+            method = RequestMethod.POST)
+    public ResponseEntity addContact(
+            @PathVariable("ownerId") Integer ownerId,
+            @PathVariable("contactId") Integer contactId,
+            @RequestParam("name") String name) {
 
         User ownerUser = userDao.getUserById(ownerId);
         User contactUser = userDao.getUserById(contactId);
@@ -79,5 +87,4 @@ public class ContactService implements IContactService {
         }
         return  new ResponseEntity(HttpStatus.OK);
     }
-
 }

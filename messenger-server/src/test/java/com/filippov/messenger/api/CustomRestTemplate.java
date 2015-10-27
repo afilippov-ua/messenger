@@ -15,7 +15,8 @@ class CustomRestTemplate extends RestTemplate {
     public CustomRestTemplate() {
         super();
         setErrorHandler(new CustomResponseErrorHandler());
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+        List<HttpMessageConverter<?>> messageConverters =
+                new ArrayList<HttpMessageConverter<?>>();
         messageConverters.add(new MappingJackson2HttpMessageConverter());
         setMessageConverters(messageConverters);
     }

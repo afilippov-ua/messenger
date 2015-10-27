@@ -21,7 +21,8 @@ public class UserService implements IUserService {
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createUser(@RequestHeader("email") String email, @RequestHeader("password") String password) {
+    public ResponseEntity createUser(@RequestHeader("email") String email,
+                                     @RequestHeader("password") String password) {
 
         try {
             userDao.createUser(email, password);
@@ -29,12 +30,14 @@ public class UserService implements IUserService {
         } catch (UserAlreadyExistException e){
             return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @Transactional
-    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getUsers(@RequestParam(value = "email", required = false) String email) {
+    @RequestMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.GET)
+    public ResponseEntity<List<User>> getUsers(
+            @RequestParam(value = "email", required = false) String email) {
 
         List<User> userList;
         if(email != null) {
@@ -49,11 +52,13 @@ public class UserService implements IUserService {
             userList = userDao.getUsers();
         }
         return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
-
     }
 
     @Transactional
-    @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @RequestMapping(
+            value = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.GET)
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
 
         User currentUser = userDao.getUserById(id);
@@ -62,11 +67,12 @@ public class UserService implements IUserService {
         } else {
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
-
     }
 
     @Transactional
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(
+            value = "/{id}",
+            method = RequestMethod.DELETE)
     public ResponseEntity deleteUser(@PathVariable("id") Integer id) {
 
         try {
@@ -75,12 +81,14 @@ public class UserService implements IUserService {
         } catch (UserNotFoundException e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
     }
 
     @Transactional
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateUser(@PathVariable("id") Integer id, @RequestBody User sourceUser) {
+    @RequestMapping(
+            value = "/{id}",
+            method = RequestMethod.PUT)
+    public ResponseEntity updateUser(@PathVariable("id") Integer id,
+                                     @RequestBody User sourceUser) {
 
         User currentUser = userDao.getUserById(id);
         if (currentUser == null)
@@ -93,6 +101,5 @@ public class UserService implements IUserService {
         } catch (UserNotFoundException e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
     }
 }

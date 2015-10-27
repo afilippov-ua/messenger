@@ -72,6 +72,5 @@ public class User {
 
         setEmail(sourceUser.getEmail());
         setName(sourceUser.getName());
-
     }
 }

@@ -15,7 +15,8 @@ import java.util.List;
 @Repository
 public class MessageDao extends AbstractDao implements IMessageDao {
 
-    public List<Message> getMessages(User userSender, User userReceiver) throws IllegalArgumentException {
+    public List<Message> getMessages(User userSender,
+                                     User userReceiver) throws IllegalArgumentException {
 
         if (userSender == null)
             throw new IllegalArgumentException("argument \"userSender\" is not valid");
@@ -23,7 +24,9 @@ public class MessageDao extends AbstractDao implements IMessageDao {
         if (userReceiver == null)
             throw new IllegalArgumentException("argument \"userReceiver\" is not valid");
 
-        Query query = getSession().createQuery("from Message where (userSender = :userSender or userReceiver =:userSender) and (userSender = :userReceiver or userReceiver = :userReceiver)");
+        Query query = getSession().createQuery("from Message " +
+                "where (userSender = :userSender or userReceiver =:userSender) " +
+                "and (userSender = :userReceiver or userReceiver = :userReceiver)");
         query.setParameter("userSender", userSender);
         query.setParameter("userReceiver", userReceiver);
 
@@ -36,7 +39,9 @@ public class MessageDao extends AbstractDao implements IMessageDao {
         if (user == null)
             throw new IllegalArgumentException("argument \"user\" is not valid");
 
-        Query query = getSession().createQuery("from Message where id = :id and (userSender = :currentUser or userReceiver = :currentUser)");
+        Query query = getSession().createQuery("from Message " +
+                "where id = :id " +
+                "and (userSender = :currentUser or userReceiver = :currentUser)");
         query.setParameter("currentUser", user);
         query.setParameter("id", messageId);
 
@@ -49,7 +54,10 @@ public class MessageDao extends AbstractDao implements IMessageDao {
         }
     }
 
-    public Message createMessage(Date messageDate, User sender, User receiver, String messageText) throws IllegalArgumentException {
+    public Message createMessage(Date messageDate,
+                                 User sender,
+                                 User receiver,
+                                 String messageText) throws IllegalArgumentException {
 
         if (messageDate == null)
             throw new IllegalArgumentException("argument \"messageDate\" is not valid");
@@ -69,7 +77,9 @@ public class MessageDao extends AbstractDao implements IMessageDao {
         return newMessage;
     }
 
-    public void updateMessage(User user, int messageId, Message sourceMessage) throws MessageNotFoundException, IllegalArgumentException {
+    public void updateMessage(User user,
+                              int messageId,
+                              Message sourceMessage) throws MessageNotFoundException, IllegalArgumentException {
 
         if (user == null)
             throw new IllegalArgumentException("argument \"user\" is not valid");
@@ -86,7 +96,8 @@ public class MessageDao extends AbstractDao implements IMessageDao {
         persist(currentMessage);
     }
 
-    public void deleteMessage(User user, int messageId) throws MessageNotFoundException, IllegalArgumentException {
+    public void deleteMessage(User user,
+                              int messageId) throws MessageNotFoundException, IllegalArgumentException {
 
         if (user == null)
             throw new IllegalArgumentException("argument \"user\" is not valid");

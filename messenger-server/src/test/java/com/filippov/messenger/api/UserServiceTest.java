@@ -67,7 +67,8 @@ public class UserServiceTest {
         restTemplate.addHttpHeader("password", "12345");
         entity = new HttpEntity(restTemplate.getHttpHeaders());
         ResponseEntity<String> responseEntity = doCreateUser(restTemplate, entity);
-        if (responseEntity.getStatusCode() != HttpStatus.CREATED && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST){
+        if (responseEntity.getStatusCode() != HttpStatus.CREATED
+                && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST){
             fail("User \"existingUser@mail.com\" creation error");
         }
 
@@ -77,7 +78,8 @@ public class UserServiceTest {
         restTemplate.addHttpHeader("password", "12345");
         entity = new HttpEntity(restTemplate.getHttpHeaders());
        responseEntity = doCreateUser(restTemplate, entity);
-        if (responseEntity.getStatusCode() != HttpStatus.CREATED && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST){
+        if (responseEntity.getStatusCode() != HttpStatus.CREATED
+                && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST){
             fail("User \"deleteUser@mail.com\" creation error");
         }
 
@@ -87,7 +89,8 @@ public class UserServiceTest {
         restTemplate.addHttpHeader("password", "12345");
         entity = new HttpEntity(restTemplate.getHttpHeaders());
         responseEntity = doCreateUser(restTemplate, entity);
-        if (responseEntity.getStatusCode() != HttpStatus.CREATED && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST){
+        if (responseEntity.getStatusCode() != HttpStatus.CREATED
+                && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST){
             fail("User \"updateUser@mail.com\" creation error");
         }
     }

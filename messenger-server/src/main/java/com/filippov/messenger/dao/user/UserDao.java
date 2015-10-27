@@ -15,9 +15,7 @@ public class UserDao extends AbstractDao implements IUserDao {
 
     public List<User> getUsers() {
 
-        Query query = getSession().createQuery("from User");
-
-        return (List<User>)query.list();
+        return (List<User>)getSession().createQuery("from User").list();
     }
 
     public User getUserById(int id) {
@@ -32,7 +30,6 @@ public class UserDao extends AbstractDao implements IUserDao {
         } else {
             return (User)result.get(0);
         }
-
     }
 
     public User getUserByEmail(String email) throws IllegalArgumentException{
@@ -52,7 +49,8 @@ public class UserDao extends AbstractDao implements IUserDao {
         }
     }
 
-    public User createUser(String email, String password) throws UserAlreadyExistException, IllegalArgumentException {
+    public User createUser(String email,
+                           String password) throws UserAlreadyExistException, IllegalArgumentException {
 
         if (email == null)
             throw new IllegalArgumentException("argument \"email\" is not valid");
@@ -69,7 +67,8 @@ public class UserDao extends AbstractDao implements IUserDao {
         return newUser;
     }
 
-    public void updateUser(int id, User sourceUser) throws UserNotFoundException, IllegalArgumentException {
+    public void updateUser(int id,
+                           User sourceUser) throws UserNotFoundException, IllegalArgumentException {
 
         if (sourceUser == null)
             throw new IllegalArgumentException("argument \"sourceUser\" is not valid");
