@@ -48,10 +48,6 @@
         </table>
     </tr>
 
-    <tr>
-        <button type="button">Save</button>
-    </tr>
-
 </table>
 
 </body>
