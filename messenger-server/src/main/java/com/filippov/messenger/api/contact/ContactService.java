@@ -5,11 +5,11 @@ import com.filippov.messenger.dao.contact.ContactNotFoundException;
 import com.filippov.messenger.dao.contact.IContactDao;
 import com.filippov.messenger.dao.user.IUserDao;
 import com.filippov.messenger.entity.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -17,10 +17,10 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class ContactService implements IContactService {
 
-    @Inject
+    @Autowired
     IContactDao contactDao;
 
-    @Inject
+    @Autowired
     IUserDao userDao;
 
     @Transactional

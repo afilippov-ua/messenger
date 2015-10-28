@@ -6,11 +6,10 @@ import com.filippov.messenger.dao.user.UserAlreadyExistException;
 import com.filippov.messenger.dao.user.UserNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.inject.Inject;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class UserDaoTest {
 
-    @Inject
+    @Autowired
     IUserDao userDao;
 
     /** Create user

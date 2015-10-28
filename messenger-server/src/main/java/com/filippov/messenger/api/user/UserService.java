@@ -4,10 +4,10 @@ import com.filippov.messenger.dao.user.IUserDao;
 import com.filippov.messenger.entity.user.User;
 import com.filippov.messenger.dao.user.UserAlreadyExistException;
 import com.filippov.messenger.dao.user.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserService implements IUserService {
 
-    @Inject
+    @Autowired
     IUserDao userDao;
 
     @Transactional

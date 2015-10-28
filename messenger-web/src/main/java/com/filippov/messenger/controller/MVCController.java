@@ -2,6 +2,7 @@ package com.filippov.messenger.controller;
 
 import com.filippov.messenger.api.user.IUserService;
 import com.filippov.messenger.entity.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,14 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Controller
 public class MVCController {
 
-    @Inject
+    @Autowired
     IUserService userService;
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)

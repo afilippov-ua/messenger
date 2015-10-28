@@ -8,10 +8,10 @@ import com.filippov.messenger.entity.user.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import java.util.List;
@@ -23,10 +23,10 @@ import static org.junit.Assert.*;
 @Transactional
 public class ContactDaoTest {
 
-    @Inject
+    @Autowired
     IContactDao contactDao;
 
-    @Inject
+    @Autowired
     IUserDao userDao;
 
     public User userOwner;

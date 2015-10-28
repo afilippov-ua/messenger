@@ -2,6 +2,7 @@ package com.filippov.messenger.security;
 
 import com.filippov.messenger.api.user.IUserService;
 import com.filippov.messenger.entity.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,14 +10,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Inject
+    @Autowired
     IUserService userService;
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

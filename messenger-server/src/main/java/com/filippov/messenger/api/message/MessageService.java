@@ -5,12 +5,12 @@ import com.filippov.messenger.entity.message.Message;
 import com.filippov.messenger.dao.message.MessageNotFoundException;
 import com.filippov.messenger.dao.user.IUserDao;
 import com.filippov.messenger.entity.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
@@ -19,10 +19,10 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class MessageService implements IMessageService {
 
-    @Inject
+    @Autowired
     IMessageDao messageDao;
 
-    @Inject
+    @Autowired
     IUserDao userDao;
 
     @Transactional
