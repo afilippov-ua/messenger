@@ -16,7 +16,7 @@ public class UserServiceTest {
 
     ///////////////////////////////////////// BASIC REQUESTS /////////////////////////////////////////
 
-    /** "doGetUsers" method with "email" parameter
+    /* "doGetUsers" method with "email" parameter
     * return User*/
     private static User doGetUserByEmail(CustomRestTemplate restTemplate, String email){
         ResponseEntity<User[]> response = restTemplate.getForEntity(baseUrl + "/api/users?email=" + email, User[].class);
@@ -124,7 +124,7 @@ public class UserServiceTest {
 
     ///////////////////////////////////////// GET USER /////////////////////////////////////////
 
-    /** Get user by id
+    /* Get user by id
     * User already exists in DB
     * Should return user */
     @Test
@@ -144,7 +144,7 @@ public class UserServiceTest {
         assertEquals(testUser.getEmail(), currentUser.getEmail());
     }
 
-    /** Get user by id
+    /* Get user by id
     * Incorrect user id
     * expected HttpStatus.NOT_FOUND */
     @Test
@@ -159,7 +159,7 @@ public class UserServiceTest {
 
     ///////////////////////////////////////// GET USERS /////////////////////////////////////////
 
-    /** Get list of users
+    /* Get list of users
      * Users already exists in DB
      * Should return list of users */
     @Test
@@ -198,7 +198,7 @@ public class UserServiceTest {
         assertTrue(user3IsFound);
     }
 
-    /** Get list of users by email
+    /* Get list of users by email
      * User already exists in DB
      * Should return list which contains 1 user */
     @Test
@@ -221,7 +221,7 @@ public class UserServiceTest {
         assertTrue(userList[0].getEmail().equals("filippov@mail.com"));
     }
 
-    /** Get list of users
+    /* Get list of users
      * Incorrect email
      * Should return null */
     @Test
@@ -237,7 +237,7 @@ public class UserServiceTest {
 
     ///////////////////////////////////////// CREATE USER /////////////////////////////////////////
 
-    /** Create new user
+    /* Create new user
     * User doesn't exist in DB
     * Should return HttpStatus.CREATED */
     @Test
@@ -261,7 +261,7 @@ public class UserServiceTest {
         assertEquals(email, user.getEmail());
     }
 
-    /** Create new user
+    /* Create new user
     * User already exist in DB
     * expected HttpStatus.BAD_REQUEST */
     @Test
@@ -282,7 +282,7 @@ public class UserServiceTest {
 
     ///////////////////////////////////////// DELETE USER /////////////////////////////////////////
 
-    /** Delete user from DB
+    /* Delete user from DB
      * User already exists in DB
      * Should return HttpStatus.NO_CONTENT */
     @Test
@@ -304,7 +304,7 @@ public class UserServiceTest {
         assertNull(doGetUserByEmail(restTemplate, email));
     }
 
-    /** Delete user from DB
+    /* Delete user from DB
      * User doesn't exist in DB
      * expected HttpStatus.NOT_FOUND */
     @Test
@@ -320,7 +320,7 @@ public class UserServiceTest {
 
     ///////////////////////////////////////// UPDATE USER /////////////////////////////////////////
 
-    /** Update user
+    /* Update user
      * User already exists in DB
      * Should return HttpStatus.NO_CONTENT */
     @Test
@@ -354,7 +354,7 @@ public class UserServiceTest {
 
     }
 
-    /** Update user
+    /* Update user
      * User doesn't exist in DB
      * expected HttpStatus.NOT_FOUND */
     @Test
