@@ -1,4 +1,4 @@
-package com.filippov.messenger.api;
+package com.filippov.messenger.service;
 
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;

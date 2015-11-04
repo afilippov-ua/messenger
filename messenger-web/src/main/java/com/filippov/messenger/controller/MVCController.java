@@ -1,9 +1,8 @@
 package com.filippov.messenger.controller;
 
-import com.filippov.messenger.api.user.IUserService;
+import com.filippov.messenger.service.user.IUserService;
 import com.filippov.messenger.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,9 +27,13 @@ public class MVCController {
 
         ModelAndView model = new ModelAndView();
         model.setViewName("index");
-        ResponseEntity<List<User>> responseEntity =
+        List<User> userList =
                 userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
-        User currentUser =  (responseEntity.getBody() == null || responseEntity.getBody().size() == 0) ? null : responseEntity.getBody().get(0);
+        User currentUser =  null;
+
+        if (userList != null && !userList.isEmpty())
+            currentUser = userList.get(0);
+
         if (currentUser == null) {
             model.addObject("userId", "");
         } else {
@@ -85,9 +88,12 @@ public class MVCController {
         ModelAndView model = new ModelAndView();
         model.setViewName("contacts");
 
-        ResponseEntity<List<User>> responseEntity =
+        List<User> userList =
                 userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
-        User currentUser =  (responseEntity.getBody() == null || responseEntity.getBody().size() == 0) ? null : responseEntity.getBody().get(0);
+        User currentUser =  null;
+
+        if (userList != null && !userList.isEmpty())
+            currentUser = userList.get(0);
 
         if (currentUser == null) {
             model.addObject("userId", "");

@@ -1,10 +1,10 @@
 package com.filippov.messenger.dao;
 
 import com.filippov.messenger.entity.contact.Contact;
-import com.filippov.messenger.dao.contact.ContactNotFoundException;
 import com.filippov.messenger.dao.contact.IContactDao;
 import com.filippov.messenger.dao.user.IUserDao;
 import com.filippov.messenger.entity.user.User;
+import org.hibernate.PersistentObjectException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,13 +39,13 @@ public class ContactDaoTest {
         userContact = userDao.getUserById(2);
     }
 
-    /** Create contact
-     * Contact should be created (not null) */
+    /* Create contact
+     * Expected not null */
     @Test
-    public void createContactTest(){
+    public void createContactTest() {
 
         Contact contact = contactDao.getContactByUsers(userOwner, userContact);
-        assertNull("Check test data!", contact);
+        assertNull(contact);
 
         contactDao.createContact(userOwner, userContact, name);
 
@@ -56,39 +56,32 @@ public class ContactDaoTest {
         assertEquals(name, contact.getContactName());
     }
 
-    /** Create contact
-     * Incorrect userOwner.
-     * Expected IllegalArgumentException exception */
-    @Test(expected = IllegalArgumentException.class)
-    public void createContactIncorrectUserOwnerTest() throws IllegalArgumentException {
-        contactDao.createContact(null, userContact, name);
+    /* Create contact
+     * Illegal arguments
+     * Expected null */
+    @Test
+    public void createContactIllegalArgumentsTest() {
+
+        assertNull(contactDao.createContact(null, userContact, name));
+        assertNull(contactDao.createContact(userOwner, null, name));
+        assertNull(contactDao.createContact(userOwner, userContact, null));
+
+        assertNull(contactDao.createContact(null, null, name));
+        assertNull(contactDao.createContact(null, userContact, null));
+        assertNull(contactDao.createContact(userOwner, null, null));
+
+        assertNull(contactDao.createContact(null, null, null));
     }
 
-    /** Create contact
-     * Incorrect userContact.
-     * Expected IllegalArgumentException exception */
-    @Test(expected = IllegalArgumentException.class)
-    public void createContactIncorrectUserContactTest() throws IllegalArgumentException {
-        contactDao.createContact(userOwner, null, name);
-    }
-
-    /** Create contact
-     * Incorrect name.
-     * Expected IllegalArgumentException exception */
-    @Test(expected = IllegalArgumentException.class)
-    public void createContactIncorrectNameTest() throws IllegalArgumentException {
-        contactDao.createContact(userOwner, userContact, null);
-    }
-
-    /** Update contact data
+    /* Update contact data
      * Contact already exists in DB
      * Contact should be updated */
     @Test
-    public void updateContactTest(){
+    public void updateContactTest() {
 
         int contactId = 5;
         Contact sourceContact = contactDao.getContact(contactId);
-        assertNotNull("Check test data!", sourceContact);
+        assertNotNull(sourceContact);
 
         User newUserOwner = sourceContact.getContactUser();
         User newUserContact = sourceContact.getOwnerUser();
@@ -101,76 +94,77 @@ public class ContactDaoTest {
         assertEquals(newUserContact, sourceContact.getContactUser());
         assertEquals(newName, sourceContact.getContactName());
 
-        try {
-            contactDao.updateContact(contactId, sourceContact);
+        assertTrue(contactDao.updateContact(sourceContact));
 
-            sourceContact = contactDao.getContact(contactId);
-            assertNotNull("Check test data!", sourceContact);
-            assertEquals(newUserOwner, sourceContact.getOwnerUser());
-            assertEquals(newUserContact, sourceContact.getContactUser());
-            assertEquals(newName, sourceContact.getContactName());
-
-        } catch (ContactNotFoundException e){
-            fail(String.format("Contact with id %s was not found! Check the test data.", contactId));
-        }
+        sourceContact = contactDao.getContact(contactId);
+        assertNotNull(sourceContact);
+        assertEquals(newUserOwner, sourceContact.getOwnerUser());
+        assertEquals(newUserContact, sourceContact.getContactUser());
+        assertEquals(newName, sourceContact.getContactName());
     }
 
-    /** Update contact
+    /* Update contact
      * Contact doesn't exist in DB.
-     * Expected ContactNotFoundException exception */
-    @Test(expected = ContactNotFoundException.class)
-    public void updateContactNotFoundTest() throws ContactNotFoundException{
-        Contact sourceContact = contactDao.getContact(3);
-        assertNotNull("Check test data!", sourceContact);
-        contactDao.updateContact(-1, sourceContact);
+     * Expected PersistentObjectException */
+    @Test(expected = PersistentObjectException.class)
+    public void updateContactNotFoundTest() {
+        Contact sourceContact = new Contact();
+        sourceContact.setId(-1);
+        contactDao.updateContact(sourceContact);
     }
 
-    /** Update contact
-     * Incorrect sourceContact.
-     * Expected IllegalArgumentException exception */
-    @Test(expected = IllegalArgumentException.class)
-    public void updateContactIncorrectSourceContactTest() throws ContactNotFoundException, IllegalArgumentException {
-        contactDao.updateContact(3, null);
-    }
-
-    /** Delete contact from DB
-     * Contact already exists in DB
-     * Contact should be delete */
+    /* Update contact
+     * Illegal arguments.
+     * Expected false */
     @Test
-    public void deleteContactTest(){
+    public void updateContactIllegalArgumentsTest() {
+        assertFalse(contactDao.updateContact(null));
+    }
+
+    /* Delete contact from DB
+     * Contact already exists in DB
+     * Expected true */
+    @Test
+    public void deleteContactTest() {
 
         int contactId = 6;
-        assertNotNull("Check the test data", contactDao.getContact(contactId));
-
-        try {
-            contactDao.deleteContact(contactId);
-            assertNull(contactDao.getContact(contactId));
-        } catch (ContactNotFoundException e){
-            fail(String.format("Contact with id %s was not found! Check the test data.", contactId));
-        }
+        Contact contact = contactDao.getContact(contactId);
+        assertNotNull(contact);
+        assertTrue(contactDao.deleteContact(contact));
+        assertNull(contactDao.getContact(contactId));
     }
 
-    /** Delete contact
+    /* Delete contact
      * Contact doesn't exist in DB
-     * Expected ContactNotFoundException exception */
-    @Test(expected = ContactNotFoundException.class)
-    public void deleteMessageNotFoundTest() throws ContactNotFoundException {
-        contactDao.deleteContact(-1);
+     * Expected false */
+    @Test
+    public void deleteContactNotFoundTest() {
+        Contact contact = new Contact();
+        contact.setId(-1);
+        assertTrue(contactDao.deleteContact(contact));
     }
 
-    /** Get contact from DB
-     * Contact already exists in DB.
-     * Contact should be get (not null) */
+    /* Delete contact
+     * Illegal arguments.
+     * Expected false */
     @Test
-    public void getContactTest(){
+    public void deleteContactIllegalArgumentsTest() {
+        assertFalse(contactDao.deleteContact(null));
+    }
+
+    /* Get contact from DB
+     * Contact already exists in DB.
+     * Expected not null */
+    @Test
+    public void getContactTest() {
 
         Integer contactId = 3;
         User userOwner = userDao.getUserById(3);
         User userContact = userDao.getUserById(2);
         String name = "Sirosh";
 
-        assertNotNull("Check the test data", userOwner);
-        assertNotNull("Check the test data", userContact);
+        assertNotNull(userOwner);
+        assertNotNull(userContact);
 
         Contact contact = contactDao.getContact(contactId);
         assertNotNull(contact);
@@ -180,27 +174,27 @@ public class ContactDaoTest {
         assertEquals(name, contact.getContactName());
     }
 
-    /** Get contact
-     * Contact doesn't exist in DB. Should return null */
+    /* Get contact
+     * Contact doesn't exist in DB.
+     * Expected null */
     @Test
-    public void getContactNullIfNotFoundTest() {
-        Contact contact = contactDao.getContact(-1);
-        assertNull(contact);
+    public void getContactNotFoundTest() {
+        assertNull(contactDao.getContact(-1));
     }
 
-    /** Get contact by users
+    /* Get contact by users
      * Contact already exists in DB
-     * Contact should be get (not null) */
+     * Expected not null */
     @Test
-    public void getContactByUsersTest(){
+    public void getContactByUsersTest() {
 
         Integer contactId = 2;
         User userOwner = userDao.getUserById(3);
         User userContact = userDao.getUserById(1);
         String name = "Serdyikov";
 
-        assertNotNull("Check the test data", userOwner);
-        assertNotNull("Check the test data", userContact);
+        assertNotNull(userOwner);
+        assertNotNull(userContact);
 
         Contact contact = contactDao.getContactByUsers(userOwner, userContact);
         assertNotNull(contact);
@@ -210,49 +204,46 @@ public class ContactDaoTest {
         assertEquals(name, contact.getContactName());
     }
 
-    /** Get contact by users
-     * Contact doesn't exist in DB. Should return null */
+    /* Get contact by users
+     * Contact doesn't exist in DB.
+     * Expected null */
     @Test
-    public void getContactByUsersNullIfNotFoundTest() {
+    public void getContactByUsersNotFoundTest() {
 
         User userOwner = userDao.getUserById(5);
         User userContact = userDao.getUserById(1);
 
-        assertNotNull("Check the test data", userOwner);
-        assertNotNull("Check the test data", userContact);
+        assertNotNull(userOwner);
+        assertNotNull(userContact);
 
-        Contact contact = contactDao.getContactByUsers(userOwner, userContact);
-        assertNull(contact);
+        assertNull(contactDao.getContactByUsers(userOwner, userContact));
     }
 
-    /** Get contact by users
-     * Incorrect userOwner.
-     * Expected IllegalArgumentException exception */
-    @Test(expected = IllegalArgumentException.class)
-    public void getContactByUsersIncorrectUserOwnerTest() throws IllegalArgumentException {
-        contactDao.getContactByUsers(null, userContact);
-    }
-
-    /** Get contact by users
-     * Incorrect userContact.
-     * Expected IllegalArgumentException exception */
-    @Test(expected = IllegalArgumentException.class)
-    public void getContactByUsersIncorrectUserContactTest() throws IllegalArgumentException {
-        contactDao.getContactByUsers(userOwner, null);
-    }
-
-    /** Get list of contact from DB
-     * Contacts already exists in DB.
-     * Contact list should be get (not null) */
+    /* Get contact by users
+     * Illegal arguments.
+     * Expected null */
     @Test
-    public void getContactsTest(){
+    public void getContactByUsersIllegalArgumentsTest() {
+        assertNull(contactDao.getContactByUsers(null, userContact));
+        assertNull(contactDao.getContactByUsers(userOwner, null));
+        assertNull(contactDao.getContactByUsers(null, null));
+    }
+
+    /* Get list of contact from DB
+     * Contacts already exists in DB.
+     * Expected not null */
+    @Test
+    public void getContactsTest() {
 
         User userOwner = userDao.getUserById(3);
-        assertNotNull("Check the test data", userOwner);
+        assertNotNull(userOwner);
 
         Contact findContact1 = contactDao.getContact(2);
         Contact findContact2 = contactDao.getContact(3);
         Contact findContact3 = contactDao.getContact(7);
+        assertNotNull(findContact1);
+        assertNotNull(findContact2);
+        assertNotNull(findContact3);
 
         List<Contact> contactList = contactDao.getContacts(userOwner);
         assertNotNull(contactList);
@@ -260,5 +251,25 @@ public class ContactDaoTest {
         assertTrue(contactList.contains(findContact1));
         assertTrue(contactList.contains(findContact2));
         assertTrue(contactList.contains(findContact3));
+    }
+
+    /* Get list of contact from DB
+     * Contacts not found
+     * Expected empty list */
+    @Test
+    public void getContactsNotFoundTest() {
+        User userOwner = new User();
+        userOwner.setId(-1);
+        List<Contact> contactList = contactDao.getContacts(userOwner);
+        assertNotNull(contactList);
+        assertEquals(contactList.size(), 0);
+    }
+
+    /* Get list of contact from DB
+     * Illegal arguments.
+     * Expected null */
+    @Test
+    public void getContactsIllegalArgumentsTest() {
+        assertNull(contactDao.getContacts(null));
     }
 }

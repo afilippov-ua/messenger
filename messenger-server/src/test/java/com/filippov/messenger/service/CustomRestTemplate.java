@@ -1,4 +1,4 @@
-package com.filippov.messenger.api;
+package com.filippov.messenger.service;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.HttpMessageConverter;

@@ -1,11 +1,11 @@
-package com.filippov.messenger.api.user;
+package com.filippov.messenger.controller.user;
 
 import com.filippov.messenger.entity.user.User;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface IUserService {
+public interface IUserController {
 
     public ResponseEntity createUser(String email, String password);
 

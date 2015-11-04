@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface IContactDao {
 
-    public List<Contact> getContacts(User ownerUser) throws IllegalArgumentException;
+    public List<Contact> getContacts(User ownerUser);
 
     public Contact getContact(int id);
 
-    public Contact getContactByUsers(User ownerUser, User contactUser) throws IllegalArgumentException;
+    public Contact getContactByUsers(User ownerUser, User contactUser);
 
-    public Contact createContact(User ownerUser, User contactUser, String name) throws IllegalArgumentException;
+    public Contact createContact(User ownerUser, User contactUser, String name);
 
-    public void updateContact(int id, Contact sourceContact) throws ContactNotFoundException, IllegalArgumentException;
+    public boolean updateContact(Contact contact);
 
-    public void deleteContact(int id) throws ContactNotFoundException;
+    public boolean deleteContact(Contact contact);
 }

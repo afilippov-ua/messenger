@@ -1,13 +1,13 @@
-package com.filippov.messenger.api.message;
+package com.filippov.messenger.controller.message;
 
 import com.filippov.messenger.entity.message.Message;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface IMessageService {
+public interface IMessageController {
 
-    public ResponseEntity<List<Message>> getMessages(String senderId, String receiverId);
+    public ResponseEntity<List<Message>> getMessages(Integer senderId, Integer receiverId);
 
     public ResponseEntity<Message> getMessage(Integer userId, Integer messageId);
 

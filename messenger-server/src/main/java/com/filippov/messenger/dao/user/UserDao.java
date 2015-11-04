@@ -3,9 +3,6 @@ package com.filippov.messenger.dao.user;
 import com.filippov.messenger.dao.AbstractDao;
 import com.filippov.messenger.entity.user.User;
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,7 +11,6 @@ import java.util.List;
 public class UserDao extends AbstractDao implements IUserDao {
 
     public List<User> getUsers() {
-
         return (List<User>)getSession().createQuery("from User").list();
     }
 
@@ -32,10 +28,10 @@ public class UserDao extends AbstractDao implements IUserDao {
         }
     }
 
-    public User getUserByEmail(String email) throws IllegalArgumentException{
+    public User getUserByEmail(String email) {
 
         if (email == null)
-            throw new IllegalArgumentException("argument \"email\" is not valid");
+            return null;
 
         Query query = getSession().createQuery("from User where LOWER(email) = :email");
         query.setParameter("email", email.toLowerCase());
@@ -50,16 +46,13 @@ public class UserDao extends AbstractDao implements IUserDao {
     }
 
     public User createUser(String email,
-                           String password) throws UserAlreadyExistException, IllegalArgumentException {
+                           String password) {
 
-        if (email == null)
-            throw new IllegalArgumentException("argument \"email\" is not valid");
-
-        if (password == null)
-            throw new IllegalArgumentException("argument \"password\" is not valid");
+        if (email == null || password == null)
+            return null;
 
         if (getUserByEmail(email) != null)
-            throw new UserAlreadyExistException("User with email" + email + " already exist");
+            return null;
 
         User newUser = new User(email, password);
         save(newUser);
@@ -67,27 +60,21 @@ public class UserDao extends AbstractDao implements IUserDao {
         return newUser;
     }
 
-    public void updateUser(int id,
-                           User sourceUser) throws UserNotFoundException, IllegalArgumentException {
+    public boolean updateUser(User user) {
 
-        if (sourceUser == null)
-            throw new IllegalArgumentException("argument \"sourceUser\" is not valid");
+        if (user == null)
+            return false;
 
-        User currentUser = getUserById(id);
-        if (currentUser == null)
-            throw new UserNotFoundException("User with id" + id + " was not found");
-
-        currentUser.loadValues(sourceUser);
-
-        persist(currentUser);
+        persist(user);
+        return true;
     }
 
-    public void deleteUser(int id) throws UserNotFoundException {
+    public boolean deleteUser(User sourceUser) {
 
-        User currentUser = getUserById(id);
-        if (currentUser == null)
-            throw new UserNotFoundException("User with id " + id + " was not found");
+        if (sourceUser == null)
+            return false;
 
-        delete(currentUser);
+        delete(sourceUser);
+        return true;
     }
 }

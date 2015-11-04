@@ -1,11 +1,11 @@
-package com.filippov.messenger.api.contact;
+package com.filippov.messenger.controller.contact;
 
 import com.filippov.messenger.entity.contact.Contact;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface IContactService {
+public interface IContactController {
 
     public ResponseEntity<List<Contact>> getContacts(Integer ownerId);
 

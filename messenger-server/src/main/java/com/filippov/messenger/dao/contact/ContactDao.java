@@ -4,9 +4,6 @@ import com.filippov.messenger.dao.AbstractDao;
 import com.filippov.messenger.entity.user.User;
 import com.filippov.messenger.entity.contact.Contact;
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,10 +11,10 @@ import java.util.List;
 @Repository
 public class ContactDao extends AbstractDao implements IContactDao {
 
-    public List<Contact> getContacts(User ownerUser) throws IllegalArgumentException {
+    public List<Contact> getContacts(User ownerUser) {
 
         if (ownerUser == null)
-            throw new IllegalArgumentException("argument \"ownerUser\" is not valid");
+            return null;
 
         Query query = getSession().createQuery("from Contact where ownerUser = :ownerUser");
         query.setParameter("ownerUser", ownerUser);
@@ -39,13 +36,10 @@ public class ContactDao extends AbstractDao implements IContactDao {
         }
     }
 
-    public Contact getContactByUsers(User ownerUser, User contactUser) throws IllegalArgumentException {
+    public Contact getContactByUsers(User ownerUser, User contactUser) {
 
-        if (ownerUser == null)
-            throw new IllegalArgumentException("argument \"ownerUser\" is not valid");
-
-        if (contactUser == null)
-            throw new IllegalArgumentException("argument \"contactUser\" is not valid");
+        if (ownerUser == null || contactUser == null)
+            return null;
 
         Query query = getSession().createQuery("from Contact " +
                 "where ownerUser = :ownerUser and contactUser =:contactUser");
@@ -61,16 +55,10 @@ public class ContactDao extends AbstractDao implements IContactDao {
         }
     }
 
-    public Contact createContact(User ownerUser, User contactUser, String name) throws IllegalArgumentException {
+    public Contact createContact(User ownerUser, User contactUser, String name) {
 
-        if (ownerUser == null)
-            throw new IllegalArgumentException("argument \"ownerUser\" is not valid");
-
-        if (contactUser == null)
-            throw new IllegalArgumentException("argument \"contactUser\" is not valid");
-
-        if (name == null)
-            throw new IllegalArgumentException("argument \"name\" is not valid");
+        if (ownerUser == null || contactUser == null || name == null)
+            return null;
 
         Contact newContact = new Contact(ownerUser, contactUser);
         newContact.setContactName(name);
@@ -79,26 +67,21 @@ public class ContactDao extends AbstractDao implements IContactDao {
         return newContact;
     }
 
-    public void updateContact(int id, Contact sourceContact) throws ContactNotFoundException, IllegalArgumentException {
+    public boolean updateContact(Contact contact) {
 
-        if (sourceContact == null)
-            throw new IllegalArgumentException("argument \"name\" is not valid");
+        if (contact == null)
+            return false;
 
-        Contact currentContact = getContact(id);
-        if (currentContact == null)
-            throw new ContactNotFoundException("Contact with id" + id + " was not found");
-
-        currentContact.loadValues(sourceContact);
-
-        persist(currentContact);
+       persist(contact);
+        return true;
     }
 
-    public void deleteContact(int id) throws ContactNotFoundException {
+    public boolean deleteContact(Contact contact) {
 
-        Contact currentContact = getContact(id);
-        if (currentContact == null)
-            throw new ContactNotFoundException("Contact with id " + id + " was not found");
+        if (contact == null)
+            return false;
 
-        delete(currentContact);
+        delete(contact);
+        return true;
     }
 }

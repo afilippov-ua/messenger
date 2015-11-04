@@ -4,9 +4,6 @@ import com.filippov.messenger.dao.AbstractDao;
 import com.filippov.messenger.entity.user.User;
 import com.filippov.messenger.entity.message.Message;
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -16,13 +13,10 @@ import java.util.List;
 public class MessageDao extends AbstractDao implements IMessageDao {
 
     public List<Message> getMessages(User userSender,
-                                     User userReceiver) throws IllegalArgumentException {
+                                     User userReceiver) {
 
-        if (userSender == null)
-            throw new IllegalArgumentException("argument \"userSender\" is not valid");
-
-        if (userReceiver == null)
-            throw new IllegalArgumentException("argument \"userReceiver\" is not valid");
+        if (userSender == null || userReceiver == null)
+            return null;
 
         Query query = getSession().createQuery("from Message " +
                 "where (userSender = :userSender or userReceiver =:userSender) " +
@@ -34,10 +28,10 @@ public class MessageDao extends AbstractDao implements IMessageDao {
 
     }
 
-    public Message getMessage(User user, int messageId) throws IllegalArgumentException {
+    public Message getMessage(User user, int messageId) {
 
         if (user == null)
-            throw new IllegalArgumentException("argument \"user\" is not valid");
+            return null;
 
         Query query = getSession().createQuery("from Message " +
                 "where id = :id " +
@@ -57,19 +51,10 @@ public class MessageDao extends AbstractDao implements IMessageDao {
     public Message createMessage(Date messageDate,
                                  User sender,
                                  User receiver,
-                                 String messageText) throws IllegalArgumentException {
+                                 String messageText) {
 
-        if (messageDate == null)
-            throw new IllegalArgumentException("argument \"messageDate\" is not valid");
-
-        if (sender == null)
-            throw new IllegalArgumentException("argument \"sender\" is not valid");
-
-        if (receiver == null)
-            throw new IllegalArgumentException("argument \"receiver\" is not valid");
-
-        if (messageText == null)
-            throw new IllegalArgumentException("argument \"messageText\" is not valid");
+        if (messageDate == null || sender == null || receiver == null || messageText == null)
+            return null;
 
         Message newMessage = new Message(messageDate, sender, receiver, messageText);
         save(newMessage);
@@ -77,35 +62,21 @@ public class MessageDao extends AbstractDao implements IMessageDao {
         return newMessage;
     }
 
-    public void updateMessage(User user,
-                              int messageId,
-                              Message sourceMessage) throws MessageNotFoundException, IllegalArgumentException {
+    public boolean updateMessage(Message message) {
 
-        if (user == null)
-            throw new IllegalArgumentException("argument \"user\" is not valid");
+        if (message == null)
+            return false;
 
-        if (sourceMessage == null)
-            throw new IllegalArgumentException("argument \"sourceMessage\" is not valid");
-
-        Message currentMessage = getMessage(user, messageId);
-        if (currentMessage == null)
-            throw new MessageNotFoundException("Message with id" + messageId + " was not found");
-
-        currentMessage.loadValues(sourceMessage);
-
-        persist(currentMessage);
+        persist(message);
+        return true;
     }
 
-    public void deleteMessage(User user,
-                              int messageId) throws MessageNotFoundException, IllegalArgumentException {
+    public boolean deleteMessage(Message message) {
 
-        if (user == null)
-            throw new IllegalArgumentException("argument \"user\" is not valid");
+        if (message == null)
+            return false;
 
-        Message currentMessage = getMessage(user, messageId);
-        if (currentMessage == null)
-            throw new MessageNotFoundException("Message with id " + messageId + " was not found");
-
-        delete(currentMessage);
+        delete(message);
+        return true;
     }
 }

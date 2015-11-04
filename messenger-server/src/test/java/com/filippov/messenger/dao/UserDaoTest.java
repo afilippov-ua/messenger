@@ -2,8 +2,7 @@ package com.filippov.messenger.dao;
 
 import com.filippov.messenger.dao.user.IUserDao;
 import com.filippov.messenger.entity.user.User;
-import com.filippov.messenger.dao.user.UserAlreadyExistException;
-import com.filippov.messenger.dao.user.UserNotFoundException;
+import org.hibernate.PersistentObjectException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,135 +22,126 @@ public class UserDaoTest {
     @Autowired
     IUserDao userDao;
 
-    /** Create user
+    /* Create user
      * User doesn't exist in DB.
-     * User should be created (not null) */
+     * Expected (not null) */
     @Test
     public void createUserTest(){
 
         String email = "testUser@mail.com";
         String password = "12345";
 
-        // create normal user
-        try {
-            User user = userDao.createUser(email, password);
-
-            assertNotNull("User shouldn't be null!", user);
-            assertEquals(email, user.getEmail());
-            assertEquals(password, user.getPassword());
-            assertNotEquals(new Integer(0), user.getId());
-
-        } catch (UserAlreadyExistException e){
-            fail(String.format("User with email %s already exists. Check the test data.", email));
-        }
+        User user = userDao.createUser(email, password);
+        assertNotNull(user);
+        assertEquals(email, user.getEmail());
+        assertEquals(password, user.getPassword());
+        assertNotEquals(new Integer(0), user.getId());
     }
 
-    /** Create user
-     * Incorrect email.
-     * Expected IllegalArgumentException exception */
-    @Test(expected = IllegalArgumentException.class)
-    public void createUserIncorrectEmailTest() throws UserAlreadyExistException, IllegalArgumentException {
-        userDao.createUser(null, "12345");
-    }
-
-    /** Create user
-     * Incorrect email.
-     * Expected IllegalArgumentException exception */
-    @Test(expected = IllegalArgumentException.class)
-    public void createUserIncorrectPasswordTest() throws UserAlreadyExistException, IllegalArgumentException {
-        userDao.createUser("filippov@mail.com", null);
-    }
-
-
-    /** Create user
+    /* Create user
      * User already exists in DB.
-     * Expected UserAlreadyExistException exception */
-    @Test(expected = UserAlreadyExistException.class)
-    public void createUserAlreadyExistTest() throws UserAlreadyExistException {
-        userDao.createUser("filippov@mail.com", "12345");
+     * Expected null */
+    @Test
+    public void createUserAlreadyExistTest() {
+        assertNull(userDao.createUser("filippov@mail.com", "12345"));
     }
 
-    /** Update user data
+
+    /* Create user
+     * Illegal arguments
+     * Expected null */
+    @Test
+    public void createUserIncorrectEmailTest() {
+        assertNull(userDao.createUser(null, "12345"));
+        assertNull(userDao.createUser("filippov@mail.com", null));
+    }
+
+    /* Update user data
      * User already exists in DB
-     * User should be updated */
+     * Expected true */
     @Test
     public void updateUserTest(){
 
         String email = "UpdateUser@mail.com";
 
-        try {
-            User user = userDao.getUserByEmail(email);
+        User user = userDao.getUserByEmail(email);
+        assertNotNull(user);
 
-            String newPassword = "111";
-            String newName = "John Doe";
+        String newPassword = "111";
+        String newName = "John Doe";
 
-            assertNotEquals(newPassword, user.getPassword());
-            assertNotEquals(newName, user.getName());
+        assertNotEquals(newPassword, user.getPassword());
+        assertNotEquals(newName, user.getName());
 
-            user.setPassword(newPassword);
-            user.setName(newName);
+        user.setPassword(newPassword);
+        user.setName(newName);
 
-            userDao.updateUser(user.getId(), user);
+        assertTrue(userDao.updateUser(user));
 
-            User currentUser = userDao.getUserByEmail(email);
-            assertNotNull(currentUser);
+        User currentUser = userDao.getUserByEmail(email);
+        assertNotNull(currentUser);
 
-            assertEquals(newPassword, user.getPassword());
-            assertEquals(newName, user.getName());
-
-        } catch (UserNotFoundException e) {
-            fail(String.format("User with email %s was not found! Check the test data.", email));
-        }
-
+        assertEquals(newPassword, user.getPassword());
+        assertEquals(newName, user.getName());
     }
 
-    /** Update user
-     * Incorrect user.
-     * Expected IllegalArgumentException exception */
-    @Test(expected = IllegalArgumentException.class)
-    public void updateUserIncorrectUserTest() throws UserNotFoundException, IllegalArgumentException {
-        userDao.updateUser(-1, null);
-    }
-
-    /** Update user
+    /* Update user
      * User doesn't exist in DB.
-     * Expected UserNotFoundException exception */
-    @Test(expected = UserNotFoundException.class)
-    public void testUpdateUserException() throws UserNotFoundException {
-        userDao.updateUser(-1, new User("DeleteUser", ""));
+     * Expected PersistentObjectException */
+    @Test(expected = PersistentObjectException.class)
+    public void testUpdateUserException() {
+
+        User user = new User();
+        user.setId(-1);
+        userDao.updateUser(user);
     }
 
-    /** Delete user from DB
+    /* Update user
+     * Illegal arguments
+     * Expected false */
+    @Test
+    public void updateUserIllegalArgumentsTest() {
+        assertFalse(userDao.updateUser(null));
+    }
+
+    /* Delete user from DB
      * User already exists in DB
-     * User should be delete */
+     * Expected true */
     @Test
     public void deleteUserTest(){
 
         String email = "DeleteUser@mail.com";
-        assertNotNull("Check the test data", userDao.getUserByEmail(email));
+        User user = userDao.getUserByEmail(email);
+        assertNotNull(user);
 
-        try {
-            User user = userDao.getUserByEmail(email);
-            userDao.deleteUser(user.getId());
+        assertTrue(userDao.deleteUser(user));
 
-            User currentUser = userDao.getUserByEmail(email);
-            assertNull(currentUser);
-        } catch (UserNotFoundException e) {
-            fail(String.format("User with email %s was not found", email));
-        }
+        User currentUser = userDao.getUserByEmail(email);
+        assertNull(currentUser);
     }
 
-    /** Delete user from DB
+    /* Delete user from DB
      * User doesn't exist in DB.
-     * Expected UserNotFoundException exception */
-    @Test(expected = UserNotFoundException.class)
-    public void testDeleteUserException() throws UserNotFoundException {
-        userDao.deleteUser(-1);
+     * Expected true */
+    @Test
+    public void deleteUserNotFoundTest() {
+
+        User user = new User();
+        user.setId(-1);
+        assertTrue(userDao.deleteUser(user));
     }
 
-    /** Get user by id from DB
+    /* Delete user from DB
+     * Illegal arguments
+     * Expected false */
+    @Test
+    public void deleteUserIllegalArgumentsTest() {
+        assertFalse(userDao.deleteUser(null));
+    }
+
+    /* Get user by id from DB
      * User already exists in DB.
-     * User should be get (not null) */
+     * Expected not null */
     @Test
     public void getUserByIdTest(){
 
@@ -160,23 +150,22 @@ public class UserDaoTest {
         String password = "12345";
 
         User user = userDao.getUserById(id);
-        assertNotNull("User shouldn't be null!", user);
-        assertEquals("Incorrect user", email, user.getEmail());
-        assertEquals("Incorrect user", password, user.getPassword());
-
+        assertNotNull(user);
+        assertEquals(email, user.getEmail());
+        assertEquals(password, user.getPassword());
     }
 
-    /** Get user by id
-     * User doesn't exist in DB. */
+    /* Get user by id
+     * User doesn't exist in DB.
+     * Expected null */
     @Test
-    public void getUserByIdNullIfNotFoundTest() {
-        User currentUser = userDao.getUserById(-1);
-        assertNull(currentUser);
+    public void getUserByIdNotFoundTest() {
+        assertNull(userDao.getUserById(-1));
     }
 
-    /** Get user by email from DB
+    /* Get user by email from DB
      * User already exists in DB.
-     * User should be get (not null) */
+     * Expected not null */
     @Test
     public void getUserByEmailTest(){
 
@@ -185,31 +174,31 @@ public class UserDaoTest {
         Integer id = 3;
 
         User user = userDao.getUserByEmail(email);
-        assertNotNull("Return value (USER) shouldn't be null!",user);
-        assertEquals("Incorrect user", id, user.getId());
-        assertEquals("Incorrect user", email, user.getEmail());
-        assertEquals("Incorrect user", password, user.getPassword());
+        assertNotNull(user);
+        assertEquals(id, user.getId());
+        assertEquals(email, user.getEmail());
+        assertEquals(password, user.getPassword());
     }
 
-    /** Get user by email
-     * User doesn't exist in DB. */
+    /* Get user by email
+     * User doesn't exist in DB.
+     * Expected null */
     @Test
-    public void getUserByEmailNullIfNotFoundTest() {
-        User currentUser = userDao.getUserByEmail("incorrectEmail");
-        assertNull(currentUser);
+    public void getUserByEmailNotFoundTest() {
+        assertNull(userDao.getUserByEmail("incorrectEmail"));
     }
 
-    /** Get user by email from DB
-     * Incorrect email.
-     * Expected IllegalArgumentException exception */
-    @Test(expected = IllegalArgumentException.class)
-    public void getUserByEmailIncorrectEmailTest() throws IllegalArgumentException {
-        userDao.getUserByEmail(null);
+    /* Get user by email from DB
+     * Illegal arguments.
+     * Expected null */
+    @Test
+    public void getUserByEmailIllegalArgumentsTest() {
+        assertNull(userDao.getUserByEmail(null));
     }
 
-    /** Get list of users from DB
+    /* Get list of users from DB
      * Users already exists in DB.
-     * User list should be get (not null) */
+     * Expected not null */
     @Test
     public void getUsersTest(){
 

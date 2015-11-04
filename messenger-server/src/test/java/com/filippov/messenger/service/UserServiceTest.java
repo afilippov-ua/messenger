@@ -1,4 +1,4 @@
-package com.filippov.messenger.api;
+package com.filippov.messenger.service;
 
 import com.filippov.messenger.entity.user.User;
 import org.junit.AfterClass;
@@ -358,7 +358,7 @@ public class UserServiceTest {
      * User doesn't exist in DB
      * expected HttpStatus.NOT_FOUND */
     @Test
-    public void updateUserDoesntExistTest(){
+    public void updateUserDoesNotExistTest(){
 
         CustomRestTemplate restTemplate = new CustomRestTemplate();
 
@@ -366,7 +366,7 @@ public class UserServiceTest {
         HttpEntity<User> entity = new HttpEntity<>(newUser, restTemplate.getHttpHeaders());
 
         ResponseEntity<String> responseEntity = doUpdateUser(restTemplate, entity,  -1);
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertNull(responseEntity.getBody());
     }
 

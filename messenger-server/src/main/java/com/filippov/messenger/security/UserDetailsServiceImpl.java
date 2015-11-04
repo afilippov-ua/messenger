@@ -1,9 +1,8 @@
 package com.filippov.messenger.security;
 
-import com.filippov.messenger.api.user.IUserService;
+import com.filippov.messenger.service.user.IUserService;
 import com.filippov.messenger.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,11 +20,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        ResponseEntity<List<User>> responseEntity = userService.getUsers(email);
-        User user =  (responseEntity.getBody() == null || responseEntity.getBody().size() == 0) ? null : responseEntity.getBody().get(0);
+        List<User> userList = userService.getUsers(email);
+        User user = null;
+        if (userList != null && !userList.isEmpty())
+            user = userList.get(0);
 
         if (user != null) {
-
             Set<GrantedAuthority> roles = new HashSet();
             roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
@@ -35,7 +35,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                             roles);
 
             return userDetails;
-
         } else {
             throw new UsernameNotFoundException("No user with email '" + email + "' found!");
         }
