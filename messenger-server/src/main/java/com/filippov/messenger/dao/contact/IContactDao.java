@@ -9,7 +9,7 @@ public interface IContactDao {
 
     public List<Contact> getContacts(User ownerUser);
 
-    public Contact getContact(int id);
+    public Contact getContact(Integer id);
 
     public Contact getContactByUsers(User ownerUser, User contactUser);
 

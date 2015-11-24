@@ -10,7 +10,7 @@ public interface IMessageDao {
 
     public List<Message> getMessages(User userSender, User userReceiver);
 
-    public Message getMessage(User user, int messageId);
+    public Message getMessage(User user, Integer messageId);
 
     public Message createMessage(Date messageDate, User sender, User receiver, String messageText);
 

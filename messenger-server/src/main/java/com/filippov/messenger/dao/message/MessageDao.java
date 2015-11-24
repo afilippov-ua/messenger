@@ -12,9 +12,7 @@ import java.util.List;
 @Repository
 public class MessageDao extends AbstractDao implements IMessageDao {
 
-    public List<Message> getMessages(User userSender,
-                                     User userReceiver) {
-
+    public List<Message> getMessages(User userSender, User userReceiver) {
         if (userSender == null || userReceiver == null)
             return null;
 
@@ -24,13 +22,11 @@ public class MessageDao extends AbstractDao implements IMessageDao {
         query.setParameter("userSender", userSender);
         query.setParameter("userReceiver", userReceiver);
 
-        return (List<Message>)query.list();
-
+        return (List<Message>) query.list();
     }
 
-    public Message getMessage(User user, int messageId) {
-
-        if (user == null)
+    public Message getMessage(User user, Integer messageId) {
+        if (user == null || messageId == null)
             return null;
 
         Query query = getSession().createQuery("from Message " +
@@ -38,32 +34,22 @@ public class MessageDao extends AbstractDao implements IMessageDao {
                 "and (userSender = :currentUser or userReceiver = :currentUser)");
         query.setParameter("currentUser", user);
         query.setParameter("id", messageId);
-
-        List result = query.list();
-
-        if (result.isEmpty()) {
-            return null;
-        } else {
-            return (Message)result.get(0);
-        }
+        return (Message) query.uniqueResult();
     }
 
     public Message createMessage(Date messageDate,
                                  User sender,
                                  User receiver,
                                  String messageText) {
-
         if (messageDate == null || sender == null || receiver == null || messageText == null)
             return null;
 
         Message newMessage = new Message(messageDate, sender, receiver, messageText);
         save(newMessage);
-
         return newMessage;
     }
 
     public boolean updateMessage(Message message) {
-
         if (message == null)
             return false;
 
@@ -72,7 +58,6 @@ public class MessageDao extends AbstractDao implements IMessageDao {
     }
 
     public boolean deleteMessage(Message message) {
-
         if (message == null)
             return false;
 

@@ -8,7 +8,7 @@ public interface IUserDao {
 
     public List<User> getUsers();
 
-    public User getUserById(int id);
+    public User getUserById(Integer id);
 
     public User getUserByEmail(String email);
 
