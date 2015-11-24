@@ -14,7 +14,7 @@ public class User implements Serializable {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @JsonIgnore
