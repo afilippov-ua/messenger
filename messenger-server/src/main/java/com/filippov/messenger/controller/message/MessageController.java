@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/messages")
 public class MessageController implements IMessageController {
 
     @Autowired
@@ -21,26 +21,15 @@ public class MessageController implements IMessageController {
     @Transactional
     @RequestMapping(
             value = "/{userId}/messages",
-            method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+            method = RequestMethod.POST
+            /*consumes = MediaType.APPLICATION_JSON_VALUE*/)
     public ResponseEntity createMessage(@PathVariable("userId") Integer senderId,
                                         @RequestParam("receiverId") Integer receiverId,
                                         @RequestBody String messageText) {
-
         if (messageService.createMessage(senderId, receiverId, messageText) == null)
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         else
             return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @Transactional
-    @RequestMapping(
-            value = "/{senderId}/messages",
-            method = RequestMethod.GET)
-    public ResponseEntity<List<Message>> getMessages(@PathVariable("senderId") Integer senderId,
-                                                     @RequestParam("receiverId") Integer receiverId) {
-
-        return new ResponseEntity<>(messageService.getMessages(senderId, receiverId), HttpStatus.OK);
     }
 
     @Transactional
@@ -50,7 +39,6 @@ public class MessageController implements IMessageController {
             method = RequestMethod.GET)
     public ResponseEntity<Message> getMessage(@PathVariable("userId") Integer userId,
                                               @PathVariable("messageId") Integer messageId) {
-
         Message msg = messageService.getMessage(userId, messageId);
         if (msg == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -60,15 +48,11 @@ public class MessageController implements IMessageController {
 
     @Transactional
     @RequestMapping(
-            value = "/{userId}/messages/{messageId}",
-            method = RequestMethod.DELETE)
-    public ResponseEntity deleteMessage(@PathVariable("userId") Integer userId,
-                                        @PathVariable("messageId") Integer messageId) {
-
-        if (messageService.deleteMessage(userId, messageId))
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        else
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            value = "/{senderId}/messages",
+            method = RequestMethod.GET)
+    public ResponseEntity<List<Message>> getMessages(@PathVariable("senderId") Integer senderId,
+                                                     @RequestParam("receiverId") Integer receiverId) {
+        return new ResponseEntity<>(messageService.getMessages(senderId, receiverId), HttpStatus.OK);
     }
 
     @Transactional
@@ -78,8 +62,19 @@ public class MessageController implements IMessageController {
     public ResponseEntity updateMessage(@PathVariable("userId") Integer userId,
                                         @PathVariable("messageId") Integer messageId,
                                         @RequestBody Message sourceMessage) {
-
         if (messageService.updateMessage(userId, messageId, sourceMessage))
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        else
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @Transactional
+    @RequestMapping(
+            value = "/{userId}/messages/{messageId}",
+            method = RequestMethod.DELETE)
+    public ResponseEntity deleteMessage(@PathVariable("userId") Integer userId,
+                                        @PathVariable("messageId") Integer messageId) {
+        if (messageService.deleteMessage(userId, messageId))
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         else
             return new ResponseEntity(HttpStatus.NOT_FOUND);

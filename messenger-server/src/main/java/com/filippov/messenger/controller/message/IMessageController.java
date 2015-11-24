@@ -6,15 +6,13 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface IMessageController {
+    ResponseEntity createMessage(Integer senderId, Integer receiverId, String messageText);
 
-    public ResponseEntity<List<Message>> getMessages(Integer senderId, Integer receiverId);
+    ResponseEntity<Message> getMessage(Integer userId, Integer messageId);
 
-    public ResponseEntity<Message> getMessage(Integer userId, Integer messageId);
+    ResponseEntity<List<Message>> getMessages(Integer senderId, Integer receiverId);
 
-    public ResponseEntity createMessage(Integer senderId, Integer receiverId, String messageText);
+    ResponseEntity updateMessage(Integer userId, Integer messageId, Message sourceMessage);
 
-    public ResponseEntity deleteMessage(Integer userId, Integer id);
-
-    public ResponseEntity updateMessage(Integer userId, Integer messageId, Message sourceMessage);
-
+    ResponseEntity deleteMessage(Integer userId, Integer id);
 }

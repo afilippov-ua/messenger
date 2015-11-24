@@ -6,13 +6,13 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface IContactController {
+    ResponseEntity createContact(Integer ownerId, Integer contactId, String name);
 
-    public ResponseEntity<List<Contact>> getContacts(Integer ownerId);
+    ResponseEntity<Contact> getContact(Integer id);
 
-    public ResponseEntity<Contact> getContact(Integer id);
+    ResponseEntity<List<Contact>> getContacts(Integer ownerId);
 
-    public ResponseEntity deleteContact(Integer id);
+    ResponseEntity updateContact(Integer id, Contact contact);
 
-    public ResponseEntity addContact(Integer ownerId, Integer contactId, String name);
-
+    ResponseEntity deleteContact(Integer id);
 }

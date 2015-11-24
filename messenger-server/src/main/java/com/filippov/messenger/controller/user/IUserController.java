@@ -6,15 +6,13 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface IUserController {
+    ResponseEntity createUser(String email, String password);
 
-    public ResponseEntity createUser(String email, String password);
+    ResponseEntity<User> getUser(Integer id);
 
-    public ResponseEntity<List<User>> getUsers(String email);
+    ResponseEntity<List<User>> getUsers(String email);
 
-    public ResponseEntity<User> getUser(Integer id);
+    ResponseEntity updateUser(Integer id, User sourceUser);
 
-    public ResponseEntity deleteUser(Integer id);
-
-    public ResponseEntity updateUser(Integer id, User sourceUser);
-
+    ResponseEntity deleteUser(Integer id);
 }
