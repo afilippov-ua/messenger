@@ -19,8 +19,34 @@ public class ContactService implements IContactService {
     @Autowired
     IUserDao userDao;
 
+    @Transactional
+    public Contact createContact(Integer ownerId, Integer contactId, String name) {
+        if (ownerId == null || contactId == null || name == null)
+            return null;
+
+        User ownerUser = userDao.getUserById(ownerId);
+        User contactUser = userDao.getUserById(contactId);
+
+        if (ownerUser != null
+                && contactUser != null
+                && contactDao.getContactByUsers(ownerUser, contactUser) == null) {
+            return contactDao.createContact(ownerUser, contactUser, name);
+        }
+        return null;
+    }
+
     @Transactional(readOnly = true)
-    public List<Contact> getContacts(int userId) {
+    public Contact getContact(Integer id) {
+        if (id == null)
+            return null;
+
+        return contactDao.getContact(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Contact> getContacts(Integer userId) {
+        if (userId == null)
+            return null;
 
         User ownerUser = userDao.getUserById(userId);
         if (ownerUser == null) {
@@ -30,13 +56,22 @@ public class ContactService implements IContactService {
         }
     }
 
-    @Transactional(readOnly = true)
-    public Contact getContact(int id) {
-        return contactDao.getContact(id);
+    @Transactional
+    public boolean updateContact(Integer id, Contact sourceContact) {
+        if (id == null || sourceContact == null)
+            return false;
+
+        Contact contact = contactDao.getContact(id);
+        if (contact == null)
+            return false;
+        contact.setContactName(sourceContact.getContactName());
+        return contactDao.updateContact(contact);
     }
 
     @Transactional
-    public boolean deleteContact(int id) {
+    public boolean deleteContact(Integer id) {
+        if (id == null)
+            return false;
 
         Contact contact = contactDao.getContact(id);
         if (contact == null)
@@ -44,23 +79,5 @@ public class ContactService implements IContactService {
 
         contactDao.deleteContact(contact);
         return true;
-    }
-
-    @Transactional
-    public boolean addContact(int ownerId, int contactId, String name) {
-
-        if (name == null)
-            return false;
-
-        User ownerUser = userDao.getUserById(ownerId);
-        User contactUser = userDao.getUserById(contactId);
-
-        if (ownerUser != null
-                && contactUser != null
-                && contactDao.getContactByUsers(ownerUser, contactUser) == null) {
-            return (contactDao.createContact(ownerUser, contactUser, name) != null);
-        }
-
-        return false;
     }
 }

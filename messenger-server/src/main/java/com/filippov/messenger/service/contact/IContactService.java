@@ -5,13 +5,13 @@ import com.filippov.messenger.entity.contact.Contact;
 import java.util.List;
 
 public interface IContactService {
+    Contact createContact(Integer ownerId, Integer contactId, String name);
 
-    public List<Contact> getContacts(int ownerId);
+    Contact getContact(Integer id);
 
-    public Contact getContact(int id);
+    List<Contact> getContacts(Integer ownerId);
 
-    public boolean deleteContact(int id);
+    boolean updateContact(Integer id, Contact sourceContact);
 
-    public boolean addContact(int ownerId, int contactId, String name);
-
+    boolean deleteContact(Integer id);
 }

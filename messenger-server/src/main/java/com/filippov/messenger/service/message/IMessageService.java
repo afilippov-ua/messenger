@@ -5,15 +5,13 @@ import com.filippov.messenger.entity.message.Message;
 import java.util.List;
 
 public interface IMessageService {
+    Message createMessage(Integer senderId, Integer receiverId, String messageText);
 
-    public List<Message> getMessages(int senderId, int receiverId);
+    Message getMessage(Integer userId, Integer messageId);
 
-    public Message getMessage(int userId, int messageId);
+    List<Message> getMessages(Integer senderId, Integer receiverId);
 
-    public Message createMessage(int senderId, int receiverId, String messageText);
+    boolean updateMessage(Integer userId, Integer messageId, Message sourceMessage);
 
-    public boolean deleteMessage(int userId, int id);
-
-    public boolean updateMessage(int userId, int messageId, Message sourceMessage);
-
+    boolean deleteMessage(Integer userId, Integer id);
 }

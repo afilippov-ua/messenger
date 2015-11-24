@@ -21,7 +21,9 @@ public class MessageService implements IMessageService {
     IUserDao userDao;
 
     @Transactional
-    public Message createMessage(int senderId, int receiverId, String messageText) {
+    public Message createMessage(Integer senderId, Integer receiverId, String messageText) {
+        if (senderId == null || receiverId == null || messageText == null)
+            return null;
 
         User userSender = userDao.getUserById(senderId);
         User userReceiver = userDao.getUserById(receiverId);
@@ -33,7 +35,21 @@ public class MessageService implements IMessageService {
     }
 
     @Transactional(readOnly = true)
-    public List<Message> getMessages(int senderId, int receiverId) throws IllegalArgumentException {
+    public Message getMessage(Integer userId, Integer messageId) {
+        if (userId == null || messageId == null)
+            return null;
+
+        User user = userDao.getUserById(userId);
+        if (user == null)
+            return null;
+
+        return messageDao.getMessage(user, messageId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Message> getMessages(Integer senderId, Integer receiverId) throws IllegalArgumentException {
+        if (senderId == null || receiverId == null)
+            return null;
 
         User userSender = userDao.getUserById(senderId);
         User userReceiver = userDao.getUserById(receiverId);
@@ -44,34 +60,9 @@ public class MessageService implements IMessageService {
         return messageDao.getMessages(userSender, userReceiver);
     }
 
-    @Transactional(readOnly = true)
-    public Message getMessage(int userId, int messageId) {
-
-        User user = userDao.getUserById(userId);
-        if (user == null)
-            return null;
-
-        return messageDao.getMessage(user, messageId);
-    }
-
     @Transactional
-    public boolean deleteMessage(int userId, int messageId) {
-
-        User user = userDao.getUserById(userId);
-        if (user == null)
-            return false;
-
-        Message message = messageDao.getMessage(user, messageId);
-        if (message == null)
-            return false;
-
-       return messageDao.deleteMessage(message);
-    }
-
-    @Transactional
-    public boolean updateMessage(int userId, int messageId, Message sourceMessage) {
-
-        if (sourceMessage == null)
+    public boolean updateMessage(Integer userId, Integer messageId, Message sourceMessage) {
+        if (userId == null || messageId == null || sourceMessage == null)
             return false;
 
         User user = userDao.getUserById(userId);
@@ -82,7 +73,25 @@ public class MessageService implements IMessageService {
         if (currentMessage == null)
             return false;
 
-        currentMessage.loadValues(sourceMessage);
+        currentMessage.setMessageDate(sourceMessage.getMessageDate());
+        currentMessage.setSeen(sourceMessage.isSeen());
+        currentMessage.setText(sourceMessage.getText());
         return messageDao.updateMessage(currentMessage);
+    }
+
+    @Transactional
+    public boolean deleteMessage(Integer userId, Integer messageId) {
+        if (userId == null || messageId == null)
+            return false;
+
+        User user = userDao.getUserById(userId);
+        if (user == null)
+            return false;
+
+        Message message = messageDao.getMessage(user, messageId);
+        if (message == null)
+            return false;
+
+        return messageDao.deleteMessage(message);
     }
 }

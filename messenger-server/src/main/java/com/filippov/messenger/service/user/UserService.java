@@ -17,12 +17,20 @@ public class UserService implements IUserService {
 
     @Transactional
     public User createUser(String email, String password) {
+        if (email == null || password == null)
+            return null;
         return userDao.createUser(email, password);
     }
 
     @Transactional(readOnly = true)
-    public List<User> getUsers(String email) {
+    public User getUserById(Integer id) {
+        if (id == null)
+            return null;
+        return userDao.getUserById(id);
+    }
 
+    @Transactional(readOnly = true)
+    public List<User> getUsers(String email) {
         List<User> userList = null;
         if(email != null) {
             User currentUser = userDao.getUserByEmail(email);
@@ -36,32 +44,30 @@ public class UserService implements IUserService {
         return userList;
     }
 
-    @Transactional(readOnly = true)
-    public User getUserById(int id) {
-        return userDao.getUserById(id);
+    @Transactional
+    public boolean updateUser(Integer id, User sourceUser) {
+        if (id == null || sourceUser == null)
+            return false;
+
+        User currentUser = userDao.getUserById(id);
+        if (currentUser == null)
+            return false;
+
+        currentUser.setName(sourceUser.getName());
+        currentUser.setEmail(sourceUser.getEmail());
+        currentUser.setPassword(sourceUser.getPassword());
+        return userDao.updateUser(currentUser);
     }
 
     @Transactional
-    public boolean deleteUser(int id) {
+    public boolean deleteUser(Integer id) {
+        if (id == null)
+            return false;
 
         User currentUser = userDao.getUserById(id);
         if (currentUser == null)
             return false;
 
         return userDao.deleteUser(currentUser);
-    }
-
-    @Transactional
-    public boolean updateUser(int id, User newUser) {
-
-        if (newUser == null)
-            return false;
-
-        User currentUser = userDao.getUserById(id);
-        if (currentUser == null)
-            return false;
-
-        currentUser.loadValues(newUser);
-        return userDao.updateUser(currentUser);
     }
 }

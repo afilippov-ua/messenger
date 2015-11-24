@@ -5,14 +5,13 @@ import com.filippov.messenger.entity.user.User;
 import java.util.List;
 
 public interface IUserService {
+    User createUser(String email, String password);
 
-    public User createUser(String email, String password);
+    User getUserById(Integer id);
 
-    public List<User> getUsers(String email);
+    List<User> getUsers(String email);
 
-    public User getUserById(int id);
+    boolean updateUser(Integer id, User sourceUser);
 
-    public boolean deleteUser(int id);
-
-    public boolean updateUser(int id, User newUser);
+    boolean deleteUser(Integer id);
 }
