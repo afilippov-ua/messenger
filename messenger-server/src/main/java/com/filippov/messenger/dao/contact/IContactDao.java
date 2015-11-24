@@ -6,16 +6,15 @@ import com.filippov.messenger.entity.contact.Contact;
 import java.util.List;
 
 public interface IContactDao {
+    Contact createContact(User ownerUser, User contactUser, String name);
 
-    public List<Contact> getContacts(User ownerUser);
+    Contact getContact(Integer id);
 
-    public Contact getContact(Integer id);
+    List<Contact> getContacts(User ownerUser);
 
-    public Contact getContactByUsers(User ownerUser, User contactUser);
+    Contact getContactByUsers(User ownerUser, User contactUser);
 
-    public Contact createContact(User ownerUser, User contactUser, String name);
+    boolean updateContact(Contact contact);
 
-    public boolean updateContact(Contact contact);
-
-    public boolean deleteContact(Contact contact);
+    boolean deleteContact(Contact contact);
 }
