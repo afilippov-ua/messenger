@@ -10,9 +10,9 @@ public interface IContactDao {
 
     Contact getContact(Integer id);
 
-    List<Contact> getContacts(User ownerUser);
-
     Contact getContactByUsers(User ownerUser, User contactUser);
+
+    List<Contact> getContacts(User ownerUser);
 
     boolean updateContact(Contact contact);
 

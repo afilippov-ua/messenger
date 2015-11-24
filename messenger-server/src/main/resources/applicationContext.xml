@@ -6,7 +6,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <context:annotation-config/>
-    <context:component-scan base-package="com.filippov.messenger.dao, com.filippov.messenger.service"/>
+    <context:component-scan base-package="com.filippov.messenger.entity"/>
+    <context:component-scan base-package="com.filippov.messenger.dao"/>
+    <context:component-scan base-package="com.filippov.messenger.service"/>
+    <context:component-scan base-package="com.filippov.messenger.controller"/>
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
