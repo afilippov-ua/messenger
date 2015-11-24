@@ -1,14 +1,13 @@
 package com.filippov.messenger.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.filippov.messenger.entity.contact.Contact;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "Users")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue
@@ -24,9 +23,6 @@ public class User {
 
     @Column(name = "name")
     private String name;
-
-    @OneToMany(mappedBy="contactUser")
-    private Set<Contact> contacts;
 
     public User(String email, String password){
         setEmail(email);
@@ -68,9 +64,21 @@ public class User {
         this.name = name;
     }
 
-    public void loadValues(User sourceUser){
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        setEmail(sourceUser.getEmail());
-        setName(sourceUser.getName());
+        User user = (User) o;
+
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        return !(name != null ? !name.equals(user.name) : user.name != null);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

@@ -1,14 +1,13 @@
 package com.filippov.messenger.entity.contact;
 
 import com.filippov.messenger.entity.user.User;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "Contacts")
-public class Contact {
+public class Contact implements Serializable {
 
     @Id
     @GeneratedValue
@@ -16,16 +15,14 @@ public class Contact {
     private Integer id;
 
     @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "ownerId")
     User ownerUser;
 
     @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
-    @JoinColumn(name = "contact_id")
+    @JoinColumn(name = "contactId")
     User contactUser;
 
-    @Column(name = "contact_name")
+    @Column(name = "contactName")
     private String contactName;
 
     public Contact(User ownerUser, User contactUser){
@@ -68,8 +65,31 @@ public class Contact {
         this.contactName = text;
     }
 
-    public void loadValues(Contact sourceContact){
-        setOwnerUser(sourceContact.getOwnerUser());
-        setContactUser(sourceContact.getContactUser());
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Contact contact = (Contact) o;
+
+        if (id != null ? !id.equals(contact.id) : contact.id != null) return false;
+        if (ownerUser != null ? !ownerUser.equals(contact.ownerUser) : contact.ownerUser != null) return false;
+        if (contactUser != null ? !contactUser.equals(contact.contactUser) : contact.contactUser != null) return false;
+        return !(contactName != null ? !contactName.equals(contact.contactName) : contact.contactName != null);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id=" + id +
+                ", ownerUser=" + ownerUser +
+                ", contactUser=" + contactUser +
+                ", contactName='" + contactName + '\'' +
+                '}';
     }
 }

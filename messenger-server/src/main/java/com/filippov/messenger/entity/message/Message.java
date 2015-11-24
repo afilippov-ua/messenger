@@ -2,31 +2,30 @@ package com.filippov.messenger.entity.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.filippov.messenger.entity.user.User;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "Messages")
-public class Message {
+public class Message implements Serializable {
 
     @Id
     @GeneratedValue
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "message_date")
+    @Column(name = "messageDate")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date messageDate;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id")
+    @JoinColumn(name = "senderId")
     private User userSender;
 
     @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
-    @JoinColumn(name = "receiver_id")
+    @JoinColumn(name = "receiverId")
     private User userReceiver;
 
     @Column(name = "text")
@@ -36,7 +35,6 @@ public class Message {
     private boolean seen;
 
     public Message(Date messageDate, User sender, User receiver, String text){
-
         setMessageDate(messageDate);
         setUserSender(sender);
         setUserReceiver(receiver);
@@ -94,13 +92,6 @@ public class Message {
         this.seen = seen;
     }
 
-    public void loadValues(Message sourceMessage){
-        setMessageDate(sourceMessage.getMessageDate());
-        setUserSender(sourceMessage.getUserSender());
-        setUserReceiver(sourceMessage.getUserReceiver());
-        setText(sourceMessage.getText());
-    }
-
     @JsonProperty("userSender")
     public Integer getIdUserSender(){
         return userSender.getId();
@@ -114,5 +105,26 @@ public class Message {
     @JsonProperty("messageDate")
     public String getMessageDateView(){
         return messageDate.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Message message = (Message) o;
+
+        if (seen != message.seen) return false;
+        if (!id.equals(message.id)) return false;
+        if (messageDate != null ? !messageDate.equals(message.messageDate) : message.messageDate != null) return false;
+        if (userSender != null ? !userSender.equals(message.userSender) : message.userSender != null) return false;
+        if (userReceiver != null ? !userReceiver.equals(message.userReceiver) : message.userReceiver != null)
+            return false;
+        return !(text != null ? !text.equals(message.text) : message.text != null);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }
