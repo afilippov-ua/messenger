@@ -12,8 +12,7 @@ INSERT INTO CONTACTS
 (ID, OWNERID, CONTACTID, CONTACTNAME) VALUES
   (1, 1, 3, 'Filippov'),
   (2, 3, 1, 'Serdyikov'),
-  (3, 3, 2, 'Sirosh'),
-  (6, 5, 3, 'filippov');
+  (3, 3, 2, 'Sirosh');
 
 INSERT INTO MESSAGES
 (ID, MESSAGEDATE, SENDERID, RECEIVERID, TEXT, SEEN) VALUES
