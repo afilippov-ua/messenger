@@ -19,39 +19,39 @@ public class UserControllerTest {
 
     /* "doGetUsers" method with "email" parameter
     * return User*/
-    private static User doGetUserByEmail(CustomRestTemplate restTemplate, String email){
+    private static User doGetUserByEmail(CustomRestTemplate restTemplate, String email) {
         ResponseEntity<User[]> response = restTemplate.getForEntity(baseUrl + "/api/users?email=" + email, User[].class);
         User[] arrUser = response.getBody();
-        if(arrUser != null && arrUser.length == 1 && arrUser[0] != null) {
+        if (arrUser != null && arrUser.length == 1 && arrUser[0] != null) {
             return arrUser[0];
         } else {
             return null;
         }
     }
 
-    private static ResponseEntity<User> doGetUser(CustomRestTemplate restTemplate, int id){
+    private static ResponseEntity<User> doGetUser(CustomRestTemplate restTemplate, int id) {
         return restTemplate.getForEntity(baseUrl + "/api/users/" + id, User.class);
     }
 
-    private static ResponseEntity<User[]> doGetUsers(CustomRestTemplate restTemplate, String email){
-        return restTemplate.getForEntity(baseUrl + "/api/users" + ((email == null ) ? "" : "?email=" + email), User[].class);
+    private static ResponseEntity<User[]> doGetUsers(CustomRestTemplate restTemplate, String email) {
+        return restTemplate.getForEntity(baseUrl + "/api/users" + ((email == null) ? "" : "?email=" + email), User[].class);
     }
 
-    private static ResponseEntity<String> doCreateUser(CustomRestTemplate restTemplate, HttpEntity entity){
+    private static ResponseEntity<String> doCreateUser(CustomRestTemplate restTemplate, HttpEntity entity) {
         return restTemplate.exchange(baseUrl + "/api/users", HttpMethod.POST, entity, String.class);
     }
 
-    private static ResponseEntity<String> doUpdateUser(CustomRestTemplate restTemplate, HttpEntity entity, int id){
+    private static ResponseEntity<String> doUpdateUser(CustomRestTemplate restTemplate, HttpEntity entity, int id) {
         return restTemplate.exchange(baseUrl + "/api/users/" + id, HttpMethod.PUT, entity, String.class);
     }
 
-    private static ResponseEntity<String> doDeleteUser(CustomRestTemplate restTemplate, HttpEntity entity, int id){
+    private static ResponseEntity<String> doDeleteUser(CustomRestTemplate restTemplate, HttpEntity entity, int id) {
         return restTemplate.exchange(baseUrl + "/api/users/" + id, HttpMethod.DELETE, entity, String.class);
     }
 
     ///////////////////////////////////////// INIT DATA /////////////////////////////////////////
     @BeforeClass
-    public static void init(){
+    public static void init() {
 
         CustomRestTemplate restTemplate = new CustomRestTemplate();
 
@@ -69,7 +69,7 @@ public class UserControllerTest {
         entity = new HttpEntity(restTemplate.getHttpHeaders());
         ResponseEntity<String> responseEntity = doCreateUser(restTemplate, entity);
         if (responseEntity.getStatusCode() != HttpStatus.CREATED
-                && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST){
+                && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST) {
             fail("User \"existingUser@mail.com\" creation error");
         }
 
@@ -78,9 +78,9 @@ public class UserControllerTest {
         restTemplate.addHttpHeader("email", "deleteUser@mail.com");
         restTemplate.addHttpHeader("password", "12345");
         entity = new HttpEntity(restTemplate.getHttpHeaders());
-       responseEntity = doCreateUser(restTemplate, entity);
+        responseEntity = doCreateUser(restTemplate, entity);
         if (responseEntity.getStatusCode() != HttpStatus.CREATED
-                && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST){
+                && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST) {
             fail("User \"deleteUser@mail.com\" creation error");
         }
 
@@ -91,7 +91,7 @@ public class UserControllerTest {
         entity = new HttpEntity(restTemplate.getHttpHeaders());
         responseEntity = doCreateUser(restTemplate, entity);
         if (responseEntity.getStatusCode() != HttpStatus.CREATED
-                && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST){
+                && responseEntity.getStatusCode() != HttpStatus.BAD_REQUEST) {
             fail("User \"updateUser@mail.com\" creation error");
         }
     }
@@ -129,7 +129,7 @@ public class UserControllerTest {
     * User already exists in DB
     * Should return user */
     @Test
-    public void getUserTest(){
+    public void getUserTest() {
 
         CustomRestTemplate restTemplate = new CustomRestTemplate();
 
@@ -149,7 +149,7 @@ public class UserControllerTest {
     * Incorrect user id
     * expected HttpStatus.NOT_FOUND */
     @Test
-    public void getUserIncorrectIdTest(){
+    public void getUserIncorrectIdTest() {
 
         CustomRestTemplate restTemplate = new CustomRestTemplate();
 
@@ -164,7 +164,7 @@ public class UserControllerTest {
      * Users already exists in DB
      * Should return list of users */
     @Test
-    public void getUsersTest(){
+    public void getUsersTest() {
 
         String email1 = "filippov@mail.com";
         String email2 = "serdyukov@mail.com";
@@ -185,7 +185,7 @@ public class UserControllerTest {
         assertNotEquals(0, userList.length);
 
         // Find users in array
-        for (User user : userList){
+        for (User user : userList) {
             if (user.getEmail().equals(email1))
                 user1IsFound = true;
             else if (user.getEmail().equals(email2))
@@ -203,7 +203,7 @@ public class UserControllerTest {
      * User already exists in DB
      * Should return list which contains 1 user */
     @Test
-    public void getUsersByEmailTest(){
+    public void getUsersByEmailTest() {
 
         CustomRestTemplate restTemplate = new CustomRestTemplate();
 
@@ -226,11 +226,11 @@ public class UserControllerTest {
      * Incorrect email
      * Should return null */
     @Test
-    public void getUsersIncorrectEmailTest(){
+    public void getUsersIncorrectEmailTest() {
 
         CustomRestTemplate restTemplate = new CustomRestTemplate();
 
-        ResponseEntity<User[]> responseEntity = doGetUsers(restTemplate,  "incorrectEmail");
+        ResponseEntity<User[]> responseEntity = doGetUsers(restTemplate, "incorrectEmail");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNull(responseEntity.getBody());
 
@@ -242,7 +242,7 @@ public class UserControllerTest {
     * User doesn't exist in DB
     * Should return HttpStatus.CREATED */
     @Test
-    public void createUserTest(){
+    public void createUserTest() {
 
         String email = "newUser@mail.com";
         String password = "12345";
@@ -266,7 +266,7 @@ public class UserControllerTest {
     * User already exist in DB
     * expected HttpStatus.BAD_REQUEST */
     @Test
-    public void createUserAlreadyExistTest(){
+    public void createUserAlreadyExistTest() {
 
         String email = "existingUser@mail.com";
         String password = "12345";
@@ -287,7 +287,7 @@ public class UserControllerTest {
      * User already exists in DB
      * Should return HttpStatus.NO_CONTENT */
     @Test
-    public void deleteUserTest(){
+    public void deleteUserTest() {
 
         String email = "deleteUser@mail.com";
         CustomRestTemplate restTemplate = new CustomRestTemplate();
@@ -309,12 +309,12 @@ public class UserControllerTest {
      * User doesn't exist in DB
      * expected HttpStatus.NOT_FOUND */
     @Test
-    public void deleteUserDoesntExistTest(){
+    public void deleteUserDoesntExistTest() {
 
         CustomRestTemplate restTemplate = new CustomRestTemplate();
         HttpEntity entity = new HttpEntity(restTemplate.getHttpHeaders());
 
-        ResponseEntity<String> responseEntity = doDeleteUser(restTemplate, entity,  -1);
+        ResponseEntity<String> responseEntity = doDeleteUser(restTemplate, entity, -1);
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertNull(responseEntity.getBody());
     }
@@ -325,7 +325,7 @@ public class UserControllerTest {
      * User already exists in DB
      * Should return HttpStatus.NO_CONTENT */
     @Test
-    public void updateUserTest(){
+    public void updateUserTest() {
 
         String email = "updateUser@mail.com";
         CustomRestTemplate restTemplate = new CustomRestTemplate();
@@ -359,14 +359,14 @@ public class UserControllerTest {
      * User doesn't exist in DB
      * expected HttpStatus.NOT_FOUND */
     @Test
-    public void updateUserDoesNotExistTest(){
+    public void updateUserDoesNotExistTest() {
 
         CustomRestTemplate restTemplate = new CustomRestTemplate();
 
         User newUser = new User("newUser@mail.com", "123");
         HttpEntity<User> entity = new HttpEntity<>(newUser, restTemplate.getHttpHeaders());
 
-        ResponseEntity<String> responseEntity = doUpdateUser(restTemplate, entity,  -1);
+        ResponseEntity<String> responseEntity = doUpdateUser(restTemplate, entity, -1);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertNull(responseEntity.getBody());
     }
@@ -374,7 +374,7 @@ public class UserControllerTest {
     ///////////////////////////////////////// COMPLEX TEST /////////////////////////////////////////
 
     @Test
-    public void complexTest(){
+    public void complexTest() {
 
         String email = "complexTestUser@mail.com";
         String password = "12345";

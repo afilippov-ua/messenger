@@ -6,19 +6,14 @@ INSERT INTO USERS
 (ID, EMAIL, PASSWORD, NAME) VALUES
   (1, 'serdyukov@mail.com', '12345', 'aleksandr serdyukov'),
   (2, 'sirosh@mail.com', '12345', 'sergey  sirosh'),
-  (3, 'filippov@mail.com', '12345', 'aleksandr filippov'),
-  (4, 'UpdateUser@mail.com', '12345', 'update user'),
-  (5, 'DeleteUser@mail.com', '12345', 'delete user');
+  (3, 'filippov@mail.com', '12345', 'aleksandr filippov');
 
 INSERT INTO CONTACTS
 (ID, OWNERID, CONTACTID, CONTACTNAME) VALUES
   (1, 1, 3, 'Filippov'),
   (2, 3, 1, 'Serdyikov'),
   (3, 3, 2, 'Sirosh'),
-  (4, 5, 4, 'update user'),
-  (5, 4, 5, 'delete user'),
-  (6, 5, 3, 'filippov'),
-  (7, 3, 5, 'delete user');
+  (6, 5, 3, 'filippov');
 
 INSERT INTO MESSAGES
 (ID, MESSAGEDATE, SENDERID, RECEIVERID, TEXT, SEEN) VALUES
