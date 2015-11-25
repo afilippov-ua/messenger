@@ -10,7 +10,7 @@ import org.springframework.http.*;
 import static org.junit.Assert.*;
 
 @Ignore
-public class UserServiceTest {
+public class UserControllerTest {
 
     private static final String baseUrl = "http://localhost:8555";
 
