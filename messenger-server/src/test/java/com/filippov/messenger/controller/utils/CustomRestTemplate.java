@@ -1,4 +1,4 @@
-package com.filippov.messenger.controller;
+package com.filippov.messenger.controller.utils;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-class CustomRestTemplate extends RestTemplate {
+public class CustomRestTemplate extends RestTemplate {
 
     private HttpHeaders headers = new HttpHeaders();
 

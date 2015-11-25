@@ -1,5 +1,6 @@
 package com.filippov.messenger.controller;
 
+import com.filippov.messenger.controller.utils.CustomRestTemplate;
 import com.filippov.messenger.entity.user.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
