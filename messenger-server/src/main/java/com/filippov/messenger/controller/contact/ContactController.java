@@ -1,17 +1,17 @@
 package com.filippov.messenger.controller.contact;
 
 import com.filippov.messenger.entity.contact.Contact;
-import com.filippov.messenger.entity.user.User;
 import com.filippov.messenger.service.contact.IContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api/contacts")
 public class ContactController implements IContactController {
 
@@ -57,7 +57,7 @@ public class ContactController implements IContactController {
             value = "/{id}",
             method = RequestMethod.PUT)
     public ResponseEntity updateContact(@PathVariable("id") Integer id,
-                                     @RequestBody Contact sourceContact) {
+                                        @RequestBody Contact sourceContact) {
 
         if (contactService.updateContact(id, sourceContact))
             return new ResponseEntity(HttpStatus.NO_CONTENT);
