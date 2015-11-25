@@ -52,6 +52,7 @@ public class UserServiceTest {
     @Test
     public void createUserTest() {
         User testUser = new User("test user", "12345");
+        expect(mockDao.getUserByEmail(testUser.getEmail())).andReturn(null).once();
         expect(mockDao.createUser(eq(testUser))).andReturn(testUser).once();
         replay(mockDao);
 
@@ -59,6 +60,18 @@ public class UserServiceTest {
         verify(mockDao);
         assertNotNull(user);
         assertEquals(testUser, user);
+    }
+
+    /* Test method: "createUser()"
+    * User with this email is already exists */
+    @Test
+    public void createUserUserAlreadyExistTest() {
+        User testUser = new User("test user", "12345");
+        expect(mockDao.getUserByEmail(testUser.getEmail())).andReturn(testUser).once();
+        replay(mockDao);
+
+        assertNull(userService.createUser(testUser.getEmail(), testUser.getPassword()));
+        verify(mockDao);
     }
 
     /* Test method: "createUser()"

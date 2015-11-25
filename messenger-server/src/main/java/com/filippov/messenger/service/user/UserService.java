@@ -19,6 +19,8 @@ public class UserService implements IUserService {
     public User createUser(String email, String password) {
         if (email == null || password == null)
             return null;
+        if (userDao.getUserByEmail(email) != null)
+            return null;
         return userDao.createUser(new User(email, password));
     }
 
