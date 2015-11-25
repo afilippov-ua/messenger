@@ -6,6 +6,7 @@
     <title>messenger</title>
     <input type="hidden" id="userId" value="${userId}"/>
     <link href="resources/css/messenger.css" rel="stylesheet">
+    <script src="/app/resources/scripts/jquery-1.11.3.js"></script>
     <script src="/app/resources/scripts/messenger.js"></script>
     <script src="/app/resources/scripts/authentication.js"></script>
 </head>

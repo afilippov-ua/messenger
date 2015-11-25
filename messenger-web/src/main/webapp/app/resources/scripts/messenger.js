@@ -1,5 +1,5 @@
 
-var userId = document.getElementById("userId").value;
+var userId = $("userId").value;
 var lastDate = null;
 
 window.onload = function onLoad() {
@@ -7,54 +7,40 @@ window.onload = function onLoad() {
     window.setInterval("loadMessages(false);", 1000);
 };
 
-/////////////////////////////////////////// LOAD CONTACTS ////////////////////////////////////////
-
 function loadContacts() {
-
-    var contactList = document.getElementById("contacts")
-
-    if (contactList != null && userId != null) {
-
-        var xmlhttp = new XMLHttpRequest();
-
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                contactList.innerHTML = "";
-
+    if ($("#contacts") != null && userId != null) {
+        $.ajax({
+            url: "//localhost:8555/api/contacts?ownerId=" + userId,
+            method: 'GET',
+            success: function( data ) {
+                $("#contacts").innerHTML = "";
                 var contactsArray = JSON.parse(xmlhttp.responseText);
                 for (var index = 0; index < contactsArray.length; index++) {
-
                     var currentContact = contactsArray[index];
-
                     var newOption = document.createElement("option");
                     newOption.setAttribute("id", currentContact.id);
                     newOption.setAttribute("data-user-id", currentContact.contactUser.id);
                     newOption.setAttribute("className", "contact");
                     newOption.innerHTML = currentContact.contactName;
 
-                    contactList.insertBefore(newOption, contactList.lastElementChild);
-
+                    $("#contacts").insertBefore(newOption, $("#contacts").lastElementChild);
                 }
             }
-        }
-
-        xmlhttp.open("GET", "//localhost:8555/api/users/" + userId + "/contacts", true);
-        xmlhttp.send();
+        });
     }
 }
 
-/////////////////////////////////////////// LOAD MESSAGES ////////////////////////////////////////
 function loadMessages(fullUpdate, scrollOnBottom) {
 
     var receiver = document.getElementById("contacts").selectedOptions[0];
+    var message_container = document.getElementById("messages");
+
     if (receiver == undefined) {
         message_container.innerHTML = "";
     } else {
 
         var receiverId = receiver.getAttribute("data-user-id");
         var receiverName = receiver.innerHTML;
-        var message_container = document.getElementById("messages");
 
         if (message_container != null
             && userId != null
