@@ -29,7 +29,7 @@ public class MessageService implements IMessageService {
         User userReceiver = userDao.getUserById(receiverId);
 
         if (userSender != null && userReceiver != null)
-            return messageDao.createMessage(new Date(), userSender, userReceiver, messageText);
+            return messageDao.createMessage(new Message(new Date(), userSender, userReceiver, messageText));
         else
             return null;
     }

@@ -30,7 +30,9 @@ public class ContactService implements IContactService {
         if (ownerUser != null
                 && contactUser != null
                 && contactDao.getContactByUsers(ownerUser, contactUser) == null) {
-            return contactDao.createContact(ownerUser, contactUser, name);
+            Contact contact = new Contact(ownerUser, contactUser);
+            contact.setContactName(name);
+            return contactDao.createContact(contact);
         }
         return null;
     }
