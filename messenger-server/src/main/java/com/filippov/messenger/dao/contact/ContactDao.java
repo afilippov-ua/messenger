@@ -11,11 +11,9 @@ import java.util.List;
 @Repository
 public class ContactDao extends AbstractDao implements IContactDao {
 
-    public Contact createContact(User ownerUser, User contactUser, String name) {
-        Contact newContact = new Contact(ownerUser, contactUser);
-        newContact.setContactName(name);
-        save(newContact);
-        return newContact;
+    public Contact createContact(Contact contact) {
+        save(contact);
+        return contact;
     }
 
     public Contact getContact(Integer id) {

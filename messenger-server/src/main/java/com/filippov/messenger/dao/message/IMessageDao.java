@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface IMessageDao {
-    Message createMessage(Date messageDate, User sender, User receiver, String messageText);
+    Message createMessage(Message message);
 
     Message getMessage(User user, Integer messageId);
 

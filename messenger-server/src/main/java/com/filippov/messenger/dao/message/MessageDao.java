@@ -6,19 +6,14 @@ import com.filippov.messenger.entity.message.Message;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
 public class MessageDao extends AbstractDao implements IMessageDao {
 
-    public Message createMessage(Date messageDate,
-                                 User sender,
-                                 User receiver,
-                                 String messageText) {
-        Message newMessage = new Message(messageDate, sender, receiver, messageText);
-        save(newMessage);
-        return newMessage;
+    public Message createMessage(Message message) {
+        save(message);
+        return message;
     }
 
     public Message getMessage(User user, Integer messageId) {

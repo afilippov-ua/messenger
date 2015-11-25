@@ -6,7 +6,7 @@ import com.filippov.messenger.entity.contact.Contact;
 import java.util.List;
 
 public interface IContactDao {
-    Contact createContact(User ownerUser, User contactUser, String name);
+    Contact createContact(Contact contact);
 
     Contact getContact(Integer id);
 

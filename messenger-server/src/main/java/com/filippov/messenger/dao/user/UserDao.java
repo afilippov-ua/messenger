@@ -10,13 +10,9 @@ import java.util.List;
 @Repository
 public class UserDao extends AbstractDao implements IUserDao {
 
-    public User createUser(String email, String password) {
-        if (getUserByEmail(email) != null)
-            return null;
-
-        User newUser = new User(email, password);
-        save(newUser);
-        return newUser;
+    public User createUser(User user) {
+        save(user);
+        return user;
     }
 
     public User getUserById(Integer id) {
