@@ -4,7 +4,6 @@ import com.filippov.messenger.dao.message.IMessageDao;
 import com.filippov.messenger.entity.message.Message;
 import com.filippov.messenger.dao.user.IUserDao;
 import com.filippov.messenger.entity.user.User;
-import org.hibernate.PersistentObjectException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,200 +28,90 @@ public class MessageDaoTest {
     @Autowired
     IUserDao userDao;
 
-    public User userSender;
-    public User userReceiver;
-    public String msgText = "new message text";
+    public User testUserSender, testUserReceiver;
+    public Message testMessage1, testMessage2, testMessage3;
 
     @Before
-    public void beforeTests() {
-        userSender = userDao.getUserById(3);
-        userReceiver = userDao.getUserById(1);
+    public void setup() {
+        testUserSender = userDao.createUser(new User("test user sender", "12345"));
+        testUserReceiver = userDao.createUser(new User("test user receiver", "12345"));
+        assertNotNull(testUserSender);
+        assertNotNull(testUserReceiver);
+
+        testMessage1 = messageDao.createMessage(
+                new Message(new Date(), testUserSender, testUserReceiver, "test message 1"));
+        testMessage2 = messageDao.createMessage(
+                new Message(new Date(), testUserSender, testUserReceiver, "test message 2"));
+        testMessage3 = messageDao.createMessage(
+                new Message(new Date(), testUserSender, testUserReceiver, "test message 3"));
     }
 
-    /* Create message
-     * Expected not null */
+    /* Test method: "createMessage()" */
     @Test
     public void createMessageTest() {
+        final Date currentDate = new Date();
+        final String text = "message text";
 
-        Date currentDate = new Date();
-
-        Message msg = messageDao.createMessage(currentDate, userSender, userReceiver, msgText);
-        assertNotNull(msg);
-
-        assertEquals(currentDate, msg.getMessageDate());
-        assertEquals(userSender, msg.getUserSender());
-        assertEquals(userReceiver, msg.getUserReceiver());
-        assertEquals(msgText, msg.getText());
-    }
-
-    /* Create message
-     * Illegal arguments
-     * Expected null */
-    @Test
-    public void createMessageIncorrectDateTest() {
-
-        assertNull(messageDao.createMessage(null, userSender, userReceiver, msgText));
-        assertNull(messageDao.createMessage(new Date(), null, userReceiver, msgText));
-        assertNull(messageDao.createMessage(new Date(), userSender, null, msgText));
-        assertNull(messageDao.createMessage(new Date(), userSender, userReceiver, null));
-        assertNull(messageDao.createMessage(null, null, null, null));
-    }
-
-    /* Update message data
-     * Message already exists in DB
-     * Expected true */
-    @Test
-    public void updateMessageTest() {
-
-        int messageId = 6;
-
-        Message sourceMessage = messageDao.getMessage(userSender, messageId);
-        assertNotNull(sourceMessage);
-
-        Date newDate = new Date();
-        User newUserSender = sourceMessage.getUserReceiver();
-        User newUserReceiver = sourceMessage.getUserSender();
-        String newText = "new text";
-        boolean newSeen = !sourceMessage.isSeen();
-
-        sourceMessage.setMessageDate(newDate);
-        sourceMessage.setUserSender(newUserSender);
-        sourceMessage.setUserReceiver(newUserReceiver);
-        sourceMessage.setText(newText);
-        sourceMessage.setSeen(newSeen);
-
-        assertEquals(newDate, sourceMessage.getMessageDate());
-        assertEquals(newUserSender, sourceMessage.getUserSender());
-        assertEquals(newUserReceiver, sourceMessage.getUserReceiver());
-        assertEquals(newText, sourceMessage.getText());
-        assertEquals(newSeen, sourceMessage.isSeen());
-
-        assertTrue(messageDao.updateMessage(sourceMessage));
-
-        sourceMessage = messageDao.getMessage(userSender, messageId);
-
-        assertEquals(newDate, sourceMessage.getMessageDate());
-        assertEquals(newUserSender, sourceMessage.getUserSender());
-        assertEquals(newUserReceiver, sourceMessage.getUserReceiver());
-        assertEquals(newText, sourceMessage.getText());
-        assertEquals(newSeen, sourceMessage.isSeen());
-    }
-
-    /* Update message
-     * Message doesn't exist in DB.
-     * Expected PersistentObjectException */
-    @Test(expected = PersistentObjectException.class)
-    public void updateMessageNotFoundTest() {
-
-        Message sourceMessage = new Message();
-        sourceMessage.setId(-1);
-        messageDao.updateMessage(sourceMessage);
-    }
-
-    /* Update message
-     * Illegal arguments.
-     * Expected false */
-    @Test
-    public void updateMessageIllegalArgumentsTest() {
-        assertFalse(messageDao.updateMessage(null));
-    }
-
-    /* Delete message from DB
-     * Message already exists in DB
-     * Expected true */
-    @Test
-    public void deleteMessageTest() {
-
-        int messageId = 7;
-        Message message = messageDao.getMessage(userSender, messageId);
+        Message message = new Message(currentDate, testUserSender, testUserReceiver, text);
+        assertNull(message.getId());
+        message = messageDao.createMessage(message);
         assertNotNull(message);
+        assertNotNull(message.getId());
 
-        assertTrue(messageDao.deleteMessage(message));
-        assertNull(messageDao.getMessage(userSender, messageId));
+        Message newMessage = messageDao.getMessage(testUserSender, message.getId());
+        assertNotNull(newMessage);
+        assertEquals(message, newMessage);
     }
 
-    /* Delete message
-     * Message doesn't exist in DB
-     * Expected true */
-    @Test
-    public void deleteMessageNotFoundTest() {
-
-        Message message = new Message();
-        message.setId(-1);
-        assertTrue(messageDao.deleteMessage(message));
-    }
-
-    /* Delete message
-     * Illegal arguments
-     * Expected false */
-    @Test
-    public void deleteMessageIllegalArgumentsTest() {
-        assertFalse(messageDao.deleteMessage(null));
-    }
-
-    /* Get message from DB
-     * Message already exists in DB.
-     * Expected not null */
+    /* Test method: "getMessage()" */
     @Test
     public void getMessageTest() {
-
-        Integer messageId = 1;
-        String text = "Hi!";
-
-        Message message = messageDao.getMessage(userSender, messageId);
+        Message message = messageDao.getMessage(
+                testMessage1.getUserSender(),
+                testMessage1.getId());
         assertNotNull(message);
-        assertEquals(messageId, message.getId());
-        assertEquals(userSender, message.getUserSender());
-        assertEquals(userReceiver, message.getUserReceiver());
-        assertEquals(text, message.getText());
+        assertEquals(message, testMessage1);
     }
 
-    /* Get message
-     * Message doesn't exist in DB.
-     * Expected null */
-    @Test
-    public void getMessageNotFoundTest() {
-        assertNull(messageDao.getMessage(userSender, -1));
-    }
-
-    /* Get message
-     * Illegal arguments
-     * Expected null */
-    @Test
-    public void getMessageIllegalArgumentsTest() {
-        assertNull(messageDao.getMessage(null, 1));
-    }
-
-    /* Get list of messages from DB
-     * Messages already exists in DB.
-     * Expected not null (list of messages) */
+    /* Test method: "getMessages()" */
     @Test
     public void getMessagesTest() {
-
-        Message findMessage1 = messageDao.getMessage(userSender, 1);
-        Message findMessage2 = messageDao.getMessage(userSender, 2);
-        Message findMessage3 = messageDao.getMessage(userSender, 3);
-
-        assertNotNull(findMessage1);
-        assertNotNull(findMessage2);
-        assertNotNull(findMessage3);
-
-        List<Message> messageList = messageDao.getMessages(userSender, userReceiver);
+        List<Message> messageList = messageDao.getMessages(
+                testUserSender,
+                testUserReceiver);
         assertNotNull(messageList);
-        assertNotEquals(0, messageList.size());
-        assertTrue(messageList.contains(findMessage1));
-        assertTrue(messageList.contains(findMessage2));
-        assertTrue(messageList.contains(findMessage3));
+        assertEquals(3, messageList.size());
+        assertTrue(messageList.contains(testMessage1));
+        assertTrue(messageList.contains(testMessage2));
+        assertTrue(messageList.contains(testMessage3));
     }
 
-    /* Get list of messages from DB
-     * Illegal arguments
-     * Expected null */
+    /* Test method: "updateMessage()" */
     @Test
-    public void getMessagesIllegalArgumentsTest() {
+    public void updateMessageTest() {
+        final Date newDate = new Date();
+        final String newText = "new text for test message";
 
-        assertNull(messageDao.getMessages(null, userReceiver));
-        assertNull(messageDao.getMessages(userSender, null));
-        assertNull(messageDao.getMessages(null, null));
+        assertNotEquals(newDate, testMessage1.getMessageDate());
+        assertNotEquals(testUserReceiver, testMessage1.getIdUserSender());
+        assertNotEquals(testUserSender, testMessage1.getIdUserReceiver());
+        assertNotEquals(newText, testMessage1.getText());
+        testMessage1.setMessageDate(newDate);
+        testMessage1.setUserSender(testUserReceiver);
+        testMessage1.setUserReceiver(testUserSender);
+        testMessage1.setText(newText);
+
+        assertTrue(messageDao.updateMessage(testMessage1));
+
+        Message updatedMessage = messageDao.getMessage(testUserReceiver, testMessage1.getId());
+        assertNotNull(updatedMessage);
+        assertEquals(testMessage1, updatedMessage);
+    }
+
+    /* Test method: "deleteMessage()" */
+    @Test
+    public void deleteMessageTest() {
+        assertTrue(messageDao.deleteMessage(testMessage1));
+        assertNull(messageDao.getMessage(testMessage1.getUserSender(), testMessage1.getId()));
     }
 }
