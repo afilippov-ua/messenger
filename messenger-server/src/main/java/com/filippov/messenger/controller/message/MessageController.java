@@ -20,7 +20,7 @@ public class MessageController implements IMessageController {
     IMessageService messageService;
 
     @Transactional
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createMessage(@RequestParam("userId") Integer senderId,
                                         @RequestParam("receiverId") Integer receiverId,
                                         @RequestBody String messageText) {

@@ -23,7 +23,7 @@ public class ContactController implements IContactController {
     public ResponseEntity createContact(
             @RequestParam("ownerId") Integer ownerId,
             @RequestParam("contactId") Integer contactId,
-            @RequestParam("name") String name) {
+            @RequestHeader("name") String name) {
         if (contactService.createContact(ownerId, contactId, name) == null)
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         else
