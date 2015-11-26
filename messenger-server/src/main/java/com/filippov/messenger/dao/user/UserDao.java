@@ -29,6 +29,11 @@ public class UserDao extends AbstractDao implements IUserDao {
         return (List<User>) getSession().createQuery("from User").list();
     }
 
+    public List<User> getUsersByName(String name) {
+        Query query = getSession().createQuery("from User where LOWER(name) LIKE '%" + name + "%'");
+        return query.list();
+    }
+
     public boolean updateUser(User user) {
         persist(user);
         return true;

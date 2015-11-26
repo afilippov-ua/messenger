@@ -11,6 +11,8 @@ public interface IUserService {
 
     List<User> getUsers(String email);
 
+    List<User> getUsersByName(String name);
+
     boolean updateUser(Integer id, User sourceUser);
 
     boolean deleteUser(Integer id);

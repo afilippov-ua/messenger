@@ -173,6 +173,36 @@ public class UserServiceTest {
         verify(mockDao);
     }
 
+    /* Test method: "getUsersByName()" */
+    @Test
+    public void getUsersByNameTest() {
+        List<User> list = new ArrayList<>(3);
+        list.add(testUser1);
+        list.add(testUser2);
+        list.add(testUser3);
+        expect(mockDao.getUsersByName("test")).andReturn(list).once();
+        replay(mockDao);
+
+        List<User> newList = userService.getUsersByName("test");
+        verify(mockDao);
+        assertNotNull(newList);
+        assertEquals(3, newList.size());
+        assertTrue(newList.contains(testUser1));
+        assertTrue(newList.contains(testUser2));
+        assertTrue(newList.contains(testUser3));
+    }
+
+    /* Test method: "getUsersByName()"
+    * User not found */
+    @Test
+    public void getUsersByNameNotFoundTest() {
+        expect(mockDao.getUsersByName("")).andReturn(null).once();
+        replay(mockDao);
+
+        assertNull(userService.getUsersByName(""));
+        verify(mockDao);
+    }
+
     /* Test method: "updateUser()" */
     @Test
     public void updateUserTest() {

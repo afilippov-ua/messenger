@@ -46,6 +46,13 @@ public class UserService implements IUserService {
         return userList;
     }
 
+    @Transactional(readOnly = true)
+    public List<User> getUsersByName(String name) {
+        if (name == null)
+            return null;
+        return userDao.getUsersByName(name);
+    }
+
     @Transactional
     public boolean updateUser(Integer id, User sourceUser) {
         if (id == null || sourceUser == null)

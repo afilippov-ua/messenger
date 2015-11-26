@@ -13,6 +13,8 @@ public interface IUserDao {
 
     List<User> getUsers();
 
+    List<User> getUsersByName(String name);
+
     boolean updateUser(User user);
 
     boolean deleteUser(User user);

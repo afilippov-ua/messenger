@@ -38,8 +38,12 @@ public class UserController implements IUserController {
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public ResponseEntity<List<User>> getUsers(
-            @RequestParam(value = "email", required = false) String email) {
-        return new ResponseEntity<>(userService.getUsers(email), HttpStatus.OK);
+            @RequestHeader(value = "email", required = false) String email,
+            @RequestHeader(value = "name", required = false) String name) {
+        if (name != null)
+            return new ResponseEntity<>(userService.getUsersByName(name), HttpStatus.OK);
+        else
+            return new ResponseEntity<>(userService.getUsers(email), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

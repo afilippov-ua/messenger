@@ -10,7 +10,7 @@ public interface IUserController {
 
     ResponseEntity<User> getUser(Integer id);
 
-    ResponseEntity<List<User>> getUsers(String email);
+    ResponseEntity<List<User>> getUsers(String email, String name);
 
     ResponseEntity updateUser(Integer id, User sourceUser);
 

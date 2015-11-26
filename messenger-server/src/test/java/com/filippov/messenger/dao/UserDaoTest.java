@@ -84,6 +84,22 @@ public class UserDaoTest {
         assertTrue(userList.contains(testUser3));
     }
 
+    /* Test method: "getUsersByName()" */
+    @Test
+    public void getUsersByNameTest() {
+        List<User> userList = userDao.getUsersByName("test");
+        assertNotNull(userList);
+        assertEquals(3, userList.size());
+        assertTrue(userList.contains(testUser1));
+        assertTrue(userList.contains(testUser2));
+        assertTrue(userList.contains(testUser3));
+
+        userList = userDao.getUsersByName("test user name 2");
+        assertNotNull(userList);
+        assertEquals(1, userList.size());
+        assertTrue(userList.contains(testUser2));
+    }
+
     /* Test method: "updateUser()" */
     @Test
     public void updateUserTest() {
