@@ -1,5 +1,4 @@
-
-var userId = $("userId").value;
+var userId = $("#userId").prop("value");
 var lastDate = null;
 
 window.onload = function onLoad() {
@@ -8,101 +7,83 @@ window.onload = function onLoad() {
 };
 
 function loadContacts() {
-    if ($("#contacts") != null && userId != null) {
-        $.ajax({
-            url: "//localhost:8555/api/contacts?ownerId=" + userId,
-            method: 'GET',
-            success: function( data ) {
-                $("#contacts").innerHTML = "";
-                var contactsArray = JSON.parse(xmlhttp.responseText);
-                for (var index = 0; index < contactsArray.length; index++) {
-                    var currentContact = contactsArray[index];
-                    var newOption = document.createElement("option");
-                    newOption.setAttribute("id", currentContact.id);
-                    newOption.setAttribute("data-user-id", currentContact.contactUser.id);
-                    newOption.setAttribute("className", "contact");
-                    newOption.innerHTML = currentContact.contactName;
-
-                    $("#contacts").insertBefore(newOption, $("#contacts").lastElementChild);
-                }
+    $.ajax({
+        url: "//localhost:8555/api/contacts?ownerId=" + userId,
+        method: 'GET',
+        success: function(data) {
+            $("#contacts").html("");
+            for (var index = 0; index < data.length; index++) {
+                var currentContact = data[index];
+                $("#contacts").append(
+                    $('<option>' + currentContact.contactName + '</option>')
+                        .attr("id", currentContact.id)
+                        .attr("data-user-id", currentContact.contactUser.id)
+                        .addClass("contact"));
             }
-        });
-    }
+        }
+    });
 }
 
 function loadMessages(fullUpdate, scrollOnBottom) {
-
-    var receiver = document.getElementById("contacts").selectedOptions[0];
-    var message_container = document.getElementById("messages");
-
-    if (receiver == undefined) {
-        message_container.innerHTML = "";
-    } else {
-
-        var receiverId = receiver.getAttribute("data-user-id");
-        var receiverName = receiver.innerHTML;
-
-        if (message_container != null
-            && userId != null
-            && receiverId != null) {
-
-            var xmlhttp = new XMLHttpRequest();
-
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                    var messages = JSON.parse(xmlhttp.responseText);
-
-                    if (fullUpdate == true) {
-                        // clear all message data
-                        message_container.innerHTML = "";
-                        lastDate = null;
-                    }
-
-                    for (index = 0; index < messages.length; index++) {
-                        if (findCreateMessage(message_container, messages[index], receiverName)){
-                            scrollOnBottom = true;
-                        }
-                    }
-
-                    if (scrollOnBottom) {
-                        message_container.scrollTop = message_container.scrollHeight;
-                    }
-                }
-            };
-
-            xmlhttp.open("GET", "//localhost:8555/api/users/" + userId + "/messages?receiverId=" + receiverId, true);
-            xmlhttp.send();
-        }
+    var receiverId = $("#contacts :selected").attr("data-user-id");
+    if (receiverId == null) {
+        $("#messages").html("");
+        return;
     }
+
+    $.ajax({
+        url: "//localhost:8555/api/messages?senderId=" + userId + "&receiverId="+receiverId,
+        method: 'GET',
+        success: function(data) {
+            $("#messages").html("");
+
+            if (fullUpdate == true) {
+                // clear all message data
+                $("#messages").html("");
+                lastDate = null;
+            }
+
+            for (index = 0; index < data.length; index++) {
+                if (findCreateMessage(data[index])){
+                    scrollOnBottom = true;
+                }
+            }
+
+            if (scrollOnBottom) {
+                message_container.scrollTop = message_container.scrollHeight;
+            }
+        }
+    });
 }
 
-function findCreateMessage(message_container, currentMessage, receiverName) {
+function findCreateMessage(currentMessage) {
 
     var result = false;
 
     // find this message by ID and create if it was not found
-    if (document.getElementById("msg" + currentMessage.id) == null) {
-
+    if ($("#msg" + currentMessage.id) == null) {
         // message date
         var curDate = currentMessage.messageDate.substr(0, 10).split("-").join(".");
         if (curDate != lastDate) {
             lastDate = curDate;
-            message_container.appendChild(createDateBlock(curDate));
+            $("#messages").append(
+                $("<div></div>").center().append(
+                    $("<div>curDate</div>")
+                        .addClass("date")
+                        .center()));
         }
 
         var messageBlock;
-
         // author & time
         if (currentMessage.userSender == userId) {
             // my message
-            messageBlock = createMessage(currentMessage, receiverName, true);
+            messageBlock = createMessage(currentMessage, $("#contacts :selected").html(), true);
         } else {
-            // to me
-            messageBlock = createMessage(currentMessage, receiverName, false);
+            // receiver message
+            messageBlock = createMessage(currentMessage, $("#contacts :selected").html(), false);
         }
 
-        message_container.appendChild(messageBlock);
+        $("#messages").append(messageBlock);
 
         result = true;
     }
@@ -110,28 +91,33 @@ function findCreateMessage(message_container, currentMessage, receiverName) {
     return result;
 }
 
-function createDateBlock(curDate) {
-
-    var newInnerDiv = document.createElement("div");
-    newInnerDiv.className = "date";
-    newInnerDiv.align = "center";
-    newInnerDiv.innerHTML = curDate;
-
-    var newDiv = document.createElement("div");
-    newDiv.align = "center";
-    newDiv.appendChild(newInnerDiv);
-
-    return newDiv;
-
-}
+//function createDateBlock(curDate) {
+//
+//    newInnerDiv.className = "date";
+//    newInnerDiv.align = "center";
+//    newInnerDiv.innerHTML = curDate;
+//
+//    var newDiv = document.createElement("div");
+//    newDiv.align = "center";
+//    newDiv.appendChild(newInnerDiv);
+//
+//    return newDiv;
+//
+//}
 
 function createMessage(currentMessage, receiverName, isMyMessage) {
+
+    $("<div></div>")
+        .attr("id", currentMessage.id);
 
     var newDiv = document.createElement("div");
     newDiv.id = "msg" + currentMessage.id;
 
     var author;
     if (isMyMessage) {
+        $("<div></div>")
+            .attr("id", currentMessage.id)
+            .addClass("message_wrapper_me");
         newDiv.className = "message_wrapper_me";
         author = "Me: ";
     } else {
