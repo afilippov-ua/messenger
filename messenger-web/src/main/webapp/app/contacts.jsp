@@ -22,7 +22,7 @@
         <li><a href="/">Main page</a></li>
         <li class="active"><a href="/contacts">Contacts</a></li>
         <li><a href="/profile">Profile</a></li>
-        <li><a href="logout()">Logout</a></li>
+        <li><a href="javascript:logout()">Logout</a></li>
       </ul>
     </div>
   </div>
@@ -37,7 +37,7 @@
             <div class="panel-heading">Contacts</div>
             <div class="panel-body panel-contacts">
               <ul id="contacts" class="nav nav-pills nav-stacked" style="max-width: 300px;">
-                <%--contacts--%>
+                <%-- User contacts --%>
               </ul>
             </div>
           </div>
@@ -45,17 +45,17 @@
 
         <td>
           <div class="panel panel-primary">
-            <div class="panel-heading">contacts</div>
+            <div class="panel-heading">Search</div>
             <div class="panel-body">
 
+              <%-- Find --%>
               <div class="row">
-
                 <div class="col-lg-6">
                   <div class="input-group">
                     <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">find by name:</button>
+                      <button class="btn btn-default" type="button" onclick="getContactsByName()">find by name:</button>
                     </span>
-                    <input type="text" class="form-control" placeholder="name">
+                    <input id="find-name" type="text" class="form-control" placeholder="name" onkeypress="getContactsByNameEvent(event)">
                   </div>
                 </div>
               </div>
@@ -64,40 +64,27 @@
                 <div class="col-lg-6">
                   <div class="input-group">
                     <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">find by email:</button>
+                      <button class="btn btn-default" type="button" onclick="getContactsByEmail()">find by email:</button>
                     </span>
-                    <input type="text" class="form-control" placeholder="email">
+                    <input id="find-email" type="text" class="form-control" placeholder="email" onkeypress="getContactsByEmailEvent(event)">
                   </div>
                 </div>
-
               </div>
 
             </div>
 
-            <table class="table">
+            <%-- Table --%>
+            <table id="table-contacts" class="table table-bordered tab" onclick="tableOnClick()">
               <thead>
               <tr>
                 <th>id</th>
                 <th>name</th>
                 <th>email</th>
+                <th></th>
               </tr>
               </thead>
-              <tbody>
-              <tr class="active">
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-              </tr>
+              <tbody id="table-contacts-body">
+                <%-- Found contacts--%>
               </tbody>
             </table>
 

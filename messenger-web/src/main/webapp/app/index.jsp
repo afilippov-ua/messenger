@@ -23,7 +23,7 @@
                 <li class="active"><a href="/">Main page</a></li>
                 <li><a href="/contacts">Contacts</a></li>
                 <li><a href="/profile">Profile</a></li>
-                <li><a href="logout()">Logout</a></li>
+                <li><a href="javascript:logout()">Logout</a></li>
             </ul>
         </div>
     </div>

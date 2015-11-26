@@ -2,13 +2,6 @@ window.onload = function onLoad() {
     window.setInterval("loadMessages();", 1000)
 };
 
-function onContactClick(elem) {
-    $("#contacts li.active").removeClass("active");
-    $(elem).addClass("active");
-    $("#messages").html("");
-    loadMessages()
-};
-
 function loadMessages() {
     var userId = $("#userId").val();
     var receiverId = $("#contacts li.active").attr("userId");

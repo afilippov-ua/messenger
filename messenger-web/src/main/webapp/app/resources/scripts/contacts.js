@@ -1,6 +1,6 @@
 window.onload = function onLoad() {
     loadContacts();
-};
+}
 
 function loadContacts() {
     $("#contacts").html("");
@@ -21,37 +21,23 @@ function loadContacts() {
             }
         }
     });
-};
-
-function addContact() {
-    var contactId = $("#add-contact-contact-list li").attr("user-id");
-    $.ajax({
-        url: "//localhost:8555/api/contacts?ownerId=" + $("#userId").val() + "&contactId=" + contactId,
-        type: "POST",
-        beforeSend: function (request) {
-            request.setRequestHeader("name", $("#add-contact-username").val());
-        },
-        success: function (result) {
-            $("#add-contact-email").val("");
-            $("#add-contact-contact").html("");
-            $("#add-contact-username").val("");
-            loadContacts();
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            $("#add-contact-contact-error")
-                .html("user is already exists in your contact list!");
-        }
-    });
-};
-
-function getContactEvent(event) {
-    if (event.keyCode == 13)
-        getContact();
 }
 
-function getContact() {
-    $("#add-contact-contact-error").html("");
-    var email = $("#add-contact-email").val();
+function onContactClick(elem) {
+    $("#contacts li.active").removeClass("active");
+    $(elem).addClass("active");
+    $("#messages").html("");
+    loadMessages()
+}
+
+function getContactsByEmailEvent(event) {
+    if (event.keyCode == 13)
+        getContactsByEmail();
+}
+
+function getContactsByEmail() {
+    $("#table-contacts-body").html("");
+    var email = $("#find-email").val();
     if (email == "")
         return;
 
@@ -62,21 +48,86 @@ function getContact() {
             request.setRequestHeader("email", email);
         },
         success: function (result) {
-            $("#add-contact-contact-info").html("");
-            if (result.length == 0) {
-                $("#add-contact-contact-info")
-                    .html("user was not found!");
-            } else {
+            $("#table-contacts-body").html("");
+            if (result.length != 0) {
                 result.forEach(function (user) {
-                    // 1 user
-                    $("#add-contact-contact-info")
-                        .html(user.name + " (" + user.email + ")")
-                        .attr("user-id", user.id);
+                    $("#table-contacts-body")
+                        .append(
+                        $("<tr></tr>")
+                            .append(
+                            $("<td>" + user.id + "</td>"))
+                            .append(
+                            $("<td><b>" + user.name + "</b></td>"))
+                            .append(
+                            $("<td>" + user.email + "</td>"))
+                            .append(
+                            $("<td></td>").append(
+                                $("<button>add</button>")
+                                    .attr("type", "button")
+                                    .addClass("btn")
+                                    .addClass("btn-danger"))
+                        )
+
+                    );
                 })
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            // ERROR
+            alert("error: " + textStatus);
         }
     });
+}
+
+function getContactsByNameEvent(event) {
+    if (event.keyCode == 13)
+        getContactsByName();
+}
+
+function getContactsByName() {
+    $("#table-contacts-body").html("");
+    var name = $("#find-name").val();
+    if (name == "")
+        return;
+
+    $.ajax({
+        url: "//localhost:8555/api/users",
+        type: "GET",
+        beforeSend: function (request) {
+            request.setRequestHeader("name", name);
+        },
+        success: function (result) {
+            $("#table-contacts-body").html("");
+            if (result.length != 0) {
+                result.forEach(function (user) {
+                    $("#table-contacts-body")
+                        .append(
+                        $("<tr onclick=\"rowOnClick(this)\"></tr>")
+                            .append(
+                                $("<td>" + user.id + "</td>"))
+                            .append(
+                                $("<td><b>" + user.name + "</b></td>"))
+                            .append(
+                                $("<td>" + user.email + "</td>"))
+                            .append(
+                                $("<td></td>").append(
+                                        $("<button>add</button>")
+                                            .attr("type", "button")
+                                            .addClass("btn")
+                                            .addClass("btn-xs")
+                                            .addClass("btn-danger"))
+                                    )
+
+                    );
+                })
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("error: " + textStatus);
+        }
+    });
+}
+
+function rowOnClick(elem) {
+    $("#table-contacts tr.active").removeClass("active");
+    $(elem).addClass("active");
 }
