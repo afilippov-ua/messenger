@@ -20,11 +20,8 @@ public class MessageController implements IMessageController {
     IMessageService messageService;
 
     @Transactional
-    @RequestMapping(
-            value = "/{userId}/messages",
-            method = RequestMethod.POST
-            /*consumes = MediaType.APPLICATION_JSON_VALUE*/)
-    public ResponseEntity createMessage(@PathVariable("userId") Integer senderId,
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity createMessage(@RequestParam("userId") Integer senderId,
                                         @RequestParam("receiverId") Integer receiverId,
                                         @RequestBody String messageText) {
         if (messageService.createMessage(senderId, receiverId, messageText) == null)
@@ -34,11 +31,8 @@ public class MessageController implements IMessageController {
     }
 
     @Transactional
-    @RequestMapping(
-            value = "/{userId}/messages/{messageId}",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            method = RequestMethod.GET)
-    public ResponseEntity<Message> getMessage(@PathVariable("userId") Integer userId,
+    @RequestMapping(value = "/{messageId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    public ResponseEntity<Message> getMessage(@RequestParam("userId") Integer userId,
                                               @PathVariable("messageId") Integer messageId) {
         Message msg = messageService.getMessage(userId, messageId);
         if (msg == null)
@@ -48,19 +42,15 @@ public class MessageController implements IMessageController {
     }
 
     @Transactional
-    @RequestMapping(
-            value = "/{senderId}/messages",
-            method = RequestMethod.GET)
-    public ResponseEntity<List<Message>> getMessages(@PathVariable("senderId") Integer senderId,
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<Message>> getMessages(@RequestParam("senderId") Integer senderId,
                                                      @RequestParam("receiverId") Integer receiverId) {
         return new ResponseEntity<>(messageService.getMessages(senderId, receiverId), HttpStatus.OK);
     }
 
     @Transactional
-    @RequestMapping(
-            value = "/{userId}/messages/{messageId}",
-            method = RequestMethod.PUT)
-    public ResponseEntity updateMessage(@PathVariable("userId") Integer userId,
+    @RequestMapping(value = "/{messageId}", method = RequestMethod.PUT)
+    public ResponseEntity updateMessage(@RequestParam("userId") Integer userId,
                                         @PathVariable("messageId") Integer messageId,
                                         @RequestBody Message sourceMessage) {
         if (messageService.updateMessage(userId, messageId, sourceMessage))
@@ -70,10 +60,8 @@ public class MessageController implements IMessageController {
     }
 
     @Transactional
-    @RequestMapping(
-            value = "/{userId}/messages/{messageId}",
-            method = RequestMethod.DELETE)
-    public ResponseEntity deleteMessage(@PathVariable("userId") Integer userId,
+    @RequestMapping(value = "/{messageId}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteMessage(@RequestParam("userId") Integer userId,
                                         @PathVariable("messageId") Integer messageId) {
         if (messageService.deleteMessage(userId, messageId))
             return new ResponseEntity(HttpStatus.NO_CONTENT);

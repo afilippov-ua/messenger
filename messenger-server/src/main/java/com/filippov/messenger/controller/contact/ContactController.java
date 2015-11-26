@@ -31,9 +31,7 @@ public class ContactController implements IContactController {
     }
 
     @Transactional
-    @RequestMapping(
-            value = "/{id}",
-            method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Contact> getContact(@PathVariable("id") Integer id) {
         Contact contact = contactService.getContact(id);
         if (contact == null) {
@@ -49,9 +47,7 @@ public class ContactController implements IContactController {
         return new ResponseEntity<>(contactService.getContacts(ownerId), HttpStatus.OK);
     }
 
-    @RequestMapping(
-            value = "/{id}",
-            method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateContact(@PathVariable("id") Integer id,
                                         @RequestBody Contact sourceContact) {
 
@@ -62,9 +58,7 @@ public class ContactController implements IContactController {
     }
 
     @Transactional
-    @RequestMapping(
-            value = "/{id}",
-            method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteContact(@PathVariable("id") Integer id) {
         if (contactService.deleteContact(id))
             return new ResponseEntity(HttpStatus.OK);
