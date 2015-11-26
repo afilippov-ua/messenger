@@ -1,4 +1,4 @@
-(2015.11.25) Проект сейчас находится в доработке - подключаем Bootstrap + производим рефакторинг фронтенда.
+(2015.11.25) refactoring for bootstrap
 
 <H2>Application for messaging</H2>
 - Developed and tested for Google Chrome <br>
