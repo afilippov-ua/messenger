@@ -22,7 +22,7 @@ public class UserDaoTest {
     @Autowired
     IUserDao userDao;
 
-    private User testUser1, testUser2, testUser3;
+    private User testUser1, testUser2, testUser3, testUser4, testUser5;
 
     @Before
     public void setup() {
@@ -39,6 +39,16 @@ public class UserDaoTest {
         user = new User("test user 3", "12345");
         user.setName("test user name 3");
         testUser3 = userDao.createUser(user);
+        assertNotNull(testUser3);
+
+        user = new User("user4@mail.com", "12345");
+        user.setName("user4");
+        testUser4 = userDao.createUser(user);
+        assertNotNull(testUser3);
+
+        user = new User("user5@mail.com", "12345");
+        user.setName("user5");
+        testUser5 = userDao.createUser(user);
         assertNotNull(testUser3);
     }
 
@@ -78,10 +88,12 @@ public class UserDaoTest {
     public void getUsersTest() {
         List<User> userList = userDao.getUsers();
         assertNotNull(userList);
-        assertEquals(3, userList.size());
+        assertEquals(5, userList.size());
         assertTrue(userList.contains(testUser1));
         assertTrue(userList.contains(testUser2));
         assertTrue(userList.contains(testUser3));
+        assertTrue(userList.contains(testUser4));
+        assertTrue(userList.contains(testUser5));
     }
 
     /* Test method: "getUsersByName()" */
@@ -98,6 +110,25 @@ public class UserDaoTest {
         assertNotNull(userList);
         assertEquals(1, userList.size());
         assertTrue(userList.contains(testUser2));
+    }
+
+    /* Test method: "findUsersByNameOrEmail()" */
+    @Test
+    public void findUsersByNameOrEmailTest() {
+        List<User> userList = userDao.findUsersByNameOrEmail("@mail.com");
+        assertNotNull(userList);
+        assertEquals(2, userList.size());
+        assertTrue(userList.contains(testUser4));
+        assertTrue(userList.contains(testUser5));
+
+        userList = userDao.findUsersByNameOrEmail("user");
+        assertNotNull(userList);
+        assertEquals(5, userList.size());
+        assertTrue(userList.contains(testUser1));
+        assertTrue(userList.contains(testUser2));
+        assertTrue(userList.contains(testUser3));
+        assertTrue(userList.contains(testUser4));
+        assertTrue(userList.contains(testUser5));
     }
 
     /* Test method: "updateUser()" */

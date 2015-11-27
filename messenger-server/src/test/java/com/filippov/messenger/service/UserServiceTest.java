@@ -173,17 +173,17 @@ public class UserServiceTest {
         verify(mockDao);
     }
 
-    /* Test method: "getUsersByName()" */
+    /* Test method: "findUsersByEmailOrName()" */
     @Test
-    public void getUsersByNameTest() {
+    public void findUsersByEmailOrNameTest() {
         List<User> list = new ArrayList<>(3);
         list.add(testUser1);
         list.add(testUser2);
         list.add(testUser3);
-        expect(mockDao.getUsersByName("test")).andReturn(list).once();
+        expect(mockDao.findUsersByNameOrEmail("test")).andReturn(list).once();
         replay(mockDao);
 
-        List<User> newList = userService.getUsersByName("test");
+        List<User> newList = userService.findUsersByEmailOrName("test");
         verify(mockDao);
         assertNotNull(newList);
         assertEquals(3, newList.size());
@@ -192,14 +192,14 @@ public class UserServiceTest {
         assertTrue(newList.contains(testUser3));
     }
 
-    /* Test method: "getUsersByName()"
+    /* Test method: "findUsersByEmailOrName()"
     * User not found */
     @Test
-    public void getUsersByNameNotFoundTest() {
-        expect(mockDao.getUsersByName("")).andReturn(null).once();
+    public void findUsersByEmailOrNameNotFoundTest() {
+        expect(mockDao.findUsersByNameOrEmail("")).andReturn(null).once();
         replay(mockDao);
 
-        assertNull(userService.getUsersByName(""));
+        assertNull(userService.findUsersByEmailOrName(""));
         verify(mockDao);
     }
 

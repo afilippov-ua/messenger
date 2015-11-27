@@ -47,10 +47,10 @@ public class UserService implements IUserService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> getUsersByName(String name) {
-        if (name == null)
+    public List<User> findUsersByEmailOrName(String text) {
+        if (text == null)
             return null;
-        return userDao.getUsersByName(name);
+        return userDao.findUsersByNameOrEmail(text);
     }
 
     @Transactional

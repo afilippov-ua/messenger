@@ -11,7 +11,7 @@ public interface IUserService {
 
     List<User> getUsers(String email);
 
-    List<User> getUsersByName(String name);
+    List<User> findUsersByEmailOrName(String text);
 
     boolean updateUser(Integer id, User sourceUser);
 

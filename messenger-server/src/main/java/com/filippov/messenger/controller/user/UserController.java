@@ -39,9 +39,9 @@ public class UserController implements IUserController {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public ResponseEntity<List<User>> getUsers(
             @RequestHeader(value = "email", required = false) String email,
-            @RequestHeader(value = "name", required = false) String name) {
-        if (name != null)
-            return new ResponseEntity<>(userService.getUsersByName(name), HttpStatus.OK);
+            @RequestHeader(value = "findText", required = false) String findText) {
+        if (findText != null)
+            return new ResponseEntity<>(userService.findUsersByEmailOrName(findText), HttpStatus.OK);
         else
             return new ResponseEntity<>(userService.getUsers(email), HttpStatus.OK);
     }

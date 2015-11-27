@@ -15,6 +15,8 @@ public interface IUserDao {
 
     List<User> getUsersByName(String name);
 
+    List<User> findUsersByNameOrEmail(String text);
+
     boolean updateUser(User user);
 
     boolean deleteUser(User user);
