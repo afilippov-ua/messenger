@@ -4,26 +4,21 @@ window.onload = function onLoad() {
 
 function loadMessages() {
     var userId = $("#userId").val();
-    var receiverId = $("#contacts li.active").attr("userId");
+    var receiverId = $("#contacts li.active").attr("user-id");
     var receiverName = $("#contacts li.active a").html();
 
-    if(receiverId == undefined)
+    if(!receiverId)
         return;
 
-    $.ajax({
-        url: "//localhost:8555/api/messages?senderId=" + userId + "&receiverId=" + receiverId,
-        type: 'GET',
-        success: function (result) {
-            result.forEach(function (message) {
+    restGetMessagesByOwner(userId, receiverId, function(data, statusText){
+        if (statusText == "success"){
+            data.forEach(function (message) {
                 addUpdateMessage(message, userId, receiverName)
             });
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            if (textStatus = "404") {
-                $("#messages").html("");
-            }
+        } else {
+            $("#messages").html("");
         }
-    });
+    })
 };
 
 function addUpdateMessage(message, userId, receiverName) {
@@ -61,21 +56,17 @@ function sendMessageOnEnter(event) {
 
 function sendMessage() {
     var userId = $("#userId").val();
-    var receiverId = $("#contacts li.active").attr("userId");
-    if (receiverId == undefined)
+    var receiverId = $("#contacts li.active").attr("user-id");
+    var text = $("#messageText").val();
+    if (!receiverId || !text)
         return;
 
-    $.ajax({
-        url: "//localhost:8555/api/messages?userId=" + userId + "&receiverId=" + receiverId,
-        type: "POST",
-        contentType: "application/json",
-        data: "\"" + $("#messageText").val() + "\"",
-        success: function (result) {
+    restAddNewMessage(userId, receiverId, text, function(data, statusText){
+        if (statusText == "success") {
             $("#warningInfo").hide();
             $("#messageText").val("");
             loadMessages();
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        } else {
             $("#warningInfo").show();
         }
     });
