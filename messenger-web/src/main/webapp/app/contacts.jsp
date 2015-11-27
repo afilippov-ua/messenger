@@ -9,6 +9,7 @@
   <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
   <script src="resources/scripts/authentication.js"></script>
   <script src="resources/scripts/contacts.js"></script>
+  <script src="resources/scripts/settings.js"></script>
   <script src="resources/scripts/restContacts.js"></script>
   <script src="resources/scripts/restUsers.js"></script>
 </head>

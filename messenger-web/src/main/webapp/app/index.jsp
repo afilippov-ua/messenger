@@ -10,6 +10,7 @@
     <script src="resources/scripts/authentication.js"></script>
     <script src="resources/scripts/messenger.js"></script>
     <script src="resources/scripts/contacts.js"></script>
+    <script src="resources/scripts/settings.js"></script>
     <script src="resources/scripts/restContacts.js"></script>
     <script src="resources/scripts/restMessages.js"></script>
 </head>
