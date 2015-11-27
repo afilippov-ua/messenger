@@ -1,6 +1,6 @@
 function restAddNewContact(userId, contactId, contactName, callback) {
     $.ajax({
-        url: "//localhost:8555/api/contacts?ownerId=" + userId + "&contactId=" + contactId,
+        url: restContactPath + "?ownerId=" + userId + "&contactId=" + contactId,
         method: "POST",
         headers: {"name": contactName},
         success: callback,
@@ -10,7 +10,7 @@ function restAddNewContact(userId, contactId, contactName, callback) {
 
 function restGetContactById(contactId, callback) {
     $.ajax({
-        url: "//localhost:8555/api/contacts/" + contactId,
+        url: restContactPath + "/" + contactId,
         method: "GET",
         success: callback,
         error: callback
@@ -19,7 +19,7 @@ function restGetContactById(contactId, callback) {
 
 function restGetContactsByOwner(ownerId, callback) {
     $.ajax({
-        url: "//localhost:8555/api/contacts?ownerId=" + ownerId,
+        url: restContactPath + "?ownerId=" + ownerId,
         type: "GET",
         success: callback,
         error: callback
@@ -28,7 +28,7 @@ function restGetContactsByOwner(ownerId, callback) {
 
 function restUpdateContact(contactId, contact, callback) {
     $.ajax({
-        url: "//localhost:8555/api/contacts/" + contactId,
+        url: restContactPath + "/" + contactId,
         type: "PUT",
         contentType: "application/json",
         data: JSON.stringify(contact),
@@ -39,7 +39,7 @@ function restUpdateContact(contactId, contact, callback) {
 
 function restDeleteContact(contactId, callback) {
     $.ajax({
-        url: "//localhost:8555/api/contacts/" + contactId,
+        url: restContactPath + "/" + contactId,
         type: "DELETE",
         success: callback,
         error: callback

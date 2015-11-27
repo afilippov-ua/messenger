@@ -1,6 +1,6 @@
 function restGetUsersByNameOrEmail(findText, callback) {
     $.ajax({
-        url: "//localhost:8555/api/users",
+        url: restUserPath,
         type: "GET",
         headers: {"findText": findText},
         success: callback,
