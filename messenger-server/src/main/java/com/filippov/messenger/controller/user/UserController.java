@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 @Controller
@@ -40,9 +42,14 @@ public class UserController implements IUserController {
     public ResponseEntity<List<User>> getUsers(
             @RequestHeader(value = "email", required = false) String email,
             @RequestHeader(value = "findText", required = false) String findText) {
-        if (findText != null)
+        if (findText != null) {
+            try {
+                findText = URLDecoder.decode(findText, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<>(userService.findUsersByEmailOrName(findText), HttpStatus.OK);
-        else
+        } else
             return new ResponseEntity<>(userService.getUsers(email), HttpStatus.OK);
     }
 
