@@ -35,7 +35,9 @@ public class UserDao extends AbstractDao implements IUserDao {
     }
 
     public List<User> findUsersByNameOrEmail(String text) {
-        Query query = getSession().createQuery("from User where LOWER(name) LIKE '%" + text + "%' OR LOWER(email) LIKE '%" + text + "%'");
+        Query query = getSession().createQuery("from User where " +
+                "LOWER(name) LIKE '%" + text.toLowerCase() + "%' " +
+                "OR LOWER(email) LIKE '%" + text.toLowerCase() + "%'");
         return query.list();
     }
 
