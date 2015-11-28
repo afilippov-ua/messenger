@@ -3,8 +3,8 @@ function restAddNewUser(email, password, cbDone, cbFail) {
         url: restUserPath,
         type: "POST",
         headers: {
-            "email": email,
-            "password": password
+            "email": encodeURIComponent(email),
+            "password": encodeURIComponent(password)
         }
     })
         .done(cbDone)

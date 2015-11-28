@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 @Controller
@@ -24,6 +26,13 @@ public class ContactController implements IContactController {
             @RequestParam("ownerId") Integer ownerId,
             @RequestParam("contactId") Integer contactId,
             @RequestHeader("name") String name) {
+
+        try {
+            name = URLDecoder.decode(name, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
         if (contactService.createContact(ownerId, contactId, name) == null)
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         else

@@ -23,6 +23,13 @@ public class UserController implements IUserController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createUser(@RequestHeader("email") String email,
                                      @RequestHeader("password") String password) {
+        try {
+            email = URLDecoder.decode(email, "UTF-8");
+            password = URLDecoder.decode(password, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
         if (userService.createUser(email, password) == null)
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         else
