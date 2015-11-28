@@ -2,11 +2,14 @@
 <head>
     <meta charset="utf-8">
     <title>msg: Profile</title>
+    <input type="hidden" id="user-id" value="${userId}"/>
     <link href="resources/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="resources/css/bootstrap/signin.css" rel="stylesheet">
     <script src="resources/scripts/jquery-1.11.3.js"></script>
     <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
     <script src="resources/scripts/authentication.js"></script>
+    <script src="resources/scripts/profile.js"></script>
+    <script src="resources/scripts/restUsers.js"></script>
     <script src="resources/scripts/settings.js"></script>
 </head>
 
@@ -28,42 +31,33 @@
     </div>
 </nav>
 
-<div class="container">
-    <form class="form-signin" action="" method="post" role="form">
+<div class="container form-signin">
+    <div class="panel-group">
         <h3 class="form-signin-heading">Profile</h3>
 
-        <table class="table">
-            <tr>
-                <td>
-                    <p><img src="resources/no_image.jpg"></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    email:
-                    <input type="email" name="email" id="inputEmail" class="form-control" placeholder="email" required
-                           autofocus>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    password:
-                    <input type="password" name="password" id="inputPassword" class="form-control"
-                           placeholder="password"
-                           required>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    username:
-                    <input type="text" name="username" id="inputUsername" class="form-control" placeholder="username"
-                           required>
-                </td>
-            </tr>
-        </table>
-
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Save changes</button>
-    </form>
+        <div class="panel-body">
+            <div class="panel-group">
+                <p><img src="resources/no_image.jpg"></p>
+            </div>
+            <div class="panel-group">
+                <label for="email" class="control-label">email:</label>
+                <input id="email" type="email" class="form-control" placeholder="email" required autofocus>
+            </div>
+            <div class="panel-group">
+                <label for="password" class="control-label">password:</label>
+                <input id="password" type="password" class="form-control" placeholder="password" required>
+            </div>
+            <div class="panel-group">
+                <label for="username" class="control-label">username:</label>
+                <input id="username" type="text" class="form-control" placeholder="username" required>
+            </div>
+            <div class="panel-group">
+                <button id="btn-save" class="btn btn-lg btn-primary btn-block" type="submit">Save changes</button>
+                <div id="panel-info" class="alert alert-success" hidden role="alert"></div>
+            </div>
+        </div>
+    </div>
 </div>
+
 </body>
 </html>

@@ -77,6 +77,19 @@ public class MVCController {
         ModelAndView model = new ModelAndView();
         model.setViewName("profile");
 
+        List<User> userList =
+                userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
+        User currentUser =  null;
+
+        if (userList != null && !userList.isEmpty())
+            currentUser = userList.get(0);
+
+        if (currentUser == null) {
+            model.addObject("userId", "");
+        } else {
+            model.addObject("userId", currentUser.getId());
+        }
+
         return model;
 
     }

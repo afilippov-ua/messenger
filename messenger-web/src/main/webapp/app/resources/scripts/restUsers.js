@@ -11,11 +11,31 @@ function restAddNewUser(email, password, cbDone, cbFail) {
         .fail(cbFail);
 }
 
+function restGetUserById(id, cbDone, cbFail) {
+    $.ajax({
+        url: restUserPath + "/" + id,
+        type: "GET"
+    })
+        .done(cbDone)
+        .fail(cbFail);
+}
+
 function restGetUsersByNameOrEmail(findText, cbDone, cbFail) {
     $.ajax({
         url: restUserPath,
         type: "GET",
         headers: {"findText": encodeURIComponent(findText)}
+    })
+        .done(cbDone)
+        .fail(cbFail);
+}
+
+function restUpdateUser(id, user, cbDone, cbFail) {
+    $.ajax({
+        url: restUserPath + "/" + id,
+        type: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(user)
     })
         .done(cbDone)
         .fail(cbFail);
