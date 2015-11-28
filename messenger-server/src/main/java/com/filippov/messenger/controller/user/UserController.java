@@ -63,10 +63,29 @@ public class UserController implements IUserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateUser(@PathVariable("id") Integer id,
                                      @RequestBody User sourceUser) {
-        if (userService.updateUser(id, sourceUser))
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        else
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        // set changed fields
+        if (id != null) {
+            User userById = userService.getUserById(id);
+            if (userById != null) {
+                if (sourceUser.getEmail() != null && !sourceUser.getEmail().isEmpty()) {
+                    List<User> list = userService.getUsers(sourceUser.getEmail());
+                    if (list!= null && !list.contains(userById))
+                        // another user with this email already exists
+                        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+                    userById.setEmail(sourceUser.getEmail());
+                }
+                if (sourceUser.getPassword() != null && !sourceUser.getPassword().isEmpty()) {
+                    userById.setPassword(sourceUser.getPassword());
+                }
+                userById.setName(sourceUser.getName());
+                if (userService.updateUser(id, userById))
+                    return new ResponseEntity(HttpStatus.NO_CONTENT);
+                else
+                    return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
