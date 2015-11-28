@@ -7,6 +7,8 @@
     <script src="resources/scripts/jquery-1.11.3.js"></script>
     <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
     <script src="resources/scripts/authentication.js"></script>
+    <script src="resources/scripts/settings.js"></script>
+    <script src="resources/scripts/restUsers.js"></script>
 </head>
 
 <body>
@@ -25,8 +27,7 @@
     </div>
 </nav>
 
-<div id="successInfo" class="alert alert-success" hidden role="alert"></div>
-<div id="warningInfo" class="alert alert-warning" hidden role="alert"></div>
+<div id="panel-info" class="alert alert-success" hidden role="alert"></div>
 
 <div class="container">
     <form class="form-signin" role="form">

@@ -1,28 +1,33 @@
-window.onload = function onLoad() {
+$(document).ready(function () {
     window.setInterval("loadMessages();", 1000)
-};
+
+    $("#message-text").on("keypress", function (event) {
+        if (event.keyCode == 13)
+            sendMessage();
+    });
+});
 
 function loadMessages() {
-    var userId = $("#userId").val();
+    var userId = $("#user-id").val();
     var receiverId = $("#contacts li.active").attr("user-id");
     var receiverName = $("#contacts li.active a").html();
 
-    if(!receiverId)
+    if (!receiverId)
         return;
 
-    restGetMessagesByOwner(userId, receiverId, function(data, statusText){
-        if (statusText == "success"){
+    restGetMessagesByOwner(userId, receiverId,
+        function done(data) {
             data.forEach(function (message) {
                 addUpdateMessage(message, userId, receiverName)
             });
-        } else {
+        },
+        function fail() {
             $("#messages").html("");
-        }
-    })
-};
+        })
+}
 
 function addUpdateMessage(message, userId, receiverName) {
-    if ($("#messages [messageId=" + message.id + "]").html() != undefined)
+    if ($("#messages [messageId=" + message.id + "]").length != 0)
         return;
 
     if (message.userSender == userId) {
@@ -49,25 +54,20 @@ function addUpdateMessage(message, userId, receiverName) {
     div.scrollTop(div.prop('scrollHeight'));
 }
 
-function sendMessageOnEnter(event) {
-    if (event.keyCode == 13)
-        sendMessage();
-}
-
 function sendMessage() {
-    var userId = $("#userId").val();
+    var userId = $("#user-id").val();
     var receiverId = $("#contacts li.active").attr("user-id");
-    var text = $("#messageText").val();
+    var text = $("#message-text").val();
     if (!receiverId || !text)
         return;
 
-    restAddNewMessage(userId, receiverId, text, function(data, statusText){
-        if (statusText == "success") {
+    restAddNewMessage(userId, receiverId, text,
+        function done() {
             $("#warningInfo").hide();
-            $("#messageText").val("");
+            $("#message-text").val("");
             loadMessages();
-        } else {
+        },
+        function fail() {
             $("#warningInfo").show();
-        }
-    });
+        });
 }

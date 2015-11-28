@@ -1,47 +1,47 @@
-function restAddNewContact(userId, contactId, contactName, callback) {
+function restAddNewContact(userId, contactId, contactName, cbDone, cbFail) {
     $.ajax({
         url: restContactPath + "?ownerId=" + userId + "&contactId=" + contactId,
         method: "POST",
-        headers: {"name": contactName},
-        success: callback,
-        error: callback
-    });
+        headers: {"name": contactName}
+    })
+        .done(cbDone)
+        .fail(cbFail);
 }
 
-function restGetContactById(contactId, callback) {
+function restGetContactById(contactId, cbDone, cbFail) {
     $.ajax({
         url: restContactPath + "/" + contactId,
-        method: "GET",
-        success: callback,
-        error: callback
-    });
+        method: "GET"
+    })
+        .done(cbDone)
+        .fail(cbFail);
 }
 
-function restGetContactsByOwner(ownerId, callback) {
+function restGetContactsByOwner(ownerId, cbDone, cbFail) {
     $.ajax({
         url: restContactPath + "?ownerId=" + ownerId,
-        type: "GET",
-        success: callback,
-        error: callback
-    });
+        type: "GET"
+    })
+        .done(cbDone)
+        .fail(cbFail);
 }
 
-function restUpdateContact(contactId, contact, callback) {
+function restUpdateContact(contactId, contact, cbDone, cbFail) {
     $.ajax({
         url: restContactPath + "/" + contactId,
         type: "PUT",
         contentType: "application/json",
-        data: JSON.stringify(contact),
-        success: callback,
-        error: callback
-    });
+        data: JSON.stringify(contact)
+    })
+        .done(cbDone)
+        .fail(cbFail);
 }
 
-function restDeleteContact(contactId, callback) {
+function restDeleteContact(contactId, cbDone, cbFail) {
     $.ajax({
         url: restContactPath + "/" + contactId,
-        type: "DELETE",
-        success: callback,
-        error: callback
-    });
+        type: "DELETE"
+    })
+        .done(cbDone)
+        .fail(cbFail);
 }

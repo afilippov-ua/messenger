@@ -1,19 +1,19 @@
-function restAddNewMessage(userId, receiverId, text, callback) {
+function restAddNewMessage(userId, receiverId, text, cbDone, cbFail) {
     $.ajax({
         url: restMessagePath + "?userId=" + userId + "&receiverId=" + receiverId,
         type: "POST",
         contentType: "application/json",
-        data: JSON.stringify(text),
-        success: callback,
-        error: callback
-    });
+        data: JSON.stringify(text)
+    })
+        .done(cbDone)
+        .fail(cbFail);
 }
 
-function restGetMessagesByOwner(userId, receiverId, callback) {
+function restGetMessagesByOwner(userId, receiverId, cbDone, cbFail) {
     $.ajax({
         url: restMessagePath + "?senderId=" + userId + "&receiverId=" + receiverId,
-        type: "GET",
-        success: callback,
-        error: callback
-    });
+        type: "GET"
+    })
+        .done(cbDone)
+        .fail(cbFail);
 }

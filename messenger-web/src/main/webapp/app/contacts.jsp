@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>msg: Main</title>
-  <input type="hidden" id="userId" value="${userId}"/>
+  <input type="hidden" id="user-id" value="${userId}"/>
   <link href="resources/css/bootstrap/bootstrap.min.css" rel="stylesheet">
   <script src="resources/scripts/jquery-1.11.3.js"></script>
   <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
@@ -98,9 +98,9 @@
                 <div class="col-lg-6">
                   <div class="input-group">
                     <span class="input-group-btn">
-                      <button class="btn btn-default" type="button" onclick="findContactsByNameOrEmail()">Find:</button>
+                      <button id="find-contact-btn" class="btn btn-default" type="button">Find:</button>
                     </span>
-                    <input id="find-contact-text" type="text" class="form-control" placeholder="name or email" onkeypress="findContactsByNameOrEmailOnEnter(event)">
+                    <input id="find-contact-text" type="text" class="form-control" placeholder="name or email"">
                   </div>
                 </div>
               </div>
@@ -128,10 +128,10 @@
         <td>
           <div class="btn-group btn-group-justified" role="group" aria-label="...">
             <div class="btn-group" role="group">
-              <button type="button" class="btn btn-default" onclick="editContactOnClick()">edit</button>
+              <button id="contact-edit-btn" type="button" class="btn btn-default">edit</button>
             </div>
             <div class="btn-group" role="group">
-              <button type="button" class="btn btn-default" onclick="deleteContactOnClick()">delete</button>
+              <button id="contact-delete-btn" type="button" class="btn btn-default">delete</button>
             </div>
           </div>
         </td>

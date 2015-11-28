@@ -1,21 +1,45 @@
-window.onload = function onLoad() {
+$(document).ready(function () {
+    $("#find-contact-text").on("keypress", function (event) {
+        if (event.keyCode == 13)
+            findContacts();
+    });
+    $("#find-contact-btn").on("click", function (event) {
+        findContacts();
+    });
+    $("#contact-edit-btn").on("click", function () {
+        var name = $("#contacts li.active a").html();
+        if (name == undefined)
+            return;
+
+        $("#contact-new-name").val(name);
+        $("#modal-btn-save-contact").bind('click', function () {
+            editContact();
+        });
+        $("#modal-enter-name").modal("show");
+    });
+    $("#contact-delete-btn").on("click", function () {
+        var contactId = $("#contacts li.active").attr("contact-id");
+        if (!contactId)
+            return;
+
+        $("#modal-btn-confirm").bind('click', function () {
+            deleteContact(contactId);
+        });
+        $("#modal-confirm").modal("show");
+    });
+
     loadContacts();
-}
+});
 
-// SEARCH
-function findContactsByNameOrEmailOnEnter(event) {
-    if (event.keyCode == 13)
-        findContactsByNameOrEmail();
-}
-
-function findContactsByNameOrEmail() {
+// find contacts by name or email
+function findContacts() {
     $("#table-contacts-body").html("");
     var findText = $("#find-contact-text").val();
     if (findText == "")
         return;
 
-    restGetUsersByNameOrEmail(findText, function(data, statusText) {
-        if (statusText == "success") {
+    restGetUsersByNameOrEmail(findText,
+        function done(data) {
             $("#table-contacts-body").html("");
             if (data.length != 0) {
                 data.forEach(function (user) {
@@ -36,22 +60,24 @@ function findContactsByNameOrEmail() {
                                     .addClass("btn")
                                     .addClass("btn-danger")
                                     .attr("user-name", user.name))
-                            )
+                        )
                     );
                 })
             }
-        }
-    });
+        },
+        function fail(request, statusText) {
+            alert("get users by name or email error...");
+        });
 }
 
-// MY CONTACTS
+// load list of user contacts
 function loadContacts() {
     $("#contacts").html("");
-    restGetContactsByOwner($("#userId").val(), function (data, statusText) {
-        if (statusText == "success") {
+    restGetContactsByOwner($("#user-id").val(),
+        function done(data) {
             data.forEach(function (contact) {
                 $("#contacts").append(
-                    $("<li onclick=\"contactOnClick(this)\"><a href=\"#\">" + contact.contactName + "</a></li>")
+                    $("<li onclick=\"selectContact(this)\"><a href=\"#\">" + contact.contactName + "</a></li>")
                         .attr("contact-id", contact.id)
                         .attr("user-id", contact.contactUser.id));
             });
@@ -59,78 +85,57 @@ function loadContacts() {
             $("#contacts li:first-child").addClass("active");
             $("#messages").html("");
             loadMessages();
-        }
-        else
+        },
+        function fail() {
             $("#contacts").html("");
-    });
+        });
 }
 
-function contactOnClick(elem) {
+// set active on selected contact
+function selectContact(elem) {
     $("#contacts li.active").removeClass("active");
     $(elem).addClass("active");
     $("#messages").html("");
     loadMessages();
 }
 
-function editContactOnClick() {
-    var name = $("#contacts li.active a").html();
-    if (name == undefined)
-        return;
-
-    $("#contact-new-name").val(name);
-    $("#modal-btn-save-contact").bind('click', function () {
-        editContactConfirm();
-    })
-    $("#modal-enter-name").modal("show");
-}
-
-function editContactConfirm() {
+// update contact data
+function editContact() {
     var contactId = $("#contacts li.active").attr("contact-id");
     var newName = $("#contact-new-name").val();
     if (contactId && newName) {
-        restGetContactById(contactId, function (data, statusText) {
-            if (statusText == "success") {
+        restGetContactById(contactId,
+            function done(data) {
                 var contact = data;
                 contact.contactName = newName;
-
-                restUpdateContact(contactId, contact, function (data, statusText) {
-                    if (statusText == "nocontent") {
+                restUpdateContact(contactId, contact,
+                    function done() {
                         $("#contacts li.active a").html($("#contact-new-name").val());
                         $("#contact-new-name").val("");
                         $("#modal-btn-save-contact").unbind();
                         $("#modal-enter-name").modal("hide");
-                    } else {
+                    },
+                    function fail() {
                         alert("update contact error...");
-                    }
-                });
-            } else {
+                    });
+            },
+            function fail() {
                 alert("get contact error...");
-            }
-        });
+            });
     }
 }
 
-function deleteContactOnClick() {
-    var contactId = $("#contacts li.active").attr("contact-id");
-    if (!contactId)
-        return;
-
-    $("#modal-btn-confirm").bind('click', function() {
-        deleteContactConfirm(contactId);
-    });
-    $("#modal-confirm").modal("show");
-}
-
-function deleteContactConfirm(contactId){
-    restDeleteContact(contactId, function(data, statusText) {
-        if (statusText = "nocontent") {
+// delete selected contact
+function deleteContact(contactId) {
+    restDeleteContact(contactId,
+        function done() {
             loadContacts();
             $("#modal-confirm").modal("hide");
             $("#modal-btn-confirm").unbind();
-        } else {
+        },
+        function fail() {
             alert("delete contact error...");
-        }
-    });
+        });
 }
 
 // NEW CONTACTS
@@ -150,19 +155,19 @@ function addNewContactOnClick(elem) {
 }
 
 function addNewContactConfirm() {
-    var userId = $("#userId").val();
+    var userId = $("#user-id").val();
     var contactId = $("#table-contacts tbody tr.active").attr("user-id");
     var contactName = $("#contact-new-name").val();
 
-    restAddNewContact(userId, contactId, contactName, function(data, statusText, response){
-        if (statusText == "success") {
+    restAddNewContact(userId, contactId, contactName,
+        function done() {
             loadContacts();
             $("#modal-btn-save-contact").unbind();
             $("#modal-enter-name").modal("hide");
-        } else {
+        },
+        function fail() {
             $("#modal-btn-save-contact").unbind();
             $("#modal-enter-name").modal("hide");
             alert("add contact error...");
-        }
-    });
+        });
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>msg: Main</title>
-    <input type="hidden" id="userId" value="${userId}"/>
+    <input type="hidden" id="user-id" value="${userId}"/>
     <link href="resources/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <script src="resources/scripts/jquery-1.11.3.js"></script>
     <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
@@ -63,7 +63,7 @@
                 <td>
                     <div class="col-lg-pull-0">
                         <div class="input-group input-group-lg">
-                            <input id="messageText" type="text" onkeypress="sendMessageOnEnter(event)" class="form-control">
+                            <input id="message-text" type="text"" class="form-control">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" onclick="sendMessage()" type="button">Send</button>
                             </span>

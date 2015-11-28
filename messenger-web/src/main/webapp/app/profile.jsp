@@ -7,6 +7,7 @@
     <script src="resources/scripts/jquery-1.11.3.js"></script>
     <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
     <script src="resources/scripts/authentication.js"></script>
+    <script src="resources/scripts/settings.js"></script>
 </head>
 
 <body>

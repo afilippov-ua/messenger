@@ -1,38 +1,31 @@
 function logout() {
     $.ajax({
-        url: '/j_spring_security_logout',
-        type: 'POST',
-        success: function (data) {
+        url: "/j_spring_security_logout",
+        type: "POST"
+    })
+        .done(function () {
             window.location = "/login";
-        },
-        error: function (data) {
-            //
-        }
-    });
+        })
+        .fail(function () {
+            alert("logout error...");
+        });
 }
 
 function registration() {
-
-    $("#successInfo").hide();
-    $("#warningInfo").hide();
-
-    $.ajax({
-        url: "//localhost:8555/api/users",
-        type: 'POST',
-        beforeSend: function (request)
-        {
-            request.setRequestHeader("email", $("#email").val());
-            request.setRequestHeader("password", $("#password").val());
+    $("#panel-info").hide();
+    restAddNewUser($("#email").val(), $("#password").val(),
+        function done() {
+            $("#panel-info")
+                .removeClass("alert-warning")
+                .addClass("alert-success")
+                .html("User was created. Please log in!")
+                .show();
         },
-        success: function(result, status, XMLHttpRequest) {
-            if (XMLHttpRequest.status = 200) {
-                $("#successInfo").html("User was created. Please log in!").show();
-            }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            if (textStatus = "404"){
-                $("#warningInfo").html("User with this email already exists!").show();
-            }
-        }
-    });
+        function fail(req, stat) {
+            $("#panel-info")
+                .removeClass("alert-success")
+                .addClass("alert-warning")
+                .html("User with this email already exists!")
+                .show();
+        })
 }
