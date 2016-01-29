@@ -10,7 +10,7 @@ public interface IMessageController {
 
     ResponseEntity<Message> getMessage(Integer userId, Integer messageId);
 
-    ResponseEntity<List<Message>> getMessages(Integer senderId, Integer receiverId);
+    ResponseEntity<List<Message>> getMessages(Integer senderId, Integer receiverId, Integer firstMessageId);
 
     ResponseEntity updateMessage(Integer userId, Integer messageId, Message sourceMessage);
 

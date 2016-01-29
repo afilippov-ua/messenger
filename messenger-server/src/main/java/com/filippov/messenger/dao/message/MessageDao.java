@@ -25,12 +25,15 @@ public class MessageDao extends AbstractDao implements IMessageDao {
         return (Message) query.uniqueResult();
     }
 
-    public List<Message> getMessages(User userSender, User userReceiver) {
+    public List<Message> getMessages(User userSender, User userReceiver, Integer firstMessageId) {
         Query query = getSession().createQuery("from Message " +
                 "where (userSender = :userSender or userReceiver =:userSender) " +
-                "and (userSender = :userReceiver or userReceiver = :userReceiver)");
+                "and (userSender = :userReceiver or userReceiver = :userReceiver) " +
+                ((firstMessageId == 0) ? "" :  "and id < :firstMessageId ") +
+                "order by messageDate desc");
         query.setParameter("userSender", userSender);
         query.setParameter("userReceiver", userReceiver);
+        query.setMaxResults(30);
 
         return (List<Message>) query.list();
     }

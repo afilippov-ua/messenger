@@ -23,8 +23,8 @@ public class ContactController implements IContactController {
     @Transactional
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createContact(
-            @RequestParam("ownerId") Integer ownerId,
-            @RequestParam("contactId") Integer contactId,
+            @RequestHeader("ownerId") Integer ownerId,
+            @RequestHeader("contactId") Integer contactId,
             @RequestHeader("name") String name) {
 
         try {

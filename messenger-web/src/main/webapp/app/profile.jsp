@@ -3,14 +3,15 @@
     <meta charset="utf-8">
     <title>msg: Profile</title>
     <input type="hidden" id="user-id" value="${userId}"/>
+    <input type="hidden" id="app-path" value="${appPath}"/>
     <link href="resources/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="resources/css/bootstrap/signin.css" rel="stylesheet">
     <script src="resources/scripts/jquery-1.11.3.js"></script>
     <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
+    <script src="resources/scripts/settings.js"></script>
     <script src="resources/scripts/authentication.js"></script>
     <script src="resources/scripts/profile.js"></script>
     <script src="resources/scripts/restUsers.js"></script>
-    <script src="resources/scripts/settings.js"></script>
 </head>
 
 <body>
@@ -37,7 +38,7 @@
 
         <div class="panel-body">
             <div class="panel-group">
-                <p><img src="resources/no_image.jpg"></p>
+                <p><img id="avatar" src="resources/no_image.jpg"></p>
             </div>
             <div class="panel-group">
                 <label for="email" class="control-label">email:</label>

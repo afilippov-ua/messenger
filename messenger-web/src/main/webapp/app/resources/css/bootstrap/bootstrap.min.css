@@ -7267,32 +7267,27 @@ button.close {
 
 .table-contacts {
     min-width: 1024px;
-    min-height: 768px;
+    min-height: 550px;
     width: inherit;
     height: inherit;
     border-color: linen;
 }
 
 .panel-contacts {
-    /*margin-bottom: 20px;*/
     background-color: #fff;
     border: 1px solid transparent;
     border-radius: 4px;
-    overflow:scroll;
-    overflow-x: auto;
-    overflow-y: auto;
-    height: 768px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05)
+    /*overflow:scroll;*/
+    /*overflow-y: auto;*/
+    height:550px;
 }
 
 .panel-messenger {
-    /*margin-bottom: 20px;*/
-    /*background-color: #fff;*/
     background-color: #eee;
     border: 1px solid transparent;
     border-radius: 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05)
+    /*overflow:scroll;*/
+    /*overflow-y: auto;*/
+    height:550px;
 }
 /*# sourceMappingURL=bootstrap.min.css.map */

@@ -1,6 +1,18 @@
 $(document).ready(function () {
     getUserData();
 
+    //$("#avatar").on("click", function () {
+    //    $('#filename').trigger('click');
+    //});
+    //
+    //$("#filename").change(function() {
+    //    //var file = this.files[0];
+    //    //var name = file.name;
+    //    //var size = file.size;
+    //    //var type = file.type;
+    //    //Your validation
+    //});
+
     $("#btn-save").on("click", function () {
         var userId = $("#user-id").val();
         restGetUserById(userId,

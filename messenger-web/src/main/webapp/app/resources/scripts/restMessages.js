@@ -1,9 +1,13 @@
 function restAddNewMessage(userId, receiverId, text, cbDone, cbFail) {
     $.ajax({
-        url: restMessagePath + "?userId=" + userId + "&receiverId=" + receiverId,
+        url: restMessagePath,
         type: "POST",
+        headers: {
+            "userId": userId,
+            "receiverId": receiverId
+        },
         contentType: "application/json",
-        data: JSON.stringify(text)
+        data: JSON.stringify(encodeURIComponent(text))
     })
         .done(cbDone)
         .fail(cbFail);

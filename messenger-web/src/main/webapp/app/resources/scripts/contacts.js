@@ -91,7 +91,7 @@ function loadContacts() {
         });
 }
 
-// set active on selected contact
+// set active selected contact
 function selectContact(elem) {
     $("#contacts li.active").removeClass("active");
     $(elem).addClass("active");

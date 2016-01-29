@@ -13,19 +13,28 @@ function logout() {
 
 function registration() {
     $("#panel-info").hide();
-    restAddNewUser($("#email").val(), $("#password").val(),
-        function done() {
-            $("#panel-info")
-                .removeClass("alert-warning")
-                .addClass("alert-success")
-                .html("User was created. Please log in!")
-                .show();
-        },
-        function fail(req, stat) {
-            $("#panel-info")
-                .removeClass("alert-success")
-                .addClass("alert-warning")
-                .html("User with this email already exists!")
-                .show();
-        })
+
+    if ($("#password").val() != $("#password-verify").val()) {
+        $("#panel-info")
+            .removeClass("alert-success")
+            .addClass("alert-warning")
+            .html("Password doesn't match confirmation")
+            .show();
+    } else {
+        restAddNewUser($("#email").val(), $("#password").val(),
+            function done() {
+                $("#panel-info")
+                    .removeClass("alert-warning")
+                    .addClass("alert-success")
+                    .html("User was created. Please log in!")
+                    .show();
+            },
+            function fail(req, stat) {
+                $("#panel-info")
+                    .removeClass("alert-success")
+                    .addClass("alert-warning")
+                    .html("User with this email already exists!")
+                    .show();
+            })
+    }
 }

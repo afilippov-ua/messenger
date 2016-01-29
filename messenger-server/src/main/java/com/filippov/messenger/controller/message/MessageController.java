@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 @Controller
@@ -21,17 +23,23 @@ public class MessageController implements IMessageController {
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createMessage(@RequestParam("userId") Integer senderId,
-                                        @RequestParam("receiverId") Integer receiverId,
+    public ResponseEntity createMessage(@RequestHeader("userId") Integer senderId,
+                                        @RequestHeader("receiverId") Integer receiverId,
                                         @RequestBody String messageText) {
+        try {
+            messageText = URLDecoder.decode(messageText, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
         if (messageService.createMessage(senderId, receiverId, messageText) == null)
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         else
             return new ResponseEntity(HttpStatus.OK);
     }
 
     @Transactional
-    @RequestMapping(value = "/{messageId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @RequestMapping(value = "/{messageId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Message> getMessage(@RequestParam("userId") Integer userId,
                                               @PathVariable("messageId") Integer messageId) {
         Message msg = messageService.getMessage(userId, messageId);
@@ -44,8 +52,9 @@ public class MessageController implements IMessageController {
     @Transactional
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Message>> getMessages(@RequestParam("senderId") Integer senderId,
-                                                     @RequestParam("receiverId") Integer receiverId) {
-        return new ResponseEntity<>(messageService.getMessages(senderId, receiverId), HttpStatus.OK);
+                                                     @RequestParam("receiverId") Integer receiverId,
+                                                     @RequestParam("firstMessageId") Integer firstMessageId) {
+        return new ResponseEntity<>(messageService.getMessages(senderId, receiverId, firstMessageId), HttpStatus.OK);
     }
 
     @Transactional

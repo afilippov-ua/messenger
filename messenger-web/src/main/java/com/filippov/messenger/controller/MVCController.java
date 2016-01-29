@@ -14,7 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 
 @Controller
 public class MVCController {
@@ -27,6 +32,7 @@ public class MVCController {
 
         ModelAndView model = new ModelAndView();
         model.setViewName("index");
+        model.addObject("appPath", getApplicationPath());
         List<User> userList =
                 userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
         User currentUser =  null;
@@ -48,6 +54,7 @@ public class MVCController {
                               @RequestParam(value = "logout", required = false) String logout) {
 
         ModelAndView model = new ModelAndView();
+        model.addObject("appPath", getApplicationPath());
         if (error != null) {
             model.addObject("error", "Invalid username and password!");
         }
@@ -66,6 +73,7 @@ public class MVCController {
 
         ModelAndView model = new ModelAndView();
         model.setViewName("register");
+        model.addObject("appPath", getApplicationPath());
 
         return model;
 
@@ -76,6 +84,7 @@ public class MVCController {
 
         ModelAndView model = new ModelAndView();
         model.setViewName("profile");
+        model.addObject("appPath", getApplicationPath());
 
         List<User> userList =
                 userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -100,6 +109,7 @@ public class MVCController {
 
         ModelAndView model = new ModelAndView();
         model.setViewName("contacts");
+        model.addObject("appPath", getApplicationPath());
 
         List<User> userList =
                 userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -123,6 +133,7 @@ public class MVCController {
     public ModelAndView accessDenied() {
 
         ModelAndView model = new ModelAndView();
+        model.addObject("appPath", getApplicationPath());
 
         //check if user is login
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -134,6 +145,20 @@ public class MVCController {
         model.setViewName("403");
         return model;
 
+    }
+
+    private String getApplicationPath() {
+        String result;
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        try (InputStream inputStream = classLoader.getResourceAsStream("conf.properties")) {
+            Properties props = new Properties();
+            props.load(inputStream);
+            result = props.getProperty("application.path");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return result;
     }
 
 }

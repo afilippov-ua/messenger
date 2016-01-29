@@ -1,4 +1,8 @@
-var globalPath = "//localhost:8555";
-var restUserPath = globalPath + "/api/users";
-var restContactPath = globalPath + "/api/contacts";
-var restMessagePath = globalPath + "/api/messages";
+var globalPath, restUserPath, restContactPath, restMessagePath;
+
+$(document).ready(function () {
+    globalPath = $("#app-path").val();
+    restUserPath = globalPath + "/api/users";
+    restContactPath = globalPath + "/api/contacts";
+    restMessagePath = globalPath + "/api/messages";
+});

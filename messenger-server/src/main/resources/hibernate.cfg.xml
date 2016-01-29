@@ -5,7 +5,6 @@
 <hibernate-configuration>
 
     <session-factory>
-        <property name="hibernate.hbm2ddl.auto">update</property>
         <mapping class="com.filippov.messenger.entity.contact.Contact"/>
         <mapping class="com.filippov.messenger.entity.message.Message"/>
         <mapping class="com.filippov.messenger.entity.user.User"/>

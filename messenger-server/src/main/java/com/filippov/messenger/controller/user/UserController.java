@@ -36,7 +36,7 @@ public class UserController implements IUserController {
             return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
         User currentUser = userService.getUserById(id);
         if (currentUser == null)
@@ -45,7 +45,7 @@ public class UserController implements IUserController {
             return new ResponseEntity<>(currentUser, HttpStatus.OK);
     }
 
-    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> getUsers(
             @RequestHeader(value = "email", required = false) String email,
             @RequestHeader(value = "findText", required = false) String findText) {

@@ -9,7 +9,7 @@ public interface IMessageService {
 
     Message getMessage(Integer userId, Integer messageId);
 
-    List<Message> getMessages(Integer senderId, Integer receiverId);
+    List<Message> getMessages(Integer senderId, Integer receiverId, Integer firstMessageId);
 
     boolean updateMessage(Integer userId, Integer messageId, Message sourceMessage);
 

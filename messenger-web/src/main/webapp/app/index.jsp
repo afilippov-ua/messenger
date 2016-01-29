@@ -4,13 +4,14 @@
     <meta charset="utf-8">
     <title>msg: Main</title>
     <input type="hidden" id="user-id" value="${userId}"/>
+    <input type="hidden" id="app-path" value="${appPath}"/>
     <link href="resources/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <script src="resources/scripts/jquery-1.11.3.js"></script>
     <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
+    <script src="resources/scripts/settings.js"></script>
     <script src="resources/scripts/authentication.js"></script>
     <script src="resources/scripts/messenger.js"></script>
     <script src="resources/scripts/contacts.js"></script>
-    <script src="resources/scripts/settings.js"></script>
     <script src="resources/scripts/restContacts.js"></script>
     <script src="resources/scripts/restMessages.js"></script>
 </head>
@@ -32,48 +33,43 @@
     </div>
 </nav>
 
-<div class="panel-messenger panel-default">
+<div class="container-fluid">
 
-    <div class="panel-body">
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="panel-messenger panel-primary">
+                <div class="panel-heading">Contacts</div>
+                <div class="panel-body panel-contacts">
+                    <ul id="contacts" class="nav nav-pills nav-stacked">
+                        <%--contacts--%>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-        <table align="center" class="table">
-            <tr>
-                <td width="300">
-                    <div class="panel-messenger panel-primary">
-                        <div class="panel-heading">Contacts</div>
-                        <div class="panel-body panel-contacts">
-                            <ul id="contacts" class="nav nav-pills nav-stacked" style="max-width: 300px;">
-                                <%--contacts--%>
-                            </ul>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="panel-messenger panel-primary">
-                        <div class="panel-heading">Messages</div>
-                        <div id="messages" class="panel-body panel-contacts">
+        <div class="col-xs-9">
+            <div class="panel-messenger panel-primary">
+                <div class="panel-heading">Messages</div>
+                <div id="messages" class="panel-body panel-contacts" style="overflow-y: scroll">
                             <%--messages--%>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-                <td>
+                </div>
+                <div class="panel-footer">
                     <div class="col-lg-pull-0">
                         <div class="input-group input-group-lg">
-                            <input id="message-text" type="text"" class="form-control">
+                            <input id="message-text" type="text" class="form-control">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" onclick="sendMessage()" type="button">Send</button>
                             </span>
                         </div>
-                        <div id="warningInfo" class="alert alert-warning" hidden role="alert">senging error... please, try again later...</div>
+                        <div id="warningInfo" class="alert alert-warning" hidden role="alert">sending error... please,
+                            try again later...
+                        </div>
                     </div>
-                </td>
-            </tr>
-        </table>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
 
 </body>

@@ -1,8 +1,12 @@
 function restAddNewContact(userId, contactId, contactName, cbDone, cbFail) {
     $.ajax({
-        url: restContactPath + "?ownerId=" + userId + "&contactId=" + contactId,
+        url: restContactPath,
         method: "POST",
-        headers: {"name": encodeURIComponent(contactName)}
+        headers: {
+            "ownerId": userId,
+            "contactId": contactId,
+            "name": encodeURIComponent(contactName)
+        }
     })
         .done(cbDone)
         .fail(cbFail);

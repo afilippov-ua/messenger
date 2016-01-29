@@ -11,7 +11,7 @@ public interface IMessageDao {
 
     Message getMessage(User user, Integer messageId);
 
-    List<Message> getMessages(User userSender, User userReceiver);
+    List<Message> getMessages(User userSender, User userReceiver, Integer firstMessageId);
 
     boolean updateMessage(Message message);
 
