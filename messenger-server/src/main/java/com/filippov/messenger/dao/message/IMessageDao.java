@@ -3,7 +3,6 @@ package com.filippov.messenger.dao.message;
 import com.filippov.messenger.entity.user.User;
 import com.filippov.messenger.entity.message.Message;
 
-import java.util.Date;
 import java.util.List;
 
 public interface IMessageDao {
@@ -11,7 +10,7 @@ public interface IMessageDao {
 
     Message getMessage(User user, Integer messageId);
 
-    List<Message> getMessages(User userSender, User userReceiver, Integer firstMessageId);
+    List<Message> getMessages(User userSender, User userReceiver, Message firstMessage);
 
     boolean updateMessage(Message message);
 

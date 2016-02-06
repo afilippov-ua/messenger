@@ -19,11 +19,6 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <jdbc:initialize-database data-source="dataSource">
-        <jdbc:script location="classpath*:sql/schema.sql"/>
-        <jdbc:script location="classpath*:sql/test-data.sql"/>
-    </jdbc:initialize-database>
-
     <context:component-scan base-package="com.filippov.messenger.controller" />
 
     <!-- RESOURCES -->

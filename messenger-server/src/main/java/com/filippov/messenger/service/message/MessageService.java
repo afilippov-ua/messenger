@@ -48,7 +48,7 @@ public class MessageService implements IMessageService {
 
     @Transactional(readOnly = true)
     public List<Message> getMessages(Integer senderId, Integer receiverId, Integer firstMessageId) throws IllegalArgumentException {
-        if (senderId == null || receiverId == null || firstMessageId == null)
+        if (senderId == null || receiverId == null)
             return null;
 
         User userSender = userDao.getUserById(senderId);
@@ -57,7 +57,11 @@ public class MessageService implements IMessageService {
         if (userSender == null || userReceiver == null)
             return null;
 
-        return messageDao.getMessages(userSender, userReceiver, firstMessageId);
+        Message firstMessage = null;
+        if (firstMessageId != null)
+            firstMessage = messageDao.getMessage(userSender, firstMessageId);
+
+        return messageDao.getMessages(userSender, userReceiver, firstMessage);
     }
 
     @Transactional
