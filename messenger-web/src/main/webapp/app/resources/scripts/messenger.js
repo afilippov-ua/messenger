@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    window.setInterval("loadMessages();", 1000)
+    window.setInterval("loadLastMessages();", 1000)
 
     $("#message-text").on("keypress", function (event) {
         if (event.keyCode == 13)
@@ -7,7 +7,7 @@ $(document).ready(function () {
     });
 });
 
-function loadMessages() {
+function loadLastMessages() {
     var userId = $("#user-id").val();
     var receiverId = $("#contacts li.active").attr("user-id");
     var receiverName = $("#contacts li.active a").html();
@@ -15,7 +15,7 @@ function loadMessages() {
     if (!receiverId)
         return;
 
-    restGetMessagesByOwner(userId, receiverId,
+    restGetMessagesByOwner(userId, receiverId, undefined,
         function done(data) {
             data.forEach(function (message) {
                 addUpdateMessage(message, userId, receiverName)
@@ -65,7 +65,7 @@ function sendMessage() {
         function done() {
             $("#warningInfo").hide();
             $("#message-text").val("");
-            loadMessages();
+            loadLastMessages();
         },
         function fail() {
             $("#warningInfo").show();

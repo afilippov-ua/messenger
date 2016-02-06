@@ -53,7 +53,7 @@ public class MessageController implements IMessageController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Message>> getMessages(@RequestParam("senderId") Integer senderId,
                                                      @RequestParam("receiverId") Integer receiverId,
-                                                     @RequestParam("firstMessageId") Integer firstMessageId) {
+                                                     @RequestParam(value = "firstMessageId", required = false) Integer firstMessageId) {
         return new ResponseEntity<>(messageService.getMessages(senderId, receiverId, firstMessageId), HttpStatus.OK);
     }
 

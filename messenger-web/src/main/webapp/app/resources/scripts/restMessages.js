@@ -13,9 +13,9 @@ function restAddNewMessage(userId, receiverId, text, cbDone, cbFail) {
         .fail(cbFail);
 }
 
-function restGetMessagesByOwner(userId, receiverId, cbDone, cbFail) {
+function restGetMessagesByOwner(userId, receiverId, firstMessageId, cbDone, cbFail) {
     $.ajax({
-        url: restMessagePath + "?senderId=" + userId + "&receiverId=" + receiverId,
+        url: restMessagePath + "?senderId=" + userId + "&receiverId=" + receiverId + "" + ((!firstMessageId) ? "" : "&firstMessageId=" + firstMessageId),
         type: "GET"
     })
         .done(cbDone)

@@ -84,7 +84,7 @@ function loadContacts() {
 
             $("#contacts li:first-child").addClass("active");
             $("#messages").html("");
-            loadMessages();
+            loadLastMessages();
         },
         function fail() {
             $("#contacts").html("");
@@ -96,7 +96,7 @@ function selectContact(elem) {
     $("#contacts li.active").removeClass("active");
     $(elem).addClass("active");
     $("#messages").html("");
-    loadMessages();
+    loadLastMessages();
 }
 
 // update contact data
