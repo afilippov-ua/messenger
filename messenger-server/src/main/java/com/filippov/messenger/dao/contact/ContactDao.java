@@ -17,14 +17,12 @@ public class ContactDao extends AbstractDao implements IContactDao {
     }
 
     public Contact getContact(Integer id) {
-        Query query = getSession().createQuery("from Contact where id = :id");
-        query.setParameter("id", id);
-        return (Contact) query.uniqueResult();
+        return (Contact) getSession().get(Contact.class, id);
     }
 
     public Contact getContactByUsers(User ownerUser, User contactUser) {
         Query query = getSession().createQuery("from Contact " +
-                "where ownerUser = :ownerUser and contactUser =:contactUser");
+                "where ownerUser = :ownerUser and contactUser = :contactUser");
         query.setParameter("ownerUser", ownerUser);
         query.setParameter("contactUser", contactUser);
         return (Contact) query.uniqueResult();
