@@ -39,7 +39,7 @@
         <div class="col-xs-3">
             <div class="panel-messenger panel-primary">
                 <div class="panel-heading">Contacts</div>
-                <div class="panel-body panel-contacts">
+                <div class="panel-body panel-contacts" style="overflow-y: scroll">
                     <ul id="contacts" class="nav nav-pills nav-stacked">
                         <%--contacts--%>
                     </ul>

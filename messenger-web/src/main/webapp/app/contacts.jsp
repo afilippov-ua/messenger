@@ -83,13 +83,13 @@
         <div class="col-xs-3">
             <div class="panel-messenger panel-primary">
                 <div class="panel-heading">Contacts</div>
-                <div class="panel-body panel-contacts">
+                <div class="panel-body panel-contacts" style="overflow-y: scroll">
                     <ul id="contacts" class="nav nav-pills nav-stacked">
                         <%--contacts--%>
                     </ul>
                 </div>
                 <div class="panel-footer">
-                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                    <div class="btn-group btn-group-justified" role="group">
                         <div class="btn-group" role="group">
                             <button id="contact-edit-btn" type="button" class="btn btn-default">edit</button>
                         </div>
