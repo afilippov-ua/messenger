@@ -6,6 +6,7 @@ import com.filippov.messenger.entity.message.Message;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -30,14 +31,17 @@ public class MessageDao extends AbstractDao implements IMessageDao {
         Query query = getSession().createQuery("from Message " +
                 "where (userSender = :userSender or userReceiver =:userSender) " +
                 "and (userSender = :userReceiver or userReceiver = :userReceiver) " +
-                "and messageDate <= :firstMessageDate " +
+                "and messageDate < :firstMessageDate " +
                 "order by messageDate desc");
         query.setParameter("userSender", userSender);
         query.setParameter("userReceiver", userReceiver);
         query.setParameter("firstMessageDate", (firstMessage == null) ? new Date() : firstMessage.getMessageDate());
         query.setMaxResults(30);
 
-        return (List<Message>) query.list();
+        List<Message> list = (List<Message>) query.list();
+        Collections.reverse(list);
+
+        return list;
     }
 
     public boolean updateMessage(Message message) {
