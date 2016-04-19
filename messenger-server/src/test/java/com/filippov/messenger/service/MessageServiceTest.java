@@ -10,6 +10,7 @@ import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -174,18 +175,18 @@ public class MessageServiceTest {
 
     /* Test method: "getMessages()" */
     @Test
-    public void getMessagesTest() {
+    public void getLastMessagesTest() {
         List<Message> list = new ArrayList<>(3);
         list.add(testMessage1);
         list.add(testMessage2);
         list.add(testMessage3);
         expect(mockUserDao.getUserById(testUser1.getId())).andReturn(testUser1).once();
         expect(mockUserDao.getUserById(testUser2.getId())).andReturn(testUser2).once();
-        expect(mockMessageDao.getMessages(testUser1, testUser2)).andReturn(list).once();
+        expect(mockMessageDao.getMessages(testUser1, testUser2, null)).andReturn(list).once();
         replay(mockUserDao);
         replay(mockMessageDao);
 
-        list = messageService.getMessages(testUser1.getId(), testUser2.getId());
+        list = messageService.getMessages(testUser1.getId(), testUser2.getId(), null);
         verify(mockUserDao);
         verify(mockMessageDao);
         assertNotNull(list);
@@ -193,6 +194,28 @@ public class MessageServiceTest {
         assertTrue(list.contains(testMessage1));
         assertTrue(list.contains(testMessage2));
         assertTrue(list.contains(testMessage3));
+    }
+
+    /* Test method: "getMessages()" */
+    @Test
+    public void getPreviousMessagesTest() {
+        List<Message> list = new ArrayList<>(3);
+        list.add(testMessage1);
+        list.add(testMessage2);
+        expect(mockUserDao.getUserById(testUser1.getId())).andReturn(testUser1).once();
+        expect(mockUserDao.getUserById(testUser2.getId())).andReturn(testUser2).once();
+        expect(mockMessageDao.getMessage(testUser1, testMessage3.getId())).andReturn(testMessage3).once();
+        expect(mockMessageDao.getMessages(testUser1, testUser2, testMessage3)).andReturn(list).once();
+        replay(mockUserDao);
+        replay(mockMessageDao);
+
+        list = messageService.getMessages(testUser1.getId(), testUser2.getId(), testMessage3.getId());
+        verify(mockUserDao);
+        verify(mockMessageDao);
+        assertNotNull(list);
+        assertEquals(2, list.size());
+        assertTrue(list.contains(testMessage1));
+        assertTrue(list.contains(testMessage2));
     }
 
     /* Test method: "getMessages()"
@@ -204,7 +227,7 @@ public class MessageServiceTest {
         replay(mockUserDao);
         replay(mockMessageDao);
 
-        assertNull(messageService.getMessages(testUser1.getId(), testUser2.getId()));
+        assertNull(messageService.getMessages(testUser1.getId(), testUser2.getId(), null));
         verify(mockUserDao);
         verify(mockMessageDao);
     }
@@ -218,7 +241,7 @@ public class MessageServiceTest {
         replay(mockUserDao);
         replay(mockMessageDao);
 
-        assertNull(messageService.getMessages(testUser1.getId(), testUser2.getId()));
+        assertNull(messageService.getMessages(testUser1.getId(), testUser2.getId(), null));
         verify(mockUserDao);
         verify(mockMessageDao);
     }
@@ -230,7 +253,7 @@ public class MessageServiceTest {
         replay(mockUserDao);
         replay(mockMessageDao);
 
-        assertNull(messageService.getMessages(null, testUser2.getId()));
+        assertNull(messageService.getMessages(null, testUser2.getId(), testMessage3.getId()));
         verify(mockUserDao);
         verify(mockMessageDao);
 
@@ -239,7 +262,7 @@ public class MessageServiceTest {
         replay(mockUserDao);
         replay(mockMessageDao);
 
-        assertNull(messageService.getMessages(testUser1.getId(), null));
+        assertNull(messageService.getMessages(testUser1.getId(), null, testMessage3.getId()));
         verify(mockUserDao);
         verify(mockMessageDao);
     }

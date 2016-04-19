@@ -5,6 +5,7 @@ import com.filippov.messenger.entity.message.Message;
 import com.filippov.messenger.dao.user.IUserDao;
 import com.filippov.messenger.entity.user.User;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class MessageDaoTest {
 
     public User testUserSender, testUserReceiver;
     public Message testMessage1, testMessage2, testMessage3;
+    public ArrayList<Message> testMessageList;
 
     @Before
     public void setup() {
@@ -38,12 +41,30 @@ public class MessageDaoTest {
         assertNotNull(testUserSender);
         assertNotNull(testUserReceiver);
 
+        Date currentDate = new Date(new Date().getTime() - 100);
         testMessage1 = messageDao.createMessage(
-                new Message(new Date(), testUserSender, testUserReceiver, "test message 1"));
+                new Message(currentDate, testUserSender, testUserReceiver, "test message 1"));
+
+        currentDate = new Date(currentDate.getTime() + 1);
         testMessage2 = messageDao.createMessage(
-                new Message(new Date(), testUserSender, testUserReceiver, "test message 2"));
+                new Message(currentDate, testUserSender, testUserReceiver, "test message 2"));
+
+        currentDate = new Date(currentDate.getTime() + 1);
         testMessage3 = messageDao.createMessage(
-                new Message(new Date(), testUserSender, testUserReceiver, "test message 3"));
+                new Message(currentDate, testUserSender, testUserReceiver, "test message 3"));
+
+        testMessageList = new ArrayList<Message>(33);
+        testMessageList.add(0, testMessage1);
+        testMessageList.add(1, testMessage2);
+        testMessageList.add(2, testMessage3);
+
+        for (int i = 3; i < 33; i++) {
+            currentDate = new Date(currentDate.getTime() + 1);
+            testMessageList.add(i, messageDao.createMessage(new Message(currentDate,
+                                                                        testUserSender,
+                                                                        testUserReceiver,
+                                                                        "test message " + (i+1))));
+        }
     }
 
     /* Test method: "createMessage()" */
@@ -75,15 +96,36 @@ public class MessageDaoTest {
 
     /* Test method: "getMessages()" */
     @Test
-    public void getMessagesTest() {
+    public void getLast30MessagesTest() {
         List<Message> messageList = messageDao.getMessages(
                 testUserSender,
-                testUserReceiver);
+                testUserReceiver,
+                null);
         assertNotNull(messageList);
+        assertEquals(30, messageList.size()); // batch = 30
+
+        for (int i = 0; i < 30; i++) {
+            // testMessageList have 33 elements. we need last 30
+            assertTrue(messageList.contains(testMessageList.get(i+3)));
+        }
+    }
+
+    /* Test method: "getMessages()" */
+    @Test
+    public void getPreviousMessagesTest() {
+        List<Message> messageList = messageDao.getMessages(
+                testUserSender,
+                testUserReceiver,
+                testMessageList.get(3));
+        assertNotNull(messageList);
+
+        // testMessageList have 33 elements
+        // we need previous 3
         assertEquals(3, messageList.size());
-        assertTrue(messageList.contains(testMessage1));
-        assertTrue(messageList.contains(testMessage2));
-        assertTrue(messageList.contains(testMessage3));
+
+        for (int i = 0; i < 3; i++) {
+            assertTrue(messageList.contains(testMessageList.get(i)));
+        }
     }
 
     /* Test method: "updateMessage()" */
