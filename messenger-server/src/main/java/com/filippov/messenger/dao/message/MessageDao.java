@@ -32,7 +32,7 @@ public class MessageDao extends AbstractDao implements IMessageDao {
                 "where (userSender = :userSender or userReceiver =:userSender) " +
                 "and (userSender = :userReceiver or userReceiver = :userReceiver) " +
                 "and messageDate < :firstMessageDate " +
-                "order by messageDate desc");
+                "order by id desc");
         query.setParameter("userSender", userSender);
         query.setParameter("userReceiver", userReceiver);
         query.setParameter("firstMessageDate", (firstMessage == null) ? new Date() : firstMessage.getMessageDate());
