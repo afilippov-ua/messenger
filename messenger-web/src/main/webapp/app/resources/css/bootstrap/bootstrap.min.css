@@ -7215,6 +7215,7 @@ button.close {
     min-height: 10px;
     padding: 6px;
     margin-bottom: 3px;
+    word-wrap: break-word;
     background-color: #eeeeee;
     border: 1px solid #e3e3e3;
     border-radius: 4px;
@@ -7226,6 +7227,7 @@ button.close {
     min-height: 10px;
     padding: 6px;
     margin-bottom: 3px;
+    word-wrap: break-word;
     background-color: #d6e9c6;
     border: 1px solid #e3e3e3;
     border-radius: 4px;

@@ -56,7 +56,7 @@
                 <div class="panel-footer">
                     <div class="col-lg-pull-0">
                         <div class="input-group input-group-lg">
-                            <input id="message-text" type="text" class="form-control">
+                            <input id="message-text" type="text" maxlength="255" class="form-control">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" onclick="sendMessage()" type="button">Send</button>
                             </span>
