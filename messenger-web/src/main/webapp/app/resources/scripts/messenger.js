@@ -20,9 +20,9 @@ function loadMessages() {
                 && $("#messages div").length == 0) {  // no messages
 
                 $("#messages").append($("<div></div>")
-                                        .attr("id", "load-msg")
-                                        .append($("<a>load more messages</a>")
-                                                    .attr("href", "#")));
+                    .attr("id", "load-msg")
+                    .append($("<a>load more messages</a>")
+                        .attr("href", "#")));
                 $("#load-msg").on("click", function (event) {
                     loadMoreMessages(userId, receiverId, receiverName);
                 });
@@ -45,37 +45,40 @@ function loadMoreMessages(userId, receiverId, receiverName) {
 
     restGetMessagesByOwner(userId, receiverId, firstLoadedMessageId,
         function done(data) {
-            if(data.length == 0) {
+            if (data.length == 0) {
                 loadMsgBtn.remove();
             }
             else {
+                var lastElem = loadMsgBtn;
                 data.forEach(function (message) {
-                    addPreviousMessage(message, userId, receiverName, loadMsgBtn)
+                    lastElem = addPreviousMessage(message, userId, receiverName, lastElem)
                 });
             }
         })
 }
 
 function addPreviousMessage(message, userId, receiverName, lastElement) {
+    var currentElem;
     if (message.userSender == userId) {
         // my message
-        lastElement.after(
-            $("<div></div>")
-                .addClass("well-sender")
-                .attr("messageId", message.id)
-                .append(
-                $("<span>Me:</span>").addClass("badge-sender"))
-                .append(message.text))
+        currentElem = $("<div></div>")
+            .addClass("well-sender")
+            .attr("messageId", message.id)
+            .append($("<span>Me:</span>").addClass("badge-sender-left"))
+            .append(message.text)
+            .append($("<span>" + message.messageDate.substr(0, 19) + "</span>").addClass("badge-sender-right"))
     } else {
         // receiver message
-        lastElement.after(
-            $("<div></div>")
-                .addClass("well-receiver")
-                .attr("messageId", message.id)
-                .append(
-                $("<span>" + receiverName + "</span>").addClass("badge-receiver"))
-                .append(message.text))
+        currentElem = $("<div></div>")
+            .addClass("well-receiver")
+            .attr("messageId", message.id)
+            .append($("<span>" + receiverName + "</span>").addClass("badge-receiver-left"))
+            .append(message.text)
+            .append($("<span>" + message.messageDate.substr(0, 19) + "</span>").addClass("badge-receiver-right"))
     }
+
+    lastElement.after(currentElem)
+    return currentElem;
 }
 
 function addUpdateMessage(message, userId, receiverName) {
@@ -88,18 +91,20 @@ function addUpdateMessage(message, userId, receiverName) {
             $("<div></div>")
                 .addClass("well-sender")
                 .attr("messageId", message.id)
-                .append(
-                $("<span>Me:</span>").addClass("badge-sender"))
-                .append(message.text))
+                .append($("<span>Me:</span>").addClass("badge-sender-left"))
+                .append(message.text)
+                .append($("<span>" + message.messageDate.substr(0, 19) + "</span>").addClass("badge-sender-right"))
+        )
     } else {
         // receiver message
         $("#messages").append(
             $("<div></div>")
                 .addClass("well-receiver")
                 .attr("messageId", message.id)
-                .append(
-                $("<span>" + receiverName + "</span>").addClass("badge-receiver"))
-                .append(message.text))
+                .append($("<span>" + receiverName + "</span>").addClass("badge-receiver-left"))
+                .append(message.text)
+                .append($("<span>" + message.messageDate.substr(0, 19) + "</span>").addClass("badge-receiver-right"))
+        )
     }
 
     var div = $("#messages");
