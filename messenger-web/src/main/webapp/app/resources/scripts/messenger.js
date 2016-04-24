@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    window.setInterval("loadMessages();", 1000);
     $("#message-text").on("keypress", function (event) {
         if (event.keyCode == 13)
             sendMessage();
