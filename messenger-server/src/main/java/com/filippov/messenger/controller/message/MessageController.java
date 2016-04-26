@@ -19,7 +19,7 @@ import java.util.List;
 public class MessageController implements IMessageController {
 
     @Autowired
-    IMessageService messageService;
+    private IMessageService messageService;
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

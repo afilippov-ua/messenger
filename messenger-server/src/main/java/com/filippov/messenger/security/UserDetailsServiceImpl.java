@@ -16,7 +16,7 @@ import java.util.Set;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    IUserService userService;
+    private IUserService userService;
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 

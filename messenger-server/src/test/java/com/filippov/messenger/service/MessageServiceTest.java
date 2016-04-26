@@ -29,13 +29,13 @@ import static org.junit.Assert.*;
 public class MessageServiceTest {
 
     @TestSubject
-    IMessageService messageService = new MessageService();
+    private IMessageService messageService = new MessageService();
 
     @Mock(fieldName = "messageDao")
-    IMessageDao mockMessageDao;
+    private IMessageDao mockMessageDao;
 
     @Mock(fieldName = "userDao")
-    IUserDao mockUserDao;
+    private IUserDao mockUserDao;
 
     private User testUser1, testUser2;
     private Message testMessage1, testMessage2, testMessage3;

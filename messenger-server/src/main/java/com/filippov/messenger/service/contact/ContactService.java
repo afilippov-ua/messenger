@@ -14,10 +14,10 @@ import java.util.List;
 public class ContactService implements IContactService {
 
     @Autowired
-    IContactDao contactDao;
+    private IContactDao contactDao;
 
     @Autowired
-    IUserDao userDao;
+    private IUserDao userDao;
 
     @Transactional
     public Contact createContact(Integer ownerId, Integer contactId, String name) {

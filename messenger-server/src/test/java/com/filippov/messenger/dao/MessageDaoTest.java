@@ -25,10 +25,10 @@ import static org.junit.Assert.*;
 public class MessageDaoTest {
 
     @Autowired
-    IMessageDao messageDao;
+    private IMessageDao messageDao;
 
     @Autowired
-    IUserDao userDao;
+    private IUserDao userDao;
 
     public User testUserSender, testUserReceiver;
     public Message testMessage1, testMessage2, testMessage3;

@@ -23,10 +23,10 @@ import static org.junit.Assert.*;
 public class ContactDaoTest {
 
     @Autowired
-    IContactDao contactDao;
+    private IContactDao contactDao;
 
     @Autowired
-    IUserDao userDao;
+    private IUserDao userDao;
 
     private User testUserOwner1, testUserOwner2;
     private User testUserContact1, testUserContact2;

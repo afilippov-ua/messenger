@@ -14,10 +14,10 @@ import java.util.List;
 public class UserService implements IUserService {
 
     @Autowired
-    IUserDao userDao;
+    private IUserDao userDao;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public User createUser(String email, String password) {

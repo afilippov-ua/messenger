@@ -18,7 +18,7 @@ import java.util.List;
 public class ContactController implements IContactController {
 
     @Autowired
-    IContactService contactService;
+    private IContactService contactService;
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST)

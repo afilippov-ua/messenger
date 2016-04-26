@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 public class UserDaoTest {
 
     @Autowired
-    IUserDao userDao;
+    private IUserDao userDao;
 
     private User testUser1, testUser2, testUser3, testUser4, testUser5;
 

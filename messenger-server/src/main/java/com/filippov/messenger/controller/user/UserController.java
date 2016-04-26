@@ -18,7 +18,7 @@ import java.util.List;
 public class UserController implements IUserController {
 
     @Autowired
-    IUserService userService;
+    private IUserService userService;
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createUser(@RequestHeader("email") String email,

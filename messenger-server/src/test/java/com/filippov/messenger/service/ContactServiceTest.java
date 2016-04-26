@@ -28,13 +28,13 @@ import static org.junit.Assert.*;
 public class ContactServiceTest {
 
     @TestSubject
-    IContactService contactService = new ContactService();
+    private IContactService contactService = new ContactService();
 
     @Mock(fieldName = "userDao")
-    IUserDao mockUserDao;
+    private IUserDao mockUserDao;
 
     @Mock(fieldName = "contactDao")
-    IContactDao mockContactDao;
+    private IContactDao mockContactDao;
 
     private User testUser1, testUser2, testUser3;
     private Contact testContact1, testContact2, testContact3;

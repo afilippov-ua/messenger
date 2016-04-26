@@ -15,10 +15,10 @@ import java.util.List;
 public class MessageService implements IMessageService {
 
     @Autowired
-    IMessageDao messageDao;
+    private IMessageDao messageDao;
 
     @Autowired
-    IUserDao userDao;
+    private IUserDao userDao;
 
     @Transactional
     public Message createMessage(Integer senderId, Integer receiverId, String messageText) {
