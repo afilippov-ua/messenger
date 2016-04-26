@@ -10,10 +10,10 @@ import org.easymock.TestSubject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.transaction.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +26,13 @@ import static org.junit.Assert.*;
 public class UserServiceTest {
 
     @TestSubject
-    IUserService userService = new UserService();
+    private IUserService userService = new UserService();
 
     @Mock(fieldName = "userDao")
-    IUserDao mockDao;
+    private IUserDao mockDao;
+
+    @Mock(fieldName = "passwordEncoder")
+    private PasswordEncoder mockPasswordEncoder;
 
     private User testUser1, testUser2, testUser3;
 
@@ -51,13 +54,18 @@ public class UserServiceTest {
     /* Test method: "createUser()" */
     @Test
     public void createUserTest() {
-        User testUser = new User("test user", "12345");
+        String pass = "12345";
+        String hash = "$2a$10$coqkujwDNFhiIlSEbvtAxuRo5kTC0WpqzBgtX7rzfifA7m3s7t092";
+        User testUser = new User("test user", hash);
         expect(mockDao.getUserByEmail(testUser.getEmail())).andReturn(null).once();
+        expect(mockPasswordEncoder.encode(eq(pass))).andReturn(hash).once();
         expect(mockDao.createUser(eq(testUser))).andReturn(testUser).once();
         replay(mockDao);
+        replay(mockPasswordEncoder);
 
-        User user = userService.createUser(testUser.getEmail(), testUser.getPassword());
+        User user = userService.createUser(testUser.getEmail(), pass);
         verify(mockDao);
+        verify(mockPasswordEncoder);
         assertNotNull(user);
         assertEquals(testUser, user);
     }

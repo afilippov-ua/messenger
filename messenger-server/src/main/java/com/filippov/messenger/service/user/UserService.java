@@ -3,6 +3,7 @@ package com.filippov.messenger.service.user;
 import com.filippov.messenger.dao.user.IUserDao;
 import com.filippov.messenger.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +16,16 @@ public class UserService implements IUserService {
     @Autowired
     IUserDao userDao;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Transactional
     public User createUser(String email, String password) {
         if (email == null || password == null)
             return null;
         if (userDao.getUserByEmail(email) != null)
             return null;
-        return userDao.createUser(new User(email, password));
+        return userDao.createUser(new User(email, passwordEncoder.encode(password)));
     }
 
     @Transactional(readOnly = true)

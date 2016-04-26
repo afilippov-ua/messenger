@@ -25,7 +25,7 @@
             <id>development</id>
             <properties>
                 <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
-                <jdbc.url>jdbc:h2:file:~/IdeaProjects/Messenger/db/messenger</jdbc.url>
+                <jdbc.url>jdbc:h2:file:~/IdeaProjects/messenger/db/messenger</jdbc.url>
                 <jdbc.username>sa</jdbc.username>
                 <jdbc.password></jdbc.password>
                 <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
@@ -40,7 +40,7 @@
         <profile>
             <id>production</id>
             <properties>
-                <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+                <jdbc.driverClassName></jdbc.driverClassName>
                 <jdbc.url></jdbc.url>
                 <jdbc.username></jdbc.username>
                 <jdbc.password></jdbc.password>
@@ -48,7 +48,7 @@
                 <hibernate.hbm2ddl.auto></hibernate.hbm2ddl.auto>
                 <hibernate.show_sql></hibernate.show_sql>
                 <hibernate.format_sql></hibernate.format_sql>
-                <hibernate.use_sql_comments>false</hibernate.use_sql_comments>
+                <hibernate.use_sql_comments></hibernate.use_sql_comments>
                 <application.path></application.path>
             </properties>
         </profile>
