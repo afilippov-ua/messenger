@@ -1,6 +1,6 @@
 package com.filippov.messenger.entity.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -61,6 +61,11 @@ public class User implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonProperty(value = "password", access = JsonProperty.Access.READ_ONLY)
+    public String getStubPassword() {
+        return "[PROTECTED]";
     }
 
     @Override
