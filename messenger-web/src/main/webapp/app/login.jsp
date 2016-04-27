@@ -26,7 +26,7 @@
 </nav>
 
 <div class="container">
-    <form class="form-signin" action="/j_spring_security_check" method="post" role="form">
+    <form class="form-signin" accept-charset="UTF-8" action="/j_spring_security_check" method="post" role="form">
         <h3 class="form-signin-heading">Login</h3>
         <div class="form-group">
             <input type="email" name="username" id="inputEmail" class="form-control" placeholder="email" required autofocus>

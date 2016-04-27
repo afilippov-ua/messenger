@@ -68,7 +68,7 @@ public class UserService implements IUserService {
 
         currentUser.setName(sourceUser.getName());
         currentUser.setEmail(sourceUser.getEmail());
-        currentUser.setPassword(sourceUser.getPassword());
+        currentUser.setPassword(passwordEncoder.encode(sourceUser.getPassword()));
         return userDao.updateUser(currentUser);
     }
 
