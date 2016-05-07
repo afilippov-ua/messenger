@@ -7,23 +7,14 @@
                            http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- RESOURCES -->
-    <http pattern="/app/resources/**" security="none"/>
-    <http pattern="/resources/**" security="none"/>
-    <http pattern="/favicon.ico" security="none"/>
+    <http pattern="**/resources/**" security="none"/>
 
     <http use-expressions="true">
 
-        <intercept-url pattern="/" access="hasRole('ROLE_USER')"/>
-        <intercept-url pattern="/index" access="hasRole('ROLE_USER')"/>
-        <intercept-url pattern="/login" access="permitAll"/>
-        <intercept-url pattern="/register" access="permitAll"/>
-        <intercept-url pattern="/profile" access="hasRole('ROLE_USER')"/>
-        <intercept-url pattern="/contacts" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/login" method="GET" access="permitAll"/>
+        <intercept-url pattern="/register" method="GET" access="permitAll"/>
+        <intercept-url pattern="/api/users" method="POST" access="permitAll"/>
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
-
-        <!-- access denied page -->
-        <access-denied-handler error-page="/403" />
 
         <form-login
             login-processing-url="/j_spring_security_check"

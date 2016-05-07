@@ -21,8 +21,8 @@ public class UserController implements IUserController {
     private IUserService userService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createUser(@RequestHeader("email") String email,
-                                     @RequestHeader("password") String password) {
+    public ResponseEntity createUser(@RequestParam("email") String email,
+                                     @RequestParam("password") String password) {
         try {
             email = URLDecoder.decode(email, "UTF-8");
             password = URLDecoder.decode(password, "UTF-8");
