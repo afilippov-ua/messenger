@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -7,6 +8,7 @@
     <link href="resources/css/bootstrap/signin.css" rel="stylesheet">
     <script src="resources/scripts/jquery-1.11.3.js"></script>
     <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
+    <script src="resources/scripts/authentication.js"></script>
 </head>
 
 <body>
@@ -24,19 +26,26 @@
         </div>
     </div>
 </nav>
+<c:if test="${not empty msg}">
+    <div class="alert alert-success" role="alert">${msg}</div>
+</c:if>
+<c:if test="${not empty error}">
+    <div class="alert alert-danger" role="alert">${error}</div>
+</c:if>
 
-<div class="container">
-    <form class="form-signin" accept-charset="UTF-8" action="/j_spring_security_check" method="post" role="form">
-        <h3 class="form-signin-heading">Login</h3>
-        <div class="form-group">
-            <input type="email" name="username" id="inputEmail" class="form-control" placeholder="email" required autofocus>
-        </div>
-        <div class="form-group">
-            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="password" required>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-    </form>
-</div>
+<form class="form-signin" accept-charset="UTF-8" action="/j_spring_security_check" method="post" role="form">
+    <h3 class="form-signin-heading">Login</h3>
+    <span name="error" class="alert-danger"></span>
+    <div class="form-group">
+        <input type="email" name="username" id="email" class="form-control" placeholder="email" required autofocus>
+    </div>
+    <span name="error" class="alert-danger"></span>
+    <div class="form-group">
+        <input type="password" name="password" id="password" class="form-control" placeholder="password" required>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="button" onclick="login()">Login</button>
+</form>
+
 
 </body>
 </html>

@@ -32,12 +32,15 @@
 
 <div class="form-signin">
     <h3 class="form-signin-heading">Registration</h3>
+    <span name="error" class="alert-danger"></span>
     <div class="form-group">
         <input type="email" id="email" class="form-control" placeholder="email" onkeyup = "if (event.keyCode == 13) $('#btn-register').click()" required autofocus>
     </div>
+    <span name="error" class="alert-danger"></span>
     <div class="form-group">
         <input type="password" id="password" class="form-control" placeholder="password" onkeyup = "if (event.keyCode == 13) $('#btn-register').click()" required>
     </div>
+    <span name="error" class="alert-danger"></span>
     <div class="form-group">
         <input type="password" id="password-verify" class="form-control" placeholder="verify password" onkeyup = "if (event.keyCode == 13) $('#btn-register').click()" required>
     </div>

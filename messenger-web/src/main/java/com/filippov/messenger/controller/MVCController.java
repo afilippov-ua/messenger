@@ -33,7 +33,7 @@ public class MVCController {
         model.addObject("appPath", getApplicationPath());
         List<User> userList =
                 userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
-        User currentUser =  null;
+        User currentUser = null;
 
         if (userList != null && !userList.isEmpty())
             currentUser = userList.get(0);
@@ -63,7 +63,6 @@ public class MVCController {
         model.setViewName("login");
 
         return model;
-
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -74,7 +73,6 @@ public class MVCController {
         model.addObject("appPath", getApplicationPath());
 
         return model;
-
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
@@ -86,7 +84,7 @@ public class MVCController {
 
         List<User> userList =
                 userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
-        User currentUser =  null;
+        User currentUser = null;
 
         if (userList != null && !userList.isEmpty())
             currentUser = userList.get(0);
@@ -98,7 +96,6 @@ public class MVCController {
         }
 
         return model;
-
     }
 
     @Transactional
@@ -111,7 +108,7 @@ public class MVCController {
 
         List<User> userList =
                 userService.getUsers(SecurityContextHolder.getContext().getAuthentication().getName());
-        User currentUser =  null;
+        User currentUser = null;
 
         if (userList != null && !userList.isEmpty())
             currentUser = userList.get(0);
@@ -123,7 +120,6 @@ public class MVCController {
         }
 
         return model;
-
     }
 
     //for 403 access denied page
@@ -142,7 +138,6 @@ public class MVCController {
 
         model.setViewName("403");
         return model;
-
     }
 
     private String getApplicationPath() {

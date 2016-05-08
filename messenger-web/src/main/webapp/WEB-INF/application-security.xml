@@ -7,13 +7,14 @@
                            http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <http pattern="**/resources/**" security="none"/>
+    <http pattern="/resources/**" security="none"/>
+    <http pattern="/favicon.ico" security="none"/>
 
     <http use-expressions="true">
 
         <intercept-url pattern="/login" method="GET" access="permitAll"/>
         <intercept-url pattern="/register" method="GET" access="permitAll"/>
-        <intercept-url pattern="/api/users" method="POST" access="permitAll"/>
+        <intercept-url pattern="/api/users" method="POST" access="permitAll"/> <!--registration-->
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
 
         <form-login
@@ -24,7 +25,7 @@
             username-parameter="username"
             password-parameter="password" />
 
-        <logout logout-success-url="/index"
+        <logout logout-success-url="/login?logout"
             logout-url="/j_spring_security_logout"/>
 
         <csrf disabled="true"/>
