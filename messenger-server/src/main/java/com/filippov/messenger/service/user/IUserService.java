@@ -5,7 +5,7 @@ import com.filippov.messenger.entity.user.User;
 import java.util.List;
 
 public interface IUserService {
-    User createUser(String email, String password);
+    User createUser(String email, String password, String name);
 
     User getUserById(Integer id);
 

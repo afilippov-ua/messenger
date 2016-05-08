@@ -28,6 +28,12 @@ public class User implements Serializable {
         setPassword(password);
     }
 
+    public User(String email, String password, String name){
+        setEmail(email);
+        setPassword(password);
+        setName(name);
+    }
+
     public User() {
     }
 

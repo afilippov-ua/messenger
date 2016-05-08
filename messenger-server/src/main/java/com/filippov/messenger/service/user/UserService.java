@@ -20,12 +20,12 @@ public class UserService implements IUserService {
     private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public User createUser(String email, String password) {
+    public User createUser(String email, String password, String name) {
         if (email == null || password == null)
             return null;
         if (userDao.getUserByEmail(email) != null)
             return null;
-        return userDao.createUser(new User(email, passwordEncoder.encode(password)));
+        return userDao.createUser(new User(email, passwordEncoder.encode(password), name));
     }
 
     @Transactional(readOnly = true)

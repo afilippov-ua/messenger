@@ -1,10 +1,11 @@
-function restAddNewUser(email, password, cbDone, cbFail) {
+function restAddNewUser(email, password, username, cbDone, cbFail) {
     $.ajax({
             url: restUserPath,
             type: "POST",
             data: {
                 "email": encodeURIComponent(email),
-                "password": encodeURIComponent(password)
+                "password": encodeURIComponent(password),
+                "username": encodeURIComponent(username)
             }
         })
         .done(cbDone)

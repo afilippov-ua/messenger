@@ -56,14 +56,15 @@ public class UserServiceTest {
     public void createUserTest() {
         String pass = "12345";
         String hash = "$2a$10$coqkujwDNFhiIlSEbvtAxuRo5kTC0WpqzBgtX7rzfifA7m3s7t092";
-        User testUser = new User("test user", hash);
+        String name = "username";
+        User testUser = new User("test user", hash, name);
         expect(mockDao.getUserByEmail(testUser.getEmail())).andReturn(null).once();
         expect(mockPasswordEncoder.encode(eq(pass))).andReturn(hash).once();
         expect(mockDao.createUser(eq(testUser))).andReturn(testUser).once();
         replay(mockDao);
         replay(mockPasswordEncoder);
 
-        User user = userService.createUser(testUser.getEmail(), pass);
+        User user = userService.createUser(testUser.getEmail(), pass, name);
         verify(mockDao);
         verify(mockPasswordEncoder);
         assertNotNull(user);
@@ -78,7 +79,7 @@ public class UserServiceTest {
         expect(mockDao.getUserByEmail(testUser.getEmail())).andReturn(testUser).once();
         replay(mockDao);
 
-        assertNull(userService.createUser(testUser.getEmail(), testUser.getPassword()));
+        assertNull(userService.createUser(testUser.getEmail(), testUser.getPassword(), ""));
         verify(mockDao);
     }
 
@@ -88,13 +89,13 @@ public class UserServiceTest {
     public void createUserIllegalArgumentsTest() {
         replay(mockDao);
 
-        assertNull(userService.createUser(null, testUser1.getPassword()));
+        assertNull(userService.createUser(null, testUser1.getPassword(), testUser1.getName()));
         verify(mockDao);
 
         reset(mockDao);
         replay(mockDao);
-        assertNull(userService.createUser(testUser1.getEmail(), null));
-        verify(mockDao);;
+        assertNull(userService.createUser(testUser1.getEmail(), null, testUser1.getName()));
+        verify(mockDao);
     }
 
     /* Test method: "getUserById()" */

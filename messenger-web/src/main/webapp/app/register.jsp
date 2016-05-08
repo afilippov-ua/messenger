@@ -38,6 +38,10 @@
     </div>
     <span name="error" class="alert-danger"></span>
     <div class="form-group">
+        <input type="text" id="username" class="form-control" placeholder="username" required>
+    </div>
+    <span name="error" class="alert-danger"></span>
+    <div class="form-group">
         <input type="password" id="password" class="form-control" placeholder="password" required>
     </div>
     <span name="error" class="alert-danger"></span>

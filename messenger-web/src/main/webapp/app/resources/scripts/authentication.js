@@ -1,16 +1,16 @@
 $(document).ready(function () {
+    var btn = $(".btn");
     $(".form-control").on("keypress", function (event) {
         if (event.keyCode == 13)
-            $(".btn").click();
+            btn.click();
     });
-    var btn = $(".btn");
     if (btn.html() == "Login") {
         btn.on("click", function (event) {
             login();
         });
-    } else if (btn.html() == "Registration") {
+    } else if (btn.html() == "Register") {
         btn.on("click", function (event) {
-            login();
+            registration();
         });
     }
 });
@@ -60,9 +60,10 @@ function registration() {
     var email = $("#email");
     var password = $("#password");
     var passwordVerify = $("#password-verify");
+    var username = $("#username");
 
     if (validateRegistrationInput(email, password, passwordVerify)) {
-        restAddNewUser(email.val(), password.val(),
+        restAddNewUser(email.val(), password.val(), username.val(),
             function done() {
                 $("#panel-info")
                     .removeClass("alert-warning")

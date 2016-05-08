@@ -22,15 +22,17 @@ public class UserController implements IUserController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createUser(@RequestParam("email") String email,
-                                     @RequestParam("password") String password) {
+                                     @RequestParam("password") String password,
+                                     @RequestParam("username") String username) {
         try {
             email = URLDecoder.decode(email, "UTF-8");
             password = URLDecoder.decode(password, "UTF-8");
+            username = URLDecoder.decode(username, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        if (userService.createUser(email, password) == null)
+        if (userService.createUser(email, password, username) == null)
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         else
             return new ResponseEntity(HttpStatus.CREATED);
