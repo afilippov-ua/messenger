@@ -22,7 +22,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="/login">Login</a></li>
-                <li class="active"><a href="#about">Register</a></li>
+                <li class="active"><a href="/register">Register</a></li>
             </ul>
         </div>
     </div>
@@ -34,17 +34,17 @@
     <h3 class="form-signin-heading">Registration</h3>
     <span name="error" class="alert-danger"></span>
     <div class="form-group">
-        <input type="email" id="email" class="form-control" placeholder="email" onkeyup = "if (event.keyCode == 13) $('#btn-register').click()" required autofocus>
+        <input type="email" id="email" class="form-control" placeholder="email" required autofocus>
     </div>
     <span name="error" class="alert-danger"></span>
     <div class="form-group">
-        <input type="password" id="password" class="form-control" placeholder="password" onkeyup = "if (event.keyCode == 13) $('#btn-register').click()" required>
+        <input type="password" id="password" class="form-control" placeholder="password" required>
     </div>
     <span name="error" class="alert-danger"></span>
     <div class="form-group">
-        <input type="password" id="password-verify" class="form-control" placeholder="verify password" onkeyup = "if (event.keyCode == 13) $('#btn-register').click()" required>
+        <input type="password" id="password-verify" class="form-control" placeholder="verify password" required>
     </div>
-    <button id="btn-register" class="btn btn-lg btn-primary btn-block"type="button" onclick="registration()">Register</button>
+    <button class="btn btn-lg btn-primary btn-block" type="button">Register</button>
 </div>
 
 </body>

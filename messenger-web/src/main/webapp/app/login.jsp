@@ -20,7 +20,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Login</a></li>
+                <li class="active"><a href="/login">Login</a></li>
                 <li><a href="/register">Register</a></li>
             </ul>
         </div>
@@ -43,7 +43,7 @@
     <div class="form-group">
         <input type="password" name="password" id="password" class="form-control" placeholder="password" required>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="button" onclick="login()">Login</button>
+    <button class="btn btn-lg btn-primary btn-block" type="button">Login</button>
 </form>
 
 

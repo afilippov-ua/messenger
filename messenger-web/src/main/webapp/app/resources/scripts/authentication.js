@@ -1,3 +1,20 @@
+$(document).ready(function () {
+    $(".form-control").on("keypress", function (event) {
+        if (event.keyCode == 13)
+            $(".btn").click();
+    });
+    var btn = $(".btn");
+    if (btn.html() == "Login") {
+        btn.on("click", function (event) {
+            login();
+        });
+    } else if (btn.html() == "Registration") {
+        btn.on("click", function (event) {
+            login();
+        });
+    }
+});
+
 function logout() {
     $.ajax({
             url: "/j_spring_security_logout",
@@ -16,7 +33,7 @@ function login() {
     var email = $("#email");
     var password = $("#password");
 
-    if(validateLoginInput(email, password)) {
+    if (validateLoginInput(email, password)) {
         $(".form-signin").submit();
     }
 }
@@ -30,7 +47,7 @@ function validateLoginInput(email, password) {
             .html("Incorrect email");
         fail = true;
     }
-    if(password.val() == "") {
+    if (password.val() == "") {
         password.parent().prev()
             .html("Empty password");
         fail = true;
@@ -73,7 +90,7 @@ function validateRegistrationInput(email, password, passwordVerify) {
             .html("Incorrect email");
         fail = true;
     }
-    if(password.val() == "") {
+    if (password.val() == "") {
         password.parent().prev()
             .html("Empty password");
         fail = true;
