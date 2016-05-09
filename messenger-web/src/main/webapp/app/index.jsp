@@ -58,7 +58,7 @@
                         <div class="input-group input-group-lg">
                             <input id="message-text" type="text" maxlength="255" class="form-control">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" onclick="sendMessage()" type="button">Send</button>
+                                <button class="btn btn-default" type="button">Send</button>
                             </span>
                         </div>
                         <div id="warningInfo" class="alert alert-warning" hidden role="alert">sending error... please,
