@@ -29,7 +29,9 @@ public class ContactController implements IContactController {
             @RequestHeader("ownerId") Integer ownerId,
             @RequestHeader("contactId") Integer contactId,
             @RequestHeader("name") String name) {
-        logger.trace(String.format("/api/contacts (POST) - method \"createContact\", ownerId: \"%d\", contactId: \"%d\", name: \"%s\"", ownerId, contactId, name));
+        if (logger.isTraceEnabled()) {
+            logger.trace(String.format("/api/contacts (POST) - method \"createContact\", ownerId: \"%d\", contactId: \"%d\", name: \"%s\"", ownerId, contactId, name));
+        }
         try {
             name = URLDecoder.decode(name, "UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -45,7 +47,9 @@ public class ContactController implements IContactController {
     @Transactional
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Contact> getContact(@PathVariable("id") Integer id) {
-        logger.trace(String.format("/api/contacts/%d (GET) - method \"getContact\"", id));
+        if (logger.isTraceEnabled()) {
+            logger.trace(String.format("/api/contacts/%d (GET) - method \"getContact\"", id));
+        }
         Contact contact = contactService.getContact(id);
         if (contact == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -57,14 +61,18 @@ public class ContactController implements IContactController {
     @Transactional
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Contact>> getContacts(@RequestParam("ownerId") Integer ownerId) {
-        logger.trace(String.format("/api/contacts (GET) - method \"getContacts\", ownerId: \"%d\"", ownerId));
+        if (logger.isTraceEnabled()) {
+            logger.trace(String.format("/api/contacts (GET) - method \"getContacts\", ownerId: \"%d\"", ownerId));
+        }
         return new ResponseEntity<>(contactService.getContacts(ownerId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateContact(@PathVariable("id") Integer id,
                                         @RequestBody Contact sourceContact) {
-        logger.trace(String.format("/api/contacts/%d (PUT) - method \"updateContact\", sourceContact: %s", id, sourceContact));
+        if (logger.isTraceEnabled()) {
+            logger.trace(String.format("/api/contacts/%d (PUT) - method \"updateContact\", sourceContact: %s", id, sourceContact));
+        }
         if (contactService.updateContact(id, sourceContact))
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         else
@@ -74,7 +82,9 @@ public class ContactController implements IContactController {
     @Transactional
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteContact(@PathVariable("id") Integer id) {
-        logger.trace(String.format("/api/contacts/%d (DELETE) - method \"deleteContact\"", id));
+        if (logger.isTraceEnabled()) {
+            logger.trace(String.format("/api/contacts/%d (DELETE) - method \"deleteContact\"", id));
+        }
         if (contactService.deleteContact(id))
             return new ResponseEntity(HttpStatus.OK);
         else
