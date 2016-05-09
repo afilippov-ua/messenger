@@ -16,8 +16,20 @@
     </modules>
 
     <properties>
-        <spring-version>4.0.1.RELEASE</spring-version>
-        <jackson-version>2.7.3</jackson-version>
+        <spring.version>4.0.1.RELEASE</spring.version>
+        <hibernate.core.version>4.3.8.Final</hibernate.core.version>
+        <jackson.version>2.7.3</jackson.version>
+        <jackson.mapper.asl.version>1.9.13</jackson.mapper.asl.version>
+        <h2.version>1.4.186</h2.version>
+        <mysql.version>5.1.38</mysql.version>
+        <jstl.version>1.2</jstl.version>
+        <junit.version>4.12</junit.version>
+        <easymock.version>3.3.1</easymock.version>
+        <log4j.version>1.2.14</log4j.version>
+        <servlet.api.version>2.5</servlet.api.version>
+        <javax.inject.version>1</javax.inject.version>
+        <maven.compiler.plugin.version>2.2</maven.compiler.plugin.version>
+        <tomcat7.maven.plugin.version>2.2</tomcat7.maven.plugin.version>
     </properties>
 
     <profiles>
@@ -61,13 +73,13 @@
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
-            <version>1</version>
+            <version>${javax.inject.version}</version>
         </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <version>${servlet.api.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -75,77 +87,77 @@
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.14</version>
+            <version>${log4j.version}</version>
         </dependency>
 
         <!-- SPRING -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>${spring-version}</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${spring-version}</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${spring-version}</version>
+            <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>${spring-version}</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${spring-version}</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>${spring-version}</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!-- JACKSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson-version}</version>
+            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${jackson-version}</version>
+            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>${jackson-version}</version>
+            <version>${jackson.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.13</version>
+            <version>${jackson.mapper.asl.version}</version>
         </dependency>
 
         <!-- JUNIT -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -153,47 +165,46 @@
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
-            <version>3.3.1</version>
+            <version>${easymock.version}</version>
         </dependency>
 
         <!-- Spring Security JSP Taglib -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-            <version>${spring-version}</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!-- jstl for jsp page -->
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
-            <version>1.2</version>
+            <version>${jstl.version}</version>
         </dependency>
 
         <!-- H2 -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.186</version>
+            <version>${h2.version}</version>
         </dependency>
 
         <!-- MySQL -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.38</version>
+            <version>${mysql.version}</version>
         </dependency>
 
     </dependencies>
 
-    <!-- TOMCAT 7 PLUGIN -->
     <build>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.tomcat.maven</groupId>
                     <artifactId>tomcat7-maven-plugin</artifactId>
-                    <version>2.2</version>
+                    <version>${tomcat7.maven.plugin.version}</version>
                     <configuration>
                         <port>8555</port>
                         <path>/</path>
@@ -209,7 +220,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.2</version>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
