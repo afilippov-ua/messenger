@@ -127,4 +127,16 @@ public class Message implements Serializable {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", messageDate=" + messageDate +
+                ", userSender.Id=" + userSender.getId() +
+                ", userReceiver.Id=" + userReceiver.getId() +
+                ", text='" + text + '\'' +
+                ", seen=" + seen +
+                '}';
+    }
 }

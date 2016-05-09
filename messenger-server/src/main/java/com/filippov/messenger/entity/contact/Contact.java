@@ -87,8 +87,8 @@ public class Contact implements Serializable {
     public String toString() {
         return "Contact{" +
                 "id=" + id +
-                ", ownerUser=" + ownerUser +
-                ", contactUser=" + contactUser +
+                ", ownerUser.Id=" + ownerUser.getId() +
+                ", contactUser.Id=" + contactUser.getId() +
                 ", contactName='" + contactName + '\'' +
                 '}';
     }
