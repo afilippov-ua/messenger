@@ -22,7 +22,7 @@ public class MessageController implements IMessageController {
     @Autowired
     private IMessageService messageService;
 
-    private static Logger logger = Logger.getLogger(MessageController.class.getName());
+    private static final Logger logger = Logger.getLogger(MessageController.class.getName());
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -21,7 +21,7 @@ public class ContactController implements IContactController {
     @Autowired
     private IContactService contactService;
 
-    private static Logger logger = Logger.getLogger(ContactController.class.getName());
+    private static final Logger logger = Logger.getLogger(ContactController.class.getName());
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST)

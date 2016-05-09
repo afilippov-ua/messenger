@@ -21,7 +21,7 @@ public class UserController implements IUserController {
     @Autowired
     private IUserService userService;
 
-    private static Logger logger = Logger.getLogger(UserController.class.getName());
+    private static final Logger logger = Logger.getLogger(UserController.class.getName());
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createUser(@RequestParam("email") String email,
