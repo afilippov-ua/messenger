@@ -1,53 +1,66 @@
 $(document).ready(function () {
     getUserData();
 
-    //$("#avatar").on("click", function () {
-    //    $('#filename').trigger('click');
-    //});
-    //
-    //$("#filename").change(function() {
-    //    //var file = this.files[0];
-    //    //var name = file.name;
-    //    //var size = file.size;
-    //    //var type = file.type;
-    //    //Your validation
-    //});
-
-    $("#btn-save").on("click", function () {
+    $(".btn").on("click", function () {
         var userId = $("#user-id").val();
-        restGetUserById(userId,
-            function done(data) {
-                // TODO: add validation
-                data.email = $("#email").val();
-                data.password = $("#password").val();
-                data.name = $("#username").val();
+        var email = $("#email");
+        var currentPassword = $("#current-password");
+        var newPassword = $("#new-password");
+        var username = $("#username");
 
-                restUpdateUser(userId, data,
-                    function done() {
-                        $("#password").val("");
-                        $("#panel-info")
-                            .html("Changes have been successful update!")
-                            .removeClass("alert-warning")
-                            .addClass("alert-success")
-                            .show();
-                    },
-                    function fail() {
-                        $("#panel-info")
-                            .html("Update user info error!")
-                            .removeClass("alert-success")
-                            .addClass("alert-warning")
-                            .show();
-                    })
-            },
-            function fail() {
-                $("#panel-info")
-                    .html("Update user info error!")
-                    .removeClass("alert-success")
-                    .addClass("alert-warning")
-                    .show();
-            })
+        if (verifyInputData(email, username, currentPassword, newPassword)) {
+            restGetUserById(userId,
+                function done(data) {
+                    // TODO: add validation
+                    data.email = email.val();
+                    data.password = newPassword.val();
+                    data.name = username.val();
+
+                    restUpdateUser(userId, data,
+                        function done() {
+                            currentPassword.val("");
+                            newPassword.val("");
+                            $("#panel-info")
+                                .html("Changes have been successful update!")
+                                .removeClass("alert-warning")
+                                .addClass("alert-success")
+                                .show();
+                        },
+                        function fail() {
+                            $("#panel-info")
+                                .html("Update user info error!")
+                                .removeClass("alert-success")
+                                .addClass("alert-warning")
+                                .show();
+                        })
+                },
+                function fail() {
+                    $("#panel-info")
+                        .html("Update user info error!")
+                        .removeClass("alert-success")
+                        .addClass("alert-warning")
+                        .show();
+                })
+        }
     })
 });
+
+function verifyInputData(email, username, currentPassword, newPassword) {
+    email.parent().prev().html("");
+    currentPassword.parent().prev().html("");
+    fail = false;
+    if (email.val() == "") {
+        email.parent().prev()
+            .html("You have to enter your current email");
+        fail = true;
+    }
+    if (newPassword.val() != "" && currentPassword.val() == "") {
+        currentPassword.parent().prev()
+            .html("You have to enter your current password");
+        fail = true;
+    }
+    return !fail;
+}
 
 function getUserData() {
     restGetUserById($("#user-id").val(),

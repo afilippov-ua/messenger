@@ -40,20 +40,28 @@
             <div class="panel-group">
                 <p><img id="avatar" src="resources/no_image.jpg"></p>
             </div>
+            <span name="error" class="alert-danger"></span>
             <div class="panel-group">
                 <label for="email" class="control-label">email:</label>
                 <input id="email" type="email" class="form-control" placeholder="email" required autofocus>
             </div>
+            <span name="error" class="alert-danger"></span>
             <div class="panel-group">
-                <label for="password" class="control-label">password:</label>
-                <input id="password" type="password" class="form-control" placeholder="password" required>
+                <label for="password" class="control-label">current password:</label>
+                <input id="current-password" type="password" class="form-control" placeholder="current password" required>
             </div>
+            <span name="error" class="alert-danger"></span>
+            <div class="panel-group">
+                <label for="password" class="control-label">new password:</label>
+                <input id="new-password" type="password" class="form-control" placeholder="new password" required>
+            </div>
+            <span name="error" class="alert-danger"></span>
             <div class="panel-group">
                 <label for="username" class="control-label">username:</label>
                 <input id="username" type="text" class="form-control" placeholder="username" required>
             </div>
             <div class="panel-group">
-                <button id="btn-save" class="btn btn-lg btn-primary btn-block" type="submit">Save changes</button>
+                <button class="btn btn-lg btn-primary btn-block" type="button">Save changes</button>
                 <div id="panel-info" class="alert alert-success" hidden role="alert"></div>
             </div>
         </div>
