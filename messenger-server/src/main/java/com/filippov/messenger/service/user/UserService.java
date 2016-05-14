@@ -19,15 +19,17 @@ public class UserService implements IUserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Override
     @Transactional
     public User createUser(String email, String password, String name) {
         if (email == null || password == null)
             return null;
         if (userDao.getUserByEmail(email) != null)
             return null;
-        return userDao.createUser(new User(email, passwordEncoder.encode(password), name));
+        return userDao.createUser(new User(email, password, name));
     }
 
+    @Override
     @Transactional(readOnly = true)
     public User getUserById(Integer id) {
         if (id == null)
@@ -35,6 +37,15 @@ public class UserService implements IUserService {
         return userDao.getUserById(id);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public User getUserByEmail(String email) {
+        if (email == null)
+            return null;
+        return userDao.getUserByEmail(email);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<User> getUsers(String email) {
         List<User> userList = null;
@@ -50,6 +61,7 @@ public class UserService implements IUserService {
         return userList;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<User> findUsersByEmailOrName(String text) {
         if (text == null)
@@ -57,6 +69,7 @@ public class UserService implements IUserService {
         return userDao.findUsersByNameOrEmail(text);
     }
 
+    @Override
     @Transactional
     public boolean updateUser(Integer id, User sourceUser) {
         if (id == null || sourceUser == null)
@@ -68,10 +81,11 @@ public class UserService implements IUserService {
 
         currentUser.setName(sourceUser.getName());
         currentUser.setEmail(sourceUser.getEmail());
-        currentUser.setPassword(passwordEncoder.encode(sourceUser.getPassword()));
+        currentUser.setPassword(sourceUser.getPassword());
         return userDao.updateUser(currentUser);
     }
 
+    @Override
     @Transactional
     public boolean deleteUser(Integer id) {
         if (id == null)
@@ -82,5 +96,10 @@ public class UserService implements IUserService {
             return false;
 
         return userDao.deleteUser(currentUser);
+    }
+
+    @Override
+    public String encodePassword(String decodePassword) {
+        return passwordEncoder.encode(decodePassword);
     }
 }

@@ -9,6 +9,8 @@ public interface IUserService {
 
     User getUserById(Integer id);
 
+    User getUserByEmail(String email);
+
     List<User> getUsers(String email);
 
     List<User> findUsersByEmailOrName(String text);
@@ -16,4 +18,6 @@ public interface IUserService {
     boolean updateUser(Integer id, User sourceUser);
 
     boolean deleteUser(Integer id);
+
+    String encodePassword(String decodePassword);
 }
