@@ -25,7 +25,7 @@ public class ContactController implements IContactController {
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createContact(
+    public ResponseEntity<Integer> createContact(
             @RequestHeader("ownerId") Integer ownerId,
             @RequestHeader("contactId") Integer contactId,
             @RequestHeader("name") String name) {
@@ -35,13 +35,14 @@ public class ContactController implements IContactController {
         try {
             name = URLDecoder.decode(name, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(0, HttpStatus.BAD_REQUEST);
         }
 
-        if (contactService.createContact(ownerId, contactId, name) == null)
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        Contact newContact = contactService.createContact(ownerId, contactId, name);
+        if (newContact == null)
+            return new ResponseEntity<>(0, HttpStatus.BAD_REQUEST);
         else
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(newContact.getId(), HttpStatus.OK);
     }
 
     @Transactional

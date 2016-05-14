@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface IContactController {
-    ResponseEntity createContact(Integer ownerId, Integer contactId, String name);
+    ResponseEntity<Integer> createContact(Integer ownerId, Integer contactId, String name);
 
     ResponseEntity<Contact> getContact(Integer id);
 

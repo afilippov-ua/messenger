@@ -24,7 +24,7 @@ public class UserController implements IUserController {
     private static final Logger logger = Logger.getLogger(UserController.class.getName());
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createUser(@RequestParam("email") String email,
+    public ResponseEntity<Integer> createUser(@RequestParam("email") String email,
                                      @RequestParam("password") String password,
                                      @RequestParam("username") String username) {
         if (logger.isTraceEnabled()) {
@@ -35,13 +35,14 @@ public class UserController implements IUserController {
             password = URLDecoder.decode(password, "UTF-8");
             username = URLDecoder.decode(username, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(0, HttpStatus.BAD_REQUEST);
         }
 
-        if (userService.createUser(email, password, username) == null)
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        User newUser = userService.createUser(email, userService.encodePassword(password), username);
+        if (newUser == null)
+            return new ResponseEntity<>(0, HttpStatus.BAD_REQUEST);
         else
-            return new ResponseEntity(HttpStatus.CREATED);
+            return new ResponseEntity<>(newUser.getId(), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -93,7 +94,7 @@ public class UserController implements IUserController {
                     userById.setEmail(sourceUser.getEmail());
                 }
                 if (sourceUser.getPassword() != null && !sourceUser.getPassword().isEmpty()) {
-                    userById.setPassword(sourceUser.getPassword());
+                    userById.setPassword(userService.encodePassword(sourceUser.getPassword()));
                 }
                 userById.setName(sourceUser.getName());
                 if (userService.updateUser(id, userById))

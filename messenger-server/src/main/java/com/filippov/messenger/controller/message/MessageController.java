@@ -26,7 +26,7 @@ public class MessageController implements IMessageController {
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createMessage(@RequestHeader("userId") Integer senderId,
+    public ResponseEntity<Integer> createMessage(@RequestHeader("userId") Integer senderId,
                                         @RequestHeader("receiverId") Integer receiverId,
                                         @RequestBody String messageText) {
         if (logger.isTraceEnabled()) {
@@ -35,13 +35,14 @@ public class MessageController implements IMessageController {
         try {
             messageText = URLDecoder.decode(messageText, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(0, HttpStatus.BAD_REQUEST);
         }
 
-        if (messageService.createMessage(senderId, receiverId, messageText) == null)
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        Message newMessage = messageService.createMessage(senderId, receiverId, messageText);
+        if (newMessage == null)
+            return new ResponseEntity<>(0, HttpStatus.BAD_REQUEST);
         else
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(newMessage.getId(), HttpStatus.OK);
     }
 
     @Transactional

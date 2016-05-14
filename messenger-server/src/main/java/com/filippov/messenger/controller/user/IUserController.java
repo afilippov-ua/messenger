@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface IUserController {
-    ResponseEntity createUser(String email, String password, String username);
+    ResponseEntity<Integer> createUser(String email, String password, String username);
 
     ResponseEntity<User> getUser(Integer id);
 

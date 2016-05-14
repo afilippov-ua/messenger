@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface IMessageController {
-    ResponseEntity createMessage(Integer senderId, Integer receiverId, String messageText);
+    ResponseEntity<Integer> createMessage(Integer senderId, Integer receiverId, String messageText);
 
     ResponseEntity<Message> getMessage(Integer userId, Integer messageId);
 
