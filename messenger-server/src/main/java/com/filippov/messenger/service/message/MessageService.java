@@ -20,6 +20,7 @@ public class MessageService implements IMessageService {
     @Autowired
     private IUserDao userDao;
 
+    @Override
     @Transactional
     public Message createMessage(Integer senderId, Integer receiverId, String messageText) {
         if (senderId == null || receiverId == null || messageText == null)
@@ -34,6 +35,7 @@ public class MessageService implements IMessageService {
             return null;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Message getMessage(Integer userId, Integer messageId) {
         if (userId == null || messageId == null)
@@ -46,6 +48,7 @@ public class MessageService implements IMessageService {
         return messageDao.getMessage(user, messageId);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<Message> getMessages(Integer senderId, Integer receiverId, Integer firstMessageId) throws IllegalArgumentException {
         if (senderId == null || receiverId == null)
@@ -64,6 +67,7 @@ public class MessageService implements IMessageService {
         return messageDao.getMessages(userSender, userReceiver, firstMessage);
     }
 
+    @Override
     @Transactional
     public boolean updateMessage(Integer userId, Integer messageId, Message sourceMessage) {
         if (userId == null || messageId == null || sourceMessage == null)
@@ -83,6 +87,7 @@ public class MessageService implements IMessageService {
         return messageDao.updateMessage(currentMessage);
     }
 
+    @Override
     @Transactional
     public boolean deleteMessage(Integer userId, Integer messageId) {
         if (userId == null || messageId == null)

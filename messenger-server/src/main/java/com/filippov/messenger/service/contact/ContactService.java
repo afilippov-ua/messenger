@@ -19,6 +19,7 @@ public class ContactService implements IContactService {
     @Autowired
     private IUserDao userDao;
 
+    @Override
     @Transactional
     public Contact createContact(Integer ownerId, Integer contactId, String name) {
         if (ownerId == null || contactId == null || name == null)
@@ -37,6 +38,7 @@ public class ContactService implements IContactService {
         return null;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Contact getContact(Integer id) {
         if (id == null)
@@ -45,6 +47,7 @@ public class ContactService implements IContactService {
         return contactDao.getContact(id);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<Contact> getContacts(Integer userId) {
         if (userId == null)
@@ -58,6 +61,7 @@ public class ContactService implements IContactService {
         }
     }
 
+    @Override
     @Transactional
     public boolean updateContact(Integer id, Contact sourceContact) {
         if (id == null || sourceContact == null)
@@ -70,6 +74,7 @@ public class ContactService implements IContactService {
         return contactDao.updateContact(contact);
     }
 
+    @Override
     @Transactional
     public boolean deleteContact(Integer id) {
         if (id == null)
