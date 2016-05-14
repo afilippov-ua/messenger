@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    var btn = $(".btn");
-    $(".form-control").on("keypress", function (event) {
+    var btn = $(".form-signin .btn");
+    $(".form-signin .form-control").on("keypress", function (event) {
         if (event.keyCode == 13)
             btn.click();
     });
