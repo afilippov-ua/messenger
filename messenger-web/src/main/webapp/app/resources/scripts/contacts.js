@@ -3,11 +3,15 @@ $(document).ready(function () {
         if (event.keyCode == 13)
             findContacts();
     });
-    $("#find-contact-btn").on("click", function (event) {
+    $("#contact-new-name").on("keypress", function (event) {
+        if (event.keyCode == 13)
+            $("#modal-btn-save-contact").click();
+    });
+    $("#contact-find-btn").on("click", function (event) {
         findContacts();
     });
     $("#contact-edit-btn").on("click", function () {
-        var name = $("#contacts li.active a").html();
+        var name = $("#contacts li.active a span").html();
         if (name == undefined)
             return;
 
@@ -27,7 +31,9 @@ $(document).ready(function () {
         });
         $("#modal-confirm").modal("show");
     });
-
+    $('#modal-enter-name').on('shown.bs.modal', function () {
+        $('#contact-new-name').focus();
+    })
     loadContacts();
 });
 
@@ -39,31 +45,54 @@ function findContacts() {
         return;
 
     restGetUsersByNameOrEmail(findText,
-        function done(data) {
-            $("#table-contacts-body").html("");
-            if (data.length != 0) {
-                data.forEach(function (user) {
-                    $("#table-contacts-body")
-                        .append(
-                        $("<tr onclick='rowOnClick(this)'></tr>")
-                            .attr("user-id", user.id)
-                            .append(
-                            $("<td>" + user.id + "</td>"))
-                            .append(
-                            $("<td><b>" + user.name + "</b></td>"))
-                            .append(
-                            $("<td>" + user.email + "</td>"))
-                            .append(
-                            $("<td></td>").append(
-                                $("<button onclick='addNewContactOnClick(this)'>add</button>")
-                                    .attr("type", "button")
-                                    .addClass("btn")
-                                    .addClass("btn-danger")
-                                    .attr("user-name", user.name))
-                        )
-                    );
-                })
-            }
+        function done(dataUsers) {
+            var userId = $("#user-id").val();
+            restGetContactsByOwner(userId,
+                function done(dataContacts) {
+                    $("#table-contacts-body").html("");
+                    var contacts = [];
+                    contacts.push(userId);
+                    dataContacts.forEach(function (contact) {
+                        contacts.push(contact.contactUser.id);
+                    });
+                    if (dataUsers.length != 0) {
+                        dataUsers.forEach(function (user) {
+                            var button = $("<button>add</button>")
+                                .attr("type", "button")
+                                .addClass("btn")
+                                .attr("user-name", ((user.name) ? user.name : user.email))
+                                .on("click", function () {
+                                    addNewContactOnClick(this);
+                                });
+                            if ($.inArray(user.id, contacts) != -1) {
+                                button.addClass("btn-success")
+                                button.prop('disabled', true);
+                            } else {
+                                button.addClass("btn-danger")
+                            }
+                            $("#table-contacts-body")
+                                .append(
+                                    $("<tr></tr>")
+                                        .attr("user-id", user.id)
+                                        .append(
+                                            $("<td>" + user.id + "</td>"))
+                                        .append(
+                                            $("<td><b>" + user.name + "</b></td>"))
+                                        .append(
+                                            $("<td>" + user.email + "</td>"))
+                                        .append(
+                                            $("<td></td>").append(button)
+                                        ).on("click", function () {
+                                        rowOnClick(this)
+                                    })
+                                )
+                            ;
+                        })
+                    }
+                },
+                function fail() {
+                    alert("get contact list error...");
+                });
         },
         function fail(request, statusText) {
             alert("get users by name or email error...");
@@ -76,10 +105,7 @@ function loadContacts() {
     restGetContactsByOwner($("#user-id").val(),
         function done(data) {
             data.forEach(function (contact) {
-                $("#contacts").append(
-                    $("<li onclick=\"selectContact(this)\"><a href=\"#\">" + contact.contactName + "</a></li>")
-                        .attr("contact-id", contact.id)
-                        .attr("user-id", contact.contactUser.id));
+                addContactElement(contact);
             });
 
             $("#contacts li:first-child").addClass("active");
@@ -89,6 +115,17 @@ function loadContacts() {
         function fail() {
             $("#contacts").html("");
         });
+}
+
+function addContactElement(contact) {
+    $("#contacts").append(
+        $("<li><a href=\"#\"><b><span>" + contact.contactName + "</span></b><br><sup>(" + contact.contactUser.email + ")</sup></a></li>")
+            .attr("contact-id", contact.id)
+            .attr("user-id", contact.contactUser.id)
+            .on("click", function () {
+                selectContact(this);
+            })
+    )
 }
 
 // set active selected contact
@@ -110,7 +147,7 @@ function editContact() {
                 contact.contactName = newName;
                 restUpdateContact(contactId, contact,
                     function done() {
-                        $("#contacts li.active a").html($("#contact-new-name").val());
+                        $("#contacts li.active a span").html($("#contact-new-name").val());
                         $("#contact-new-name").val("");
                         $("#modal-btn-save-contact").unbind();
                         $("#modal-enter-name").modal("hide");
@@ -129,7 +166,12 @@ function editContact() {
 function deleteContact(contactId) {
     restDeleteContact(contactId,
         function done() {
-            loadContacts();
+            var delUserId = $("#contacts li.active").attr("user-id");
+            $("tbody tr[user-id=" + delUserId + "] .btn")
+                .removeClass("btn-success")
+                .addClass("btn-danger")
+                .prop('disabled', false);
+            $("#contacts li.active").remove();
             $("#modal-confirm").modal("hide");
             $("#modal-btn-confirm").unbind();
         },
@@ -146,7 +188,6 @@ function rowOnClick(elem) {
 
 function addNewContactOnClick(elem) {
     var contactName = $(elem).attr("user-name");
-
     $("#contact-new-name").val(contactName);
     $("#modal-btn-save-contact").bind('click', function () {
         addNewContactConfirm();
@@ -160,10 +201,20 @@ function addNewContactConfirm() {
     var contactName = $("#contact-new-name").val();
 
     restAddNewContact(userId, contactId, contactName,
-        function done() {
-            loadContacts();
+        function done(contactId) {
+            $("#table-contacts tbody tr.active .btn")
+                .removeClass("btn-danger")
+                .addClass("btn-success")
+                .prop('disabled', true);
             $("#modal-btn-save-contact").unbind();
             $("#modal-enter-name").modal("hide");
+            restGetContactById(contactId,
+                function done(contact) {
+                    addContactElement(contact);
+                },
+                function fail() {
+                    alert("get contact error...");
+                })
         },
         function fail() {
             $("#modal-btn-save-contact").unbind();

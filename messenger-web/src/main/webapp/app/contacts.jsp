@@ -110,7 +110,7 @@
                         <div class="col-lg-6">
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button id="find-contact-btn" class="btn btn-default" type="button">Find:</button>
+                                    <button id="contact-find-btn" class="btn btn-default" type="button">Find:</button>
                                 </span>
                                 <input id="find-contact-text" type="text" class="form-control" placeholder="name or email">
                             </div>

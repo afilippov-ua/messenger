@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    window.setInterval("loadMessages();", 1000);
+    // window.setInterval("loadMessages();", 1000);
     $("#message-text").on("keypress", function (event) {
         if (event.keyCode == 13)
             sendMessage();
@@ -9,13 +9,17 @@ $(document).ready(function () {
 function loadMessages() {
     var userId = $("#user-id").val();
     var receiverId = $("#contacts li.active").attr("user-id");
-    var receiverName = $("#contacts li.active a").html();
+    var receiverName = $("#contacts li.active a span").html();
 
     if (!receiverId)
         return;
 
     restGetMessagesByOwner(userId, receiverId, undefined,
         function done(data) {
+            if (receiverId != $("#contacts li.active").attr("user-id")) {
+                //receiver was changed
+                return;
+            }
             if (data.length == 30                     // data is available
                 && $("#load-msg").length == 0         // button isn't exist
                 && $("#messages div").length == 0) {  // no messages
@@ -33,6 +37,10 @@ function loadMessages() {
             });
         },
         function fail() {
+            if (userId != $("#contacts li.active").attr("user-id")) {
+                //receiver was changed
+                return;
+            }
             $("#messages").html("");
         })
 }
