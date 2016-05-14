@@ -30,6 +30,7 @@
         <javax.inject.version>1</javax.inject.version>
         <maven.compiler.plugin.version>2.2</maven.compiler.plugin.version>
         <tomcat7.maven.plugin.version>2.2</tomcat7.maven.plugin.version>
+        <commons.fileupload.version>1.3.1</commons.fileupload.version>
     </properties>
 
     <profiles>
@@ -47,6 +48,7 @@
                 <hibernate.format_sql>false</hibernate.format_sql>
                 <hibernate.use_sql_comments>false</hibernate.use_sql_comments>
                 <application.path>http://localhost:8555</application.path>
+                <image.upload.path>/home/alexander/messenger/images/avatars</image.upload.path>
             </properties>
         </profile>
 
@@ -63,6 +65,7 @@
                 <hibernate.format_sql></hibernate.format_sql>
                 <hibernate.use_sql_comments></hibernate.use_sql_comments>
                 <application.path></application.path>
+                <image.upload.path></image.upload.path>
             </properties>
         </profile>
 
@@ -194,6 +197,12 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons.fileupload.version}</version>
         </dependency>
 
     </dependencies>

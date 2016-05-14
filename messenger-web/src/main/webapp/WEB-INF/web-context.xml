@@ -12,6 +12,10 @@
 
     <import resource="classpath*:applicationContext.xml"/>
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:conf.properties"/>
+    </bean>
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
@@ -21,6 +25,7 @@
     <context:component-scan base-package="com.filippov.messenger.controller" />
 
     <!-- RESOURCES -->
+    <mvc:resources mapping="/app/resources/images/avatars/*" location="file:${image.upload.path}/"/>
     <mvc:resources mapping="/app/resources/**" location="/app/resources/" />
     <mvc:resources mapping="/resources/**" location="/app/resources/" />
     <mvc:resources mapping="/favicon.ico" location="/app/resources/" />
@@ -35,6 +40,10 @@
             <value>.jsp</value>
         </property>
         <property name="order" value="1"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="4194304"/> <!--4 Mb-->
     </bean>
 
 </beans>

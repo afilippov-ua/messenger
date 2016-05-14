@@ -4,11 +4,10 @@ $(document).ready(function () {
     $(".btn").on("click", function () {
         var userId = $("#user-id").val();
         var email = $("#email");
-        var currentPassword = $("#current-password");
         var newPassword = $("#new-password");
         var username = $("#username");
 
-        if (verifyInputData(email, username, currentPassword, newPassword)) {
+        if (verifyInputData(email, username, newPassword)) {
             restGetUserById(userId,
                 function done(data) {
                     // TODO: add validation
@@ -18,7 +17,6 @@ $(document).ready(function () {
 
                     restUpdateUser(userId, data,
                         function done() {
-                            currentPassword.val("");
                             newPassword.val("");
                             $("#panel-info")
                                 .html("Changes have been successful update!")
@@ -42,24 +40,86 @@ $(document).ready(function () {
                         .show();
                 })
         }
-    })
+    });
+
+    $("img")
+        .on("click", function () {
+            var input = $("#input-file");
+            if (input) {
+                input.click();
+            }
+        })
+        .on("error", function () {
+            $("img").attr('src', 'resources/no_image.jpg');
+        });
+
+    $("#input-file").on("change", function () {
+        var inputFile = $("#input-file");
+        var file = inputFile[0].files[0];
+
+        inputFile.prev().html("");
+        if (!verifyFileTypes(file.name)) {
+            inputFile.val("");
+            inputFile.prev().html("Upload JPG or PNG images only");
+            return;
+        }
+        uploadPicture(file,
+            function done(imageUrl) {
+                $("img").attr("src", imageUrl);
+            },
+            function fail(data) {
+                inputFile.prev().html("Can't upload image");
+            });
+        inputFile.val("");
+    });
 });
 
-function verifyInputData(email, username, currentPassword, newPassword) {
+function uploadPicture(file, cbDone, cbFail) {
+    var fileExtension = file.name.split('.').pop();
+    var contentType;
+    if (fileExtension == "jpg") {
+        contentType = "image/jpeg";
+    } else if (fileExtension == "png") {
+        contentType = "image/png";
+    } else
+        return;
+
+    var formData = new FormData();
+    formData.append("image", file);
+
+    $.ajax({
+            url: globalAvatarPath,
+            method: "POST",
+            cache: false,
+            // dataType: 'text/plain',
+            processData: false,
+            contentType: false,
+            data: formData
+        })
+        .done(cbDone)
+        .fail(cbFail);
+}
+
+function verifyInputData(email, username, newPassword) {
     email.parent().prev().html("");
-    currentPassword.parent().prev().html("");
     fail = false;
     if (email.val() == "") {
         email.parent().prev()
             .html("You have to enter your current email");
         fail = true;
     }
-    if (newPassword.val() != "" && currentPassword.val() == "") {
-        currentPassword.parent().prev()
-            .html("You have to enter your current password");
-        fail = true;
-    }
     return !fail;
+}
+
+function verifyFileTypes(fileName) {
+    var allowedExtensions = ["jpg", "png"];
+    var fileExtension = fileName.split('.').pop();
+    for (var i = 0; i <= allowedExtensions.length; i++) {
+        if (allowedExtensions[i] == fileExtension) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function getUserData() {
@@ -75,4 +135,5 @@ function getUserData() {
                 .addClass("alert-warning")
                 .show();
         });
+    restGetUserById
 }

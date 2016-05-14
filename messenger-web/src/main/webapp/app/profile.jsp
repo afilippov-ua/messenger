@@ -38,7 +38,9 @@
 
         <div class="panel-body">
             <div class="panel-group">
-                <p><img id="avatar" src="resources/no_image.jpg"></p>
+                <span name="error" class="alert-danger"></span>
+                <input id="input-file" style="display:none" type="file">
+                <img class="img-thumbnail container-fluid" src="/app/resources/images/avatars/${userId}_original.jpg">
             </div>
             <span name="error" class="alert-danger"></span>
             <div class="panel-group">
@@ -47,12 +49,7 @@
             </div>
             <span name="error" class="alert-danger"></span>
             <div class="panel-group">
-                <label for="password" class="control-label">current password:</label>
-                <input id="current-password" type="password" class="form-control" placeholder="current password" required>
-            </div>
-            <span name="error" class="alert-danger"></span>
-            <div class="panel-group">
-                <label for="password" class="control-label">new password:</label>
+                <label for="new-password" class="control-label">new password:</label>
                 <input id="new-password" type="password" class="form-control" placeholder="new password" required>
             </div>
             <span name="error" class="alert-danger"></span>
@@ -65,6 +62,7 @@
                 <div id="panel-info" class="alert alert-success" hidden role="alert"></div>
             </div>
         </div>
+
     </div>
 </div>
 
