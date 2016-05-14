@@ -54,17 +54,15 @@ public class UserServiceTest {
     /* Test method: "createUser()" */
     @Test
     public void createUserTest() {
-        String pass = "12345";
         String hash = "$2a$10$coqkujwDNFhiIlSEbvtAxuRo5kTC0WpqzBgtX7rzfifA7m3s7t092";
         String name = "username";
         User testUser = new User("test user", hash, name);
         expect(mockDao.getUserByEmail(testUser.getEmail())).andReturn(null).once();
-        expect(mockPasswordEncoder.encode(eq(pass))).andReturn(hash).once();
         expect(mockDao.createUser(eq(testUser))).andReturn(testUser).once();
         replay(mockDao);
         replay(mockPasswordEncoder);
 
-        User user = userService.createUser(testUser.getEmail(), pass, name);
+        User user = userService.createUser(testUser.getEmail(), hash, name);
         verify(mockDao);
         verify(mockPasswordEncoder);
         assertNotNull(user);
