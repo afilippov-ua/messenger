@@ -20,11 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        List<User> userList = userService.getUsers(email);
-        User user = null;
-        if (userList != null && !userList.isEmpty())
-            user = userList.get(0);
-
+        User user = userService.getUserByEmail(email);
         if (user != null) {
             Set<GrantedAuthority> roles = new HashSet();
             roles.add(new SimpleGrantedAuthority("ROLE_USER"));
