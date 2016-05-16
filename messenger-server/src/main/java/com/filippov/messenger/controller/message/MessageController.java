@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
@@ -24,7 +23,6 @@ public class MessageController implements IMessageController {
 
     private static final Logger logger = Logger.getLogger(MessageController.class.getName());
 
-    @Transactional
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> createMessage(@RequestHeader("userId") Integer senderId,
                                         @RequestHeader("receiverId") Integer receiverId,
@@ -45,7 +43,6 @@ public class MessageController implements IMessageController {
             return new ResponseEntity<>(newMessage.getId(), HttpStatus.OK);
     }
 
-    @Transactional
     @RequestMapping(value = "/{messageId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Message> getMessage(@RequestParam("userId") Integer userId,
                                               @PathVariable("messageId") Integer messageId) {
@@ -59,7 +56,6 @@ public class MessageController implements IMessageController {
             return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
-    @Transactional
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Message>> getMessages(@RequestParam("senderId") Integer senderId,
                                                      @RequestParam("receiverId") Integer receiverId,
@@ -70,7 +66,6 @@ public class MessageController implements IMessageController {
         return new ResponseEntity<>(messageService.getMessages(senderId, receiverId, firstMessageId), HttpStatus.OK);
     }
 
-    @Transactional
     @RequestMapping(value = "/{messageId}", method = RequestMethod.PUT)
     public ResponseEntity updateMessage(@RequestParam("userId") Integer userId,
                                         @PathVariable("messageId") Integer messageId,
@@ -84,7 +79,6 @@ public class MessageController implements IMessageController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @Transactional
     @RequestMapping(value = "/{messageId}", method = RequestMethod.DELETE)
     public ResponseEntity deleteMessage(@RequestParam("userId") Integer userId,
                                         @PathVariable("messageId") Integer messageId) {

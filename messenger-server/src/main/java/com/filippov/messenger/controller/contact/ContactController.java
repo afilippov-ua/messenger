@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
@@ -23,7 +22,6 @@ public class ContactController implements IContactController {
 
     private static final Logger logger = Logger.getLogger(ContactController.class.getName());
 
-    @Transactional
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Integer> createContact(
             @RequestHeader("ownerId") Integer ownerId,
@@ -45,7 +43,6 @@ public class ContactController implements IContactController {
             return new ResponseEntity<>(newContact.getId(), HttpStatus.OK);
     }
 
-    @Transactional
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Contact> getContact(@PathVariable("id") Integer id) {
         if (logger.isTraceEnabled()) {
@@ -59,7 +56,6 @@ public class ContactController implements IContactController {
         }
     }
 
-    @Transactional
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Contact>> getContacts(@RequestParam("ownerId") Integer ownerId) {
         if (logger.isTraceEnabled()) {
@@ -80,7 +76,6 @@ public class ContactController implements IContactController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
-    @Transactional
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteContact(@PathVariable("id") Integer id) {
         if (logger.isTraceEnabled()) {
