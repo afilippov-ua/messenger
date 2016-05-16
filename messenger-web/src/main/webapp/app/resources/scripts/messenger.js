@@ -1,8 +1,11 @@
 $(document).ready(function () {
-    // window.setInterval("loadMessages();", 1000);
+    window.setInterval("loadMessages();", 1000);
+    $(".btn").on("click", function () {
+        sendMessage();
+    });
     $("#message-text").on("keypress", function (event) {
         if (event.keyCode == 13)
-            sendMessage();
+            $(".btn").click();
     });
 });
 
