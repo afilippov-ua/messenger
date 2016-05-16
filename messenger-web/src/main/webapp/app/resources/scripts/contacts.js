@@ -64,7 +64,7 @@ function findContacts() {
                                 .on("click", function () {
                                     addNewContactOnClick(this);
                                 });
-                            if ($.inArray(user.id, contacts) != -1) {
+                            if ($.inArray(user.id, contacts) != -1 || user.id == userId) {
                                 button.addClass("btn-success")
                                 button.prop('disabled', true);
                             } else {
