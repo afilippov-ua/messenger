@@ -9,7 +9,7 @@ public interface IContactService {
 
     Contact getContact(Integer id);
 
-    List<Contact> getContacts(Integer ownerIdzz);
+    List<Contact> getContacts(Integer ownerId);
 
     boolean updateContact(Integer id, Contact sourceContact);
 
